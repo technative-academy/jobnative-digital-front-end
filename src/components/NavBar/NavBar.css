@@ -1,0 +1,10 @@
+.navbar {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #0c4c84ff;
+}
+
+.navbar-active {
+    border-bottom: 4px solid #0e5491ff;
+}
