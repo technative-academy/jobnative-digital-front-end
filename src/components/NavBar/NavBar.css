@@ -1,10 +1,24 @@
 .navbar {
-    display: flex;
-    gap: 30px;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #0c4c84ff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
 }
 
 .navbar-active {
-    border-bottom: 4px solid #0e5491ff;
+  border-bottom: 4px solid #0e5491ff;
+}
+
+.navbar-left,
+.navbar-right {
+  display: flex;
+  gap: 1rem;
+}
+
+.btn-primary {
+  background: rgb(193, 8, 8);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  text-decoration: none;
 }
