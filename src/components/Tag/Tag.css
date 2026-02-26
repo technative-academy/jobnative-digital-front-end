@@ -1,0 +1,10 @@
+@import url("https://fonts.googleapis.com/css2?family=Bpmf+Iansui&display=swap");
+.tag {
+    border-radius: 12px;
+    padding: 10px 22px;
+    width: fit-content;
+    margin: 8px;
+    font-family: "Bpmf Iansui";
+    font-size: 16px;
+    font-weight: 800;
+}
