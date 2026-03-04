@@ -38,7 +38,7 @@ function Home() {
         ))
       )}
       
-      <Company/>
+      <Company companyId={2}/>
 
       <div style={{ marginTop: "2rem", textAlign: "center" }}>
         <Link to="/add-company">Add a Company</Link>
