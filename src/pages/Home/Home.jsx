@@ -29,7 +29,7 @@ function Home() {
   return (
     <div style={{ padding: "2rem" }}>
       <h1>JobNative Digital</h1>
-      <h2>Find the company of your dreams.</h2>
+      <h2>Find the company of your dreams</h2>
       <p>Explore job opportunities that match your skills and interests.</p>
 
       <Filters filters={filters} setFilters={setFilters} />
