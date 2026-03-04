@@ -1,3 +1,4 @@
+import Company from "../Company/Company";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { companies } from "../../data/companies";
@@ -36,6 +37,8 @@ function Home() {
           <CompanyCard key={company.id} company={company} />
         ))
       )}
+      
+      <Company/>
 
       <div style={{ marginTop: "2rem", textAlign: "center" }}>
         <Link to="/add-company">Add a Company</Link>
