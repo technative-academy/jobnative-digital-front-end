@@ -1,3 +1,4 @@
+import "./Home.css";
 import Company from "../Company/Company";
 import { Link } from "react-router-dom";
 import { useState } from "react";
@@ -7,18 +8,21 @@ import CompanyCard from "../../components/CompanyCard/CompanyCard";
 
 function Home() {
   const [filters, setFilters] = useState({
-    location: "",
-    industry: "",
-    technology: "",
-    role: "",
+    location: [],
+    industry: [],
+    technology: [],
+    role: [],
   });
 
   const filteredCompanies = companies.filter((company) => {
     return (
-      (!filters.location || company.location === filters.location) &&
-      (!filters.industry || company.industry === filters.industry) &&
-      (!filters.technology || company.technology === filters.technology) &&
-      (!filters.role || company.role === filters.role)
+      (filters.location.length === 0 ||
+        filters.location.includes(company.location)) &&
+      (filters.industry.length === 0 ||
+        filters.industry.includes(company.industry)) &&
+      (filters.technology.length === 0 ||
+        filters.technology.includes(company.technology)) &&
+      (filters.role.length === 0 || filters.role.includes(company.role))
     );
   });
 
@@ -33,15 +37,17 @@ function Home() {
       {filteredCompanies.length === 0 ? (
         <p>No companies found.</p>
       ) : (
-        filteredCompanies.map((company) => (
-          <CompanyCard key={company.id} company={company} />
-        ))
+        <div className="company-grid">
+          {filteredCompanies.map((company) => (
+            <CompanyCard key={company.id} company={company} />
+          ))}
+        </div>
       )}
-      
-      <Company/>
 
       <div style={{ marginTop: "2rem", textAlign: "center" }}>
-        <Link to="/add-company">Add a Company</Link>
+        <Link to="/add-company" className="btn-primary">
+          Add a Company
+        </Link>
       </div>
     </div>
   );

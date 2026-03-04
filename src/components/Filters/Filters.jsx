@@ -1,52 +1,60 @@
+import { useState } from "react";
+import FilterDropdown from "./FilterDropdown";
+import "./Filters.css";
+
 function Filters({ filters, setFilters }) {
-  function handleChange(e) {
-    setFilters({
-      ...filters,
-      [e.target.name]: e.target.value,
-    });
-  }
+  const [openDropdown, setOpenDropdown] = useState(null);
 
   return (
-    <div style={filterContainer}>
-      <select name="location" onChange={handleChange}>
-        <option value="">All Locations</option>
-        <option value="London">London</option>
-        <option value="Remote">Remote</option>
-        <option value="Manchester">Manchester</option>
-        <option value="Brighton">Brighton</option>
-        <option value="Worthing">Worthing</option>
-      </select>
+    <div className="filters">
+      <FilterDropdown
+        label="Location"
+        name="location"
+        options={[
+          "All",
+          "London",
+          "Remote",
+          "Manchester",
+          "Brighton",
+          "Worthing",
+        ]}
+        filters={filters}
+        setFilters={setFilters}
+        openDropdown={openDropdown}
+        setOpenDropdown={setOpenDropdown}
+      />
 
-      <select name="industry" onChange={handleChange}>
-        <option value="">All Industries</option>
-        <option value="FinTech">FinTech</option>
-        <option value="SaaS">SaaS</option>
-        <option value="Charity">Charity</option>
-        <option value="HealthTech">HealthTech</option>
-        <option value="Travel">Travel</option>
-      </select>
+      <FilterDropdown
+        label="Industry"
+        name="industry"
+        options={["FinTech", "SaaS", "Charity", "HealthTech", "Travel"]}
+        filters={filters}
+        setFilters={setFilters}
+        openDropdown={openDropdown}
+        setOpenDropdown={setOpenDropdown}
+      />
 
-      <select name="technology" onChange={handleChange}>
-        <option value="">All Technologies</option>
-        <option value="React">React</option>
-        <option value="Node">Node</option>
-        <option value="Python">Python</option>
-      </select>
+      <FilterDropdown
+        label="Technology"
+        name="technology"
+        options={["React", "Node", "Python"]}
+        filters={filters}
+        setFilters={setFilters}
+        openDropdown={openDropdown}
+        setOpenDropdown={setOpenDropdown}
+      />
 
-      <select name="role" onChange={handleChange}>
-        <option value="">All Job Roles</option>
-        <option value="Frontend Developer">Frontend Developer</option>
-        <option value="Backend Developer">Backend Developer</option>
-        <option value="Data Engineer">Data Engineer</option>
-      </select>
+      <FilterDropdown
+        label="Role"
+        name="role"
+        options={["Frontend Developer", "Backend Developer", "Data Engineer"]}
+        filters={filters}
+        setFilters={setFilters}
+        openDropdown={openDropdown}
+        setOpenDropdown={setOpenDropdown}
+      />
     </div>
   );
 }
-
-const filterContainer = {
-  display: "flex",
-  gap: "1rem",
-  marginBottom: "2rem",
-};
 
 export default Filters;
