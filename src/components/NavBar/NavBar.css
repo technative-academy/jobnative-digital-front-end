@@ -5,8 +5,19 @@
   padding: 1rem;
 }
 
+.nav-item {
+  color: var(--colour-primary);
+  text-decoration: none;
+  font-size: var(--font-size-body);
+}
+
+.nav-item:hover {
+  text-decoration: underline;
+  color: var(--colour-secondary);
+}
+
 .navbar-active {
-  border-bottom: 4px solid #0e5491ff;
+  border-bottom: 4px solid var(--colour-secondary);
 }
 
 .navbar-left,
@@ -16,9 +27,14 @@
 }
 
 .btn-primary {
-  background: rgb(193, 8, 8);
+  background: var(--colour-accent);
   color: white;
   padding: 0.5rem 1rem;
   border-radius: 6px;
   text-decoration: none;
+}
+
+.btn-primary:hover {
+  background: var(--colour-secondary);
+  border: 2px solid var(--colour-secondary);
 }

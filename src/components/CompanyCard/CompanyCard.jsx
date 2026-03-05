@@ -1,7 +1,8 @@
+import "./CompanyCard.css";
 function CompanyCard({ company }) {
   return (
-    <div style={cardStyle}>
-      <h3>{company.name}</h3>
+    <div className="company-card">
+      <h3 className="company-name">{company.name}</h3>
       <p>
         <strong>Location:</strong> {company.location}
       </p>
@@ -17,12 +18,5 @@ function CompanyCard({ company }) {
     </div>
   );
 }
-
-const cardStyle = {
-  border: "1px solid #ddd",
-  padding: "1rem",
-  borderRadius: "8px",
-  marginBottom: "1rem",
-};
 
 export default CompanyCard;
