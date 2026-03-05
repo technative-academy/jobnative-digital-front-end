@@ -4,21 +4,22 @@
   gap: 1.5rem;
 }
 
-h1 {
+.hero-title {
   text-align: center;
   margin-bottom: 2rem;
   font-size: var(--font-size-heading);
 }
 
-h2 {
+.hero-subtitle {
   margin-top: 2rem;
   margin-bottom: 0.5rem;
   font-size: var(--font-size-subheading);
+  color: var(--colour-text-dark);
 }
 
-p {
+.hero-text {
   text-align: center;
-  font-size: var(--font-size-body);
-  color: var(--colour-text-dark);
+  color: var(--colour-text-medium);
   margin-bottom: 1rem;
+  font-size: 1rem;
 }
