@@ -1,12 +1,14 @@
 import "./Home.css";
-import Company from "../Company/Company";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { companies } from "../../data/companies";
+import { useCompanies } from "../../hooks/useCompanies";
+import { useCompany } from "../../hooks/useCompany";
 import Filters from "../../components/Filters/Filters";
 import CompanyCard from "../../components/CompanyCard/CompanyCard";
 
 function Home() {
+  const { data: companies, isLoading, error } = useCompanies();
+
   const [filters, setFilters] = useState({
     location: [],
     industry: [],
@@ -14,7 +16,10 @@ function Home() {
     role: [],
   });
 
-  const filteredCompanies = companies.filter((company) => {
+  if (isLoading) return <p>Loading companies...</p>;
+  if (error) return <p>Something went wrong.</p>;
+
+  const filteredCompanies = companies?.filter((company) => {
     return (
       (filters.location.length === 0 ||
         filters.location.includes(company.location)) &&
@@ -36,11 +41,11 @@ function Home() {
 
       <Filters filters={filters} setFilters={setFilters} />
 
-      {filteredCompanies.length === 0 ? (
+      {filteredCompanies?.length === 0 ? (
         <p>No companies found.</p>
       ) : (
         <div className="company-grid">
-          {filteredCompanies.map((company) => (
+          {filteredCompanies?.map((company) => (
             <CompanyCard key={company.id} company={company} />
           ))}
         </div>
