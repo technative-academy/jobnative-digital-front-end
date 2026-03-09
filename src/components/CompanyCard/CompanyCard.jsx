@@ -1,7 +1,7 @@
 import "./CompanyCard.css";
-function CompanyCard({ company }) {
+function CompanyCard({ company, colourClass }) {
   return (
-    <div className="company-card">
+    <div className={`company-card ${colourClass}`}>
       <h3 className="company-name">{company.name}</h3>
       <p>
         <strong>Location:</strong> {company.location}

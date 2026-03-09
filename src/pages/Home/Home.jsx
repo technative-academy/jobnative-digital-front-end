@@ -16,6 +16,18 @@ function Home() {
     role: [],
   });
 
+  const colourClasses = [
+    "card-colour-1",
+    "card-colour-2",
+    "card-colour-3",
+    "card-colour-4",
+    "card-colour-5",
+  ];
+
+  function getRandomColourClass() {
+    return colourClasses[Math.floor(Math.random() * colourClasses.length)];
+  }
+
   if (isLoading) return <p>Loading companies...</p>;
   if (error) return <p>Something went wrong.</p>;
 
@@ -32,8 +44,10 @@ function Home() {
   });
 
   return (
-    <div style={{ padding: "2rem" }}>
-      <h1 className="hero-title">JobNative Digital</h1>
+    <div className="home-container">
+      <h1 className="hero-title">
+        <span className="brand-highlight">Job</span>Native
+      </h1>
       <h2 className="hero-subtitle">Find the company of your dreams</h2>
       <p className="hero-text">
         Explore job opportunities that match your skills and interests.
@@ -46,12 +60,16 @@ function Home() {
       ) : (
         <div className="company-grid">
           {filteredCompanies?.map((company) => (
-            <CompanyCard key={company.id} company={company} />
+            <CompanyCard
+              key={company.id}
+              company={company}
+              colourClass={getRandomColourClass()}
+            />
           ))}
         </div>
       )}
 
-      <div style={{ marginTop: "2rem", textAlign: "center" }}>
+      <div className="add-company-link">
         <Link to="/add-company" className="btn-primary">
           Add a Company
         </Link>
