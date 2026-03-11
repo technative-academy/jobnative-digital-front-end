@@ -1,10 +1,13 @@
 :root {
-  --colour-primary: #8c2e86;
-  --colour-secondary: #0a21a6;
-  --colour-secondary-light: #0c2ff2;
-  --colour-accent: #bf281b;
-  --colour-background-white: white;
-  --colour-background-light: lightgray;
+  --colour-primary: #561ce5;
+  --colour-primary-light: #7e57e1;
+  --colour-secondary: #1939e0;
+  --colour-secondary-light: #6b80fa;
+
+  --colour-accent: #fa161c;
+  --colour-accent-bright: #fac918;
+  --colour-background-white: #ffffff;
+  --colour-background-light: #e2e8f0;
   --colour-background-dark: rgb(23, 24, 24);
   --colour-text-light: rgb(246, 245, 240);
   --colour-text-dark: rgb(35, 34, 34);
