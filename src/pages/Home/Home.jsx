@@ -2,12 +2,14 @@ import "./Home.css";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useCompanies } from "../../hooks/useCompanies";
-import { useCompany } from "../../hooks/useCompany";
 import Filters from "../../components/Filters/Filters";
 import CompanyCard from "../../components/CompanyCard/CompanyCard";
+import Company from "../Company/Company";
 
 function Home() {
   const { data: companies, isLoading, error } = useCompanies();
+  const [companyDialogOpen, setCompanyDialogOpen] = useState(false);
+  const [selectedCompanyId, setSelectedCompanyId] = useState(null);
 
   const [filters, setFilters] = useState({
     location: [],
@@ -45,6 +47,11 @@ function Home() {
 
   return (
     <div className="home-container">
+      <Company
+        open={companyDialogOpen}
+        onOpenChange={setCompanyDialogOpen}
+        companyId={selectedCompanyId}
+      />
       <h1 className="hero-title">
         <span className="brand-highlight">Job</span>Native
       </h1>
@@ -64,6 +71,10 @@ function Home() {
               key={company.id}
               company={company}
               colourClass={getRandomColourClass()}
+              onClick={() => {
+                setSelectedCompanyId(company.id);
+                setCompanyDialogOpen(true);
+              }}
             />
           ))}
         </div>

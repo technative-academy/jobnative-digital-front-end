@@ -1,7 +1,23 @@
 import "./CompanyCard.css";
-function CompanyCard({ company, colourClass }) {
+
+function CompanyCard({ company, colourClass, onClick }) {
   return (
-    <div className={`company-card ${colourClass}`}>
+    <div
+      className={`company-card ${colourClass}`}
+      role={onClick ? "button" : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      onClick={onClick}
+      onKeyDown={
+        onClick
+          ? (event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                onClick(event);
+              }
+            }
+          : undefined
+      }
+    >
       <h3 className="company-name">{company.name}</h3>
       <p>
         <strong>Location:</strong> {company.location}
