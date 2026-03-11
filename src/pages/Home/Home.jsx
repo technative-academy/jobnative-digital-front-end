@@ -12,10 +12,7 @@ function Home() {
   const [selectedCompanyId, setSelectedCompanyId] = useState(null);
 
   const [filters, setFilters] = useState({
-    location: [],
-    industry: [],
-    technology: [],
-    role: [],
+    location: [], industry: [], technology: [], role: [],
   });
 
   const colourClasses = [
@@ -35,12 +32,9 @@ function Home() {
 
   const filteredCompanies = companies?.filter((company) => {
     return (
-      (filters.location.length === 0 ||
-        filters.location.includes(company.location)) &&
-      (filters.industry.length === 0 ||
-        filters.industry.includes(company.industry)) &&
-      (filters.technology.length === 0 ||
-        filters.technology.includes(company.technology)) &&
+      (filters.location.length === 0 || filters.location.includes(company.location)) &&
+      (filters.industry.length === 0 || filters.industry.includes(company.industry)) &&
+      (filters.technology.length === 0 || filters.technology.includes(company.technology)) &&
       (filters.role.length === 0 || filters.role.includes(company.role))
     );
   });
@@ -56,9 +50,7 @@ function Home() {
         <span className="brand-highlight">Job</span>Native
       </h1>
       <h2 className="hero-subtitle">Find the company of your dreams</h2>
-      <p className="hero-text">
-        Explore job opportunities that match your skills and interests.
-      </p>
+      <p className="hero-text">Explore job opportunities that match your skills and interests.</p>
 
       <Filters filters={filters} setFilters={setFilters} />
 
@@ -67,6 +59,9 @@ function Home() {
       ) : (
         <div className="company-grid">
           {filteredCompanies?.map((company) => (
+<<<<<<< feature/comment
+            <CompanyCard key={company.id} company={company} onClick={setSelectedCompanyId} />
+=======
             <CompanyCard
               key={company.id}
               company={company}
@@ -76,14 +71,26 @@ function Home() {
                 setCompanyDialogOpen(true);
               }}
             />
+>>>>>>> main
           ))}
         </div>
       )}
 
+<<<<<<< feature/comment
+      <Company
+        open={!!selectedCompanyId}
+        onOpenChange={(open) => { if (!open) setSelectedCompanyId(null); }}
+        companyId={selectedCompanyId}
+      />
+
+      <div style={{ marginTop: "2rem", textAlign: "center" }}>
+        <Link to="/add-company" className="btn-primary">Add a Company</Link>
+=======
       <div className="add-company-link">
         <Link to="/add-company" className="btn-primary">
           Add a Company
         </Link>
+>>>>>>> main
       </div>
     </div>
   );
