@@ -2,7 +2,6 @@ import "./Home.css";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useCompanies } from "../../hooks/useCompanies";
-import { useCompany } from "../../hooks/useCompany";
 import Filters from "../../components/Filters/Filters";
 import CompanyCard from "../../components/CompanyCard/CompanyCard";
 
@@ -24,22 +23,35 @@ function Home() {
     "card-colour-5",
   ];
 
-  function getRandomColourClass() {
-    return colourClasses[Math.floor(Math.random() * colourClasses.length)];
+  function getColourClass(companyId) {
+    const hash = String(companyId)
+      .split("")
+      .reduce((total, character) => total + character.charCodeAt(0), 0);
+
+    return colourClasses[hash % colourClasses.length];
   }
 
   if (isLoading) return <p>Loading companies...</p>;
   if (error) return <p>Something went wrong.</p>;
 
   const filteredCompanies = companies?.filter((company) => {
+    const matchesTechnology =
+      filters.technology.length === 0 ||
+      filters.technology.some((technology) =>
+        company.technologyList?.includes(technology),
+      );
+
+    const matchesRole =
+      filters.role.length === 0 ||
+      filters.role.some((role) => company.roleList?.includes(role));
+
     return (
       (filters.location.length === 0 ||
         filters.location.includes(company.location)) &&
       (filters.industry.length === 0 ||
         filters.industry.includes(company.industry)) &&
-      (filters.technology.length === 0 ||
-        filters.technology.includes(company.technology)) &&
-      (filters.role.length === 0 || filters.role.includes(company.role))
+      matchesTechnology &&
+      matchesRole
     );
   });
 
@@ -63,7 +75,7 @@ function Home() {
             <CompanyCard
               key={company.id}
               company={company}
-              colourClass={getRandomColourClass()}
+              colourClass={getColourClass(company.id)}
             />
           ))}
         </div>
