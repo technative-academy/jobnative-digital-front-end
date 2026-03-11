@@ -1,5 +1,5 @@
 import { NavLink, Link } from "react-router-dom";
-import "./Navbar.css";
+import "./NavBar.css";
 
 function Navbar() {
   return (
