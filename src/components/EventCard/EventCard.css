@@ -1,0 +1,49 @@
+.event-card {
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--colour-background-light);
+  transition: all 0.2s ease;
+}
+
+.event-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+.event-name {
+  font-size: 25px;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--colour-text-dark);
+  border-bottom: 1px solid var(--colour-text-dark);
+  padding: 15px;
+}
+
+.event-card p {
+  margin: 0.3rem 0;
+  color: var(--colour-text-dark);
+}
+
+.card-colour-1 {
+  background-color: #a3ffd8;
+}
+
+.card-colour-2 {
+  background-color: #fdceff;
+}
+
+.card-colour-3 {
+  background-color: #9fc5ff;
+}
+
+.card-colour-4 {
+  background-color: #a89fff;
+}
+
+.card-colour-5 {
+  background-color: #a1f4ff;
+}
+
+.card-colour-6 {
+  background-color: #d39aff;
+}

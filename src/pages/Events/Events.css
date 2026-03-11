@@ -1,0 +1,54 @@
+.event-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  margin-top: 60px;
+  margin-bottom: 50px;
+}
+
+.home-container {
+  padding: 2rem;
+}
+
+.hero-title {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 70px;
+  font-weight: 900;
+  font-family: Georgia, "Times New Roman", Times, serif;
+}
+
+.brand-highlight {
+  color: var(--colour-primary);
+
+  font-family: "montserrat", sans-serif;
+}
+
+.hero-subtitle {
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+  font-size: 35px;
+  font-weight: 700;
+  color: var(--colour-secondary-light);
+
+  /*background: -webkit-linear-gradient(
+    90deg,
+    var(--colour-secondary),
+    var(--colour-secondary-light),
+    var(--colour-primary-light)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;*/
+}
+
+.hero-text {
+  text-align: center;
+  color: var(--colour-text-medium);
+  margin-bottom: 1rem;
+  font-size: 25px;
+}
+
+.add-event-link {
+  margin-top: 2rem;
+  text-align: center;
+}
