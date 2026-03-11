@@ -17,24 +17,47 @@ import Tag from "../../components/Tag/Tag";
 import { useCompany } from "../../hooks/useCompany";
 import { getRandomColor } from "../../utils.js";
 import { ArrowUpRightIcon } from "lucide-react";
+import { useComments } from "../../hooks/useComments";
+import { useState } from "react";
 
 import "./Company.css";
 
-function Comment() {
+function Comment({ comment, onEdit, onDelete }) {
+  const [editing, setEditing] = useState(false);
+  const [value, setValue] = useState(comment.body);
+
+  const handleSave = async () => {
+    await onEdit(comment.id, value);
+    setEditing(false);
+  };
+
   return (
     <div className="flex gap-10 p-3">
       <span>
         <div className="text-center">
-          <img
-            src="/stock-profile-pic.jpg"
-            alt="Profile"
-            className="h-14 w-14 rounded-full object-cover"
-          />
-          <p>Danny</p>
+          <img src="/stock-profile-pic.jpg" alt="Profile" className="h-14 w-14 rounded-full object-cover" />
+          <p>{comment.user?.name ?? "User"}</p>
         </div>
       </span>
-      <span className="min-w-9/12 max-w-11/12">
-        <Textarea id="comment-1" disabled defaultValue="I Love this company!" />
+      <span className="min-w-9/12 max-w-11/12 flex flex-col gap-1">
+        <Textarea
+          disabled={!editing}
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+        />
+        <div className="flex gap-2 justify-end">
+          {editing ? (
+            <>
+              <Button size="sm" onClick={handleSave}>Save</Button>
+              <Button size="sm" variant="outline" onClick={() => setEditing(false)}>Cancel</Button>
+            </>
+          ) : (
+            <>
+              <Button size="sm" variant="outline" onClick={() => setEditing(true)}>Edit</Button>
+              <Button size="sm" variant="destructive" onClick={() => onDelete(comment.id)}>Delete</Button>
+            </>
+          )}
+        </div>
       </span>
     </div>
   );
@@ -52,6 +75,20 @@ Mollit dolore ut adipisicing veniam id aliqua pariatur mollit nostrud. Cillum si
 function Company({ open, onOpenChange, companyId }) {
   const { data, isLoading, error } = useCompany(companyId);
   console.log(data);
+
+  const { comments, addComment, editComment, deleteComment } = useComments(companyId);
+  const [newComment, setNewComment] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!newComment.trim()) return;
+    try {
+      await addComment(newComment);
+      setNewComment("");
+    } catch (err) {
+      alert("You must be logged in to add a comment.");
+    }
+  };
 
   return (
     // TODO add functionality for this to be opened from the main page
@@ -148,10 +185,10 @@ function Company({ open, onOpenChange, companyId }) {
               <Label htmlFor="comments">Comments</Label>
               {/* <Input id="username-1" name="username" placeholder="Enter a desription for this company" /> */}
               <div className="max-h-40 space-y-4 overflow-y-scroll rounded-md border-2 border-muted/70 pr-3">
-                <Comment />
-                <Comment />
-                <Comment />
-                <Comment />
+                {comments.length === 0 && <p className="p-3 text-sm text-muted-foreground">No comments yet.</p>}
+                {comments.map((comment) => (
+                  <Comment key={comment.id} comment={comment} onEdit={editComment} onDelete={deleteComment} />
+                ))}
               </div>
             </Field>
 
@@ -159,18 +196,17 @@ function Company({ open, onOpenChange, companyId }) {
               <Label htmlFor="add-comment">Add Comment:</Label>
               {/* <Input id="username-1" name="username" placeholder="Enter a desription for this company" /> */}
               <div className="flex flex-col justify-end max-w-8/12">
-                <Textarea
-                  id="add-comment"
-                  className="mb-2"
-                  placeholder="Type comment here"
-                />
-                <Button
-                  type="submit"
-                  className="max-w-2/12 min-w-3/24 self-end"
-                >
-                  Submit
-                </Button>
-              </div>
+              <Textarea
+                id="add-comment"
+                className="mb-2"
+                placeholder="Type comment here"
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+              />
+              <Button onClick={handleSubmit} className="max-w-2/12 min-w-3/24 self-end">
+                Submit
+              </Button>
+            </div>
             </Field>
           </FieldGroup>
           <DialogFooter>
