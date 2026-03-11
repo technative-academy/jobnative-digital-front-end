@@ -7,7 +7,11 @@ export function useCompany(companyId) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!companyId) return;
+    if (!companyId) {
+      setData(null);
+      setIsLoading(false);
+      return;
+    }
 
     let isActive = true;
     setError(null);
@@ -29,7 +33,7 @@ export function useCompany(companyId) {
     return () => {
       isActive = false;
     };
-  }, []);
+  }, [companyId]);
 
   return { data, isLoading, error };
 }
