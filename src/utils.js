@@ -25,3 +25,14 @@ export function formatDate(date) {
 
   return `${getOrdinal(day)} ${month} ${year}, ${hours}:${minutes}`;
 }
+
+export function stringArrayToString(arr) {
+  // Return empty string for non-arrays or empty arrays
+  if (!Array.isArray(arr) || arr.length === 0) return "";
+
+  let str = "";
+  arr.forEach(element => {
+    str += element.trim() + ", "
+  });
+  return str.slice(0, -2);
+}

@@ -4,14 +4,14 @@ import { useState } from "react";
 import { useCompanies } from "../../hooks/useCompanies";
 import Filters from "../../components/Filters/Filters";
 import CompanyCard from "../../components/CompanyCard/CompanyCard";
-import Company from "../Company/Company";
+import EventDialog from "../EventDialog/EventDialog";
 import { useEvents } from "../../hooks/useEvents";
 import EventCard from "../../components/EventCard/EventCard";
 
 function Events() {
   const { data: events, isLoading, error } = useEvents();
-  const [companyDialogOpen, setCompanyDialogOpen] = useState(false);
-  const [selectedCompanyId, setSelectedCompanyId] = useState(null);
+  const [eventDialogOpen, setEventDialogOpen] = useState(false);
+  const [selectedEventId, setSelectedEventId] = useState(null);
   console.log(events)
 
   const [filters, setFilters] = useState({
@@ -71,10 +71,10 @@ function Events() {
 
   return (
     <div className="home-container">
-      <Company
-        open={companyDialogOpen}
-        onOpenChange={setCompanyDialogOpen}
-        companyId={selectedCompanyId}
+      <EventDialog
+        open={eventDialogOpen}
+        onOpenChange={setEventDialogOpen}
+        eventId={selectedEventId}
       />
       <h1 className="hero-title">
         <span className="brand-highlight">Job</span>Native
@@ -97,8 +97,8 @@ function Events() {
                   event={event}
                   colourClass={colourAssignments?.[index]}
                   onClick={() => {
-                    setSelectedCompanyId(event.id);
-                    setCompanyDialogOpen(true);
+                    setSelectedEventId(event.id);
+                    setEventDialogOpen(true);
                   }}
                 />
               ))}

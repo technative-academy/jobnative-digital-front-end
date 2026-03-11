@@ -1,4 +1,4 @@
-import { formatDate } from "../../utils";
+import { formatDate, stringArrayToString } from "../../utils";
 import "./EventCard.css";
 
 function EventCard({ event, colourClass, onClick }) {
@@ -29,7 +29,7 @@ function EventCard({ event, colourClass, onClick }) {
       </p>
       {/* {event.technology ? */}
         <p>
-          <strong>Technology:</strong> {event.technology}
+          <strong>Technologies:</strong> {stringArrayToString(event.technologies.map(item => item.name))}
         </p> 
 
       <p>
