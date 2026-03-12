@@ -1,0 +1,45 @@
+import { useState, useEffect } from "react";
+import { commentsService } from "../services/comments.service";
+
+export function useComments(companyId) {
+  const [comments, setComments] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (!companyId) return;
+    let isActive = true;
+
+    const load = async () => {
+      try {
+        setIsLoading(true);
+        const res = await commentsService.getAll(companyId);
+        if (isActive) setComments(res);
+      } catch (err) {
+        if (isActive) setError(err);
+      } finally {
+        if (isActive) setIsLoading(false);
+      }
+    };
+
+    load();
+    return () => { isActive = false; };
+  }, [companyId]);
+
+  const addComment = async (body) => {
+    const newComment = await commentsService.create(companyId, { body });
+    setComments((prev) => [...prev, newComment]);
+  };
+
+  const editComment = async (commentId, body) => {
+    const updated = await commentsService.update(commentId, { body });
+    setComments((prev) => prev.map((c) => c.id === commentId ? updated : c));
+  };
+
+  const deleteComment = async (commentId) => {
+    await commentsService.delete(commentId);
+    setComments((prev) => prev.filter((c) => c.id !== commentId));
+  };
+
+  return { comments, isLoading, error, addComment, editComment, deleteComment };
+}

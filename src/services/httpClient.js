@@ -6,7 +6,9 @@ function normalizeBaseUrl(url) {
 }
 
 const BASE_URL = normalizeBaseUrl(
-  import.meta.env.VITE_API_BASE_URL || DEFAULT_BASE_URL,
+  import.meta.env.VITE_API_BASE_URL ||
+    import.meta.env.VITE_API_URL ||
+    DEFAULT_BASE_URL,
 );
 
 async function request(path, options = {}) {
