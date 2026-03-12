@@ -7,7 +7,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Field, FieldGroup } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
@@ -57,9 +56,6 @@ function Company({ open, onOpenChange, companyId }) {
     // TODO add functionality for this to be opened from the main page
     <Dialog open={open} onOpenChange={onOpenChange}>
       <form>
-        <DialogTrigger asChild>
-          <Button variant="outline">Company</Button>
-        </DialogTrigger>
         <DialogContent className="max-h-[90vh] min-w-11/12 overflow-y-auto">
           <DialogHeader>
             <div className="flex items-center justify-between">

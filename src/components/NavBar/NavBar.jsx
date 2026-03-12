@@ -1,10 +1,10 @@
-import { LogOut } from "lucide-react";
-import { NavLink, useNavigate } from "react-router-dom";
-import { useAuth } from "../../hooks/useAuth";
-import "./NavBar.css";
+import { LogOut } from 'lucide-react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../hooks/useAuth';
+import './NavBar.css';
 
 function getNavItemClassName({ isActive }) {
-  return isActive ? "nav-item nav-item-active" : "nav-item";
+  return isActive ? 'nav-item nav-item-active' : 'nav-item';
 }
 
 function Navbar() {
@@ -13,7 +13,7 @@ function Navbar() {
 
   async function handleLogout() {
     await logout();
-    navigate("/login");
+    navigate('/login');
   }
 
   return (
@@ -32,8 +32,12 @@ function Navbar() {
       <div className="navbar-right">
         {isAuthenticated ? (
           <>
-            <span className="navbar-user">{user?.name || "Member"}</span>
-            <button className="navbar-logout" onClick={handleLogout} type="button">
+            <span className="navbar-user">{user?.name || 'Member'}</span>
+            <button
+              className="navbar-logout"
+              onClick={handleLogout}
+              type="button"
+            >
               <LogOut size={16} strokeWidth={2.25} />
               Logout
             </button>

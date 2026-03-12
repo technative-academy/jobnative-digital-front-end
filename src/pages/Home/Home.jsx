@@ -1,12 +1,14 @@
-import "./Home.css";
-import { Link } from "react-router-dom";
-import { useState } from "react";
-import { useCompanies } from "../../hooks/useCompanies";
-import Filters from "../../components/Filters/Filters";
-import CompanyCard from "../../components/CompanyCard/CompanyCard";
+import './Home.css';
+import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { useCompanies } from '../../hooks/useCompanies';
+import Filters from '../../components/Filters/Filters';
+import CompanyCard from '../../components/CompanyCard/CompanyCard';
+import Company from '../Company/Company';
 
 function Home() {
   const { data: companies, isLoading, error } = useCompanies();
+  const [selectedCompanyId, setSelectedCompanyId] = useState(null);
 
   const [filters, setFilters] = useState({
     location: [],
@@ -16,16 +18,16 @@ function Home() {
   });
 
   const colourClasses = [
-    "card-colour-1",
-    "card-colour-2",
-    "card-colour-3",
-    "card-colour-4",
-    "card-colour-5",
+    'card-colour-1',
+    'card-colour-2',
+    'card-colour-3',
+    'card-colour-4',
+    'card-colour-5',
   ];
 
   function getColourClass(companyId) {
     const hash = String(companyId)
-      .split("")
+      .split('')
       .reduce((total, character) => total + character.charCodeAt(0), 0);
 
     return colourClasses[hash % colourClasses.length];
@@ -57,6 +59,16 @@ function Home() {
 
   return (
     <div className="home-container">
+      <Company
+        open={selectedCompanyId !== null}
+        onOpenChange={(open) => {
+          if (!open) {
+            setSelectedCompanyId(null);
+          }
+        }}
+        companyId={selectedCompanyId}
+      />
+
       <h1 className="hero-title">
         <span className="brand-highlight">Job</span>Native
       </h1>
@@ -76,6 +88,9 @@ function Home() {
               key={company.id}
               company={company}
               colourClass={getColourClass(company.id)}
+              onClick={() => {
+                setSelectedCompanyId(company.id);
+              }}
             />
           ))}
         </div>

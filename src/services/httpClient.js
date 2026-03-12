@@ -1,7 +1,8 @@
-const DEFAULT_BASE_URL = "https://jobnative-digital-api-production.up.railway.app/";
+const DEFAULT_BASE_URL =
+  'https://jobnative-digital-api-production.up.railway.app/';
 
 function normalizeBaseUrl(url) {
-  return url.endsWith("/") ? url : `${url}/`;
+  return url.endsWith('/') ? url : `${url}/`;
 }
 
 const BASE_URL = normalizeBaseUrl(
@@ -10,10 +11,10 @@ const BASE_URL = normalizeBaseUrl(
 
 async function request(path, options = {}) {
   const { body, headers: customHeaders, token, ...fetchOptions } = options;
-  const url = path.startsWith("http") ? path : `${BASE_URL}${path}`;
+  const url = path.startsWith('http') ? path : `${BASE_URL}${path}`;
   const headers = {
-    Accept: "application/json",
-    ...(body !== undefined ? { "Content-Type": "application/json" } : {}),
+    Accept: 'application/json',
+    ...(body !== undefined ? { 'Content-Type': 'application/json' } : {}),
     ...(customHeaders || {}),
   };
 
@@ -30,9 +31,9 @@ async function request(path, options = {}) {
   if (!res.ok) {
     const errorBody = await safeJson(res);
     const message =
-      (typeof errorBody === "object" && errorBody?.message) ||
+      (typeof errorBody === 'object' && errorBody?.message) ||
       res.statusText ||
-      "Request failed.";
+      'Request failed.';
     const error = new Error(message);
     error.status = res.status;
     error.body = errorBody;
@@ -57,12 +58,12 @@ async function safeJson(res) {
 }
 
 export const httpClient = {
-  del: (path, options = {}) => request(path, { ...options, method: "DELETE" }),
-  get: (path, options = {}) => request(path, { ...options, method: "GET" }),
+  del: (path, options = {}) => request(path, { ...options, method: 'DELETE' }),
+  get: (path, options = {}) => request(path, { ...options, method: 'GET' }),
   patch: (path, body, options = {}) =>
-    request(path, { ...options, body, method: "PATCH" }),
+    request(path, { ...options, body, method: 'PATCH' }),
   post: (path, body, options = {}) =>
-    request(path, { ...options, body, method: "POST" }),
+    request(path, { ...options, body, method: 'POST' }),
   put: (path, body, options = {}) =>
-    request(path, { ...options, body, method: "PUT" }),
+    request(path, { ...options, body, method: 'PUT' }),
 };
