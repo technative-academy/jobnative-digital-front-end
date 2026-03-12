@@ -1,0 +1,92 @@
+/* Scoped theme overrides for the DatePicker (shadcn calendar) */
+.date-picker {
+	color: var(--foreground);
+}
+
+/* .date-picker button:not([data-slot="button"]) {
+  border-radius: var(--border-radius-m);
+  padding: 0.6em 1.2em;
+  font-size: var(--font-size-body);
+  font-family: inherit;
+  background-color: var(--colour-primary);
+  color: var(--colour-background-white);
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.date-picker button:not([data-slot="button"]):hover {
+  opacity: 0.85;
+} */
+
+.date-picker,
+.date-picker__popover {
+	--background: #ffffff;
+	--popover: #ffffff;
+	--border: #e6e0f8;
+	--input: #e6e0f8;
+	--ring: #8a63f3;
+	--muted: #f3efff;
+	--muted-foreground: #6c5aa7;
+	--accent: #eee7ff;
+	--accent-foreground: #3b1f7a;
+	--primary: #6a3ef0;
+	--primary-foreground: #ffffff;
+}
+
+.date-picker .date-picker__trigger,
+.date-picker .date-picker__trigger[data-variant="outline"] {
+	background-color: #ffffff;
+	border-color: var(--border);
+	border-width: 1px;
+	border-style: solid;
+	color: var(--foreground);
+}
+
+.date-picker .date-picker__trigger:hover,
+.date-picker .date-picker__trigger[data-variant="outline"]:hover {
+	background-color: #ffffff;
+	border-color: #d6c9f7;
+	color: var(--foreground);
+}
+
+.date-picker__popover {
+	background-color: var(--popover);
+	border: 1px solid var(--border);
+	box-shadow: 0 14px 32px rgba(106, 62, 240, 0.18);
+}
+
+.date-picker__popover [data-slot="calendar"] {
+	background-color: var(--background);
+	color: var(--foreground);
+}
+
+.date-picker__popover .rdp-day_button:hover {
+	background-color: var(--accent);
+	color: var(--accent-foreground);
+}
+
+.date-picker__popover .rdp-day_button,
+.date-picker__popover .rdp-day_button:focus,
+.date-picker__popover .rdp-day_button:focus-visible,
+.date-picker__popover .rdp-day_button[aria-selected="true"] {
+	box-shadow: none;
+	outline: none;
+}
+
+.date-picker__popover .rdp-day_today:not(.rdp-day_selected) {
+	background-color: transparent;
+	color: inherit;
+}
+
+.date-picker__popover .rdp-day_today:not(.rdp-day_selected) .rdp-day_button,
+.date-picker__popover .rdp-day_today:not(.rdp-day_selected) button {
+	background-color: transparent;
+	color: inherit;
+	box-shadow: none;
+}
+
+.date-picker__time {
+	background-color: #ffffff;
+	border-color: var(--border);
+}
