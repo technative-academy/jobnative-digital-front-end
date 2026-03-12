@@ -1,53 +1,55 @@
-@import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
 
 @custom-variant dark (&:is(.dark *));
+
 #root {
-  max-width: 1280px;
-  height: 100%;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.app-shell--default {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   margin: 0 auto;
+  max-width: 1280px;
+  min-height: 100vh;
   padding: 2rem;
   text-align: center;
+}
+
+.app-main--default {
   display: flex;
-  justify-content: center;
+  flex: 1;
   flex-direction: column;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.app-shell--auth {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.app-main--auth {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  margin: 0 auto;
+  padding: 0 0 2rem;
+  width: min(1180px, calc(100% - 2rem));
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+.route-status {
+  align-items: center;
+  color: #5b5171;
+  display: flex;
+  flex: 1;
+  font-size: 1rem;
+  justify-content: center;
+  min-height: 40vh;
+  text-align: center;
 }
 
 @theme inline {
@@ -166,5 +168,15 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@media (max-width: 640px) {
+  .app-shell--default {
+    padding: 1rem;
+  }
+
+  .app-main--auth {
+    width: calc(100% - 1.2rem);
   }
 }
