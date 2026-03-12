@@ -1,0 +1,124 @@
+.dashboard-page {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 1.6rem;
+  padding: 1rem 0 2rem;
+}
+
+.dashboard-hero {
+
+  border: 1px solid rgba(108, 58, 208, 0.12);
+  border-radius: 2rem;
+  box-shadow: 0 28px 56px rgba(61, 30, 121, 0.1);
+  padding: clamp(1.5rem, 3vw, 2.6rem);
+  text-align: left;
+}
+
+.dashboard-kicker {
+  color: #6f38d8;
+  font-size: 0.84rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  margin: 0 0 0.8rem;
+  text-transform: uppercase;
+}
+
+.dashboard-hero h1 {
+  color: #2f174e;
+  margin: 0;
+}
+
+.dashboard-hero p {
+  color: #615a70;
+  font-size: 1.02rem;
+  line-height: 1.7;
+  margin: 1rem 0 0;
+  max-width: 44rem;
+}
+
+.dashboard-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.dashboard-panel {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(108, 58, 208, 0.12);
+  border-radius: 1.7rem;
+  box-shadow: 0 24px 46px rgba(61, 30, 121, 0.08);
+  padding: 1.6rem;
+  text-align: left;
+}
+
+.dashboard-panel h2 {
+  color: #311653;
+  margin-top: 0;
+}
+
+.dashboard-panel p {
+  color: #615a70;
+  line-height: 1.7;
+  margin-bottom: 0;
+}
+
+.dashboard-panel--accent {
+  background: linear-gradient(160deg, #6f38d8 0%, #5720c1 100%);
+  color: #ffffff;
+}
+
+.dashboard-panel--accent h2,
+.dashboard-panel--accent p {
+  color: #ffffff;
+}
+
+.dashboard-details {
+  display: grid;
+  gap: 1rem;
+  margin: 1.2rem 0 0;
+}
+
+.dashboard-details div {
+  background: rgba(108, 58, 208, 0.05);
+  border-radius: 1rem;
+  padding: 0.95rem 1rem;
+}
+
+.dashboard-details dt {
+  color: #6b6480;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.35rem;
+  text-transform: uppercase;
+}
+
+.dashboard-details dd {
+  color: #2f174e;
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.dashboard-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  margin-top: 1.4rem;
+}
+
+.dashboard-secondary {
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  border-radius: 999px;
+  color: #ffffff;
+  font-weight: 700;
+  min-height: 2.9rem;
+  padding: 0.75rem 1.2rem;
+}
+
+.dashboard-secondary:hover {
+  background: rgba(255, 255, 255, 0.2);
+  opacity: 1;
+}
