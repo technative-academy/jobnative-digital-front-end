@@ -1,17 +1,18 @@
 import "./Events.css";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { useCompanies } from "../../hooks/useCompanies";
 import Filters from "../../components/Filters/Filters";
-import CompanyCard from "../../components/CompanyCard/CompanyCard";
 import EventDialog from "../EventDialog/EventDialog";
 import { useEvents } from "../../hooks/useEvents";
 import EventCard from "../../components/EventCard/EventCard";
+import AddEventDialog from "../AddEventDialog/AddEventDialog";
+import { Button } from "../../components/ui/button";
 
 function Events() {
   const { data: events, isLoading, error } = useEvents();
   const [eventDialogOpen, setEventDialogOpen] = useState(false);
   const [selectedEventId, setSelectedEventId] = useState(null);
+  const [addEventDialogOpen, setAddEventDialogOpen] = useState(false);
   console.log(events)
 
   const [filters, setFilters] = useState({
@@ -76,6 +77,11 @@ function Events() {
         onOpenChange={setEventDialogOpen}
         eventId={selectedEventId}
       />
+      <AddEventDialog
+        open={addEventDialogOpen}
+        onOpenChange={setAddEventDialogOpen}
+        // eventId={selectedEventId}
+      />
       <h1 className="hero-title">
         <span className="brand-highlight">Job</span>Native
       </h1>
@@ -106,9 +112,14 @@ function Events() {
           )}
 
           <div className="add-event-link">
-            <Link to="/add-event" className="btn-primary">
+            <Button
+              onClick={() => {
+                setAddEventDialogOpen(true);
+              }}
+              className="btn-primary"
+            >
               Add an event
-            </Link>
+            </Button>
           </div>
         </>
       )}
