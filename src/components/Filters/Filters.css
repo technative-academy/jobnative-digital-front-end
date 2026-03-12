@@ -20,7 +20,7 @@
 
 .filter-button {
   padding: 0.6rem 1rem;
-
+  font-size: var(--font-size-title);
   background-color: white;
   color: var(--colour-primary);
   cursor: pointer;
@@ -33,8 +33,8 @@
 .filter-button:hover {
   background-color: var(--colour-primary);
   color: white;
-  border-radius: 8px;
-  width: 100%;
+  border-radius: 50px; /*not sure if i like this*/
+  width: 110%;
   height: 100%;
 
   text-align: left;
@@ -63,4 +63,11 @@
 
 input[type="checkbox"] {
   margin-right: 0.5rem;
+}
+
+.filter-header {
+  font-size: var(--font-size-subheading);
+  margin-top: 35px;
+  margin-bottom: 15px;
+  color: var(--colour-secondary);
 }

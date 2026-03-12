@@ -1,3 +1,17 @@
+// import "./Home.css";
+// import { useState } from "react";
+// import { useCompanies } from "../../hooks/useCompanies";
+// import Filters from "../../components/Filters/Filters";
+// import CompanyCard from "../../components/CompanyCard/CompanyCard";
+// import CompanyView from "../Company/CompanyView";
+// import AddCompanyDialog from "../../components/AddCompanyDialog/AddCompanyDialog";
+
+// function Home() {
+//   const { data: companies, isLoading, error } = useCompanies();
+
+//   // dialog state
+//   const [viewCompanyId, setViewCompanyId] = useState(null);
+//   const [addDialogOpen, setAddDialogOpen] = useState(false);
 import './Home.css';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
@@ -36,6 +50,33 @@ function Home() {
   if (isLoading) return <p>Loading companies...</p>;
   if (error) return <p>Something went wrong.</p>;
 
+  // const filteredCompanies =
+  //   companies?.filter((company) => {
+  //     return (
+  //       (filters.location.length === 0 ||
+  //         filters.location.includes(company.location)) &&
+  //       (filters.industry.length === 0 ||
+  //         filters.industry.includes(company.industry)) &&
+  //       (filters.technology.length === 0 ||
+  //         company.technologies?.some((tech) =>
+  //           filters.technology.includes(tech.name),
+  //         )) &&
+  //       (filters.role.length === 0 || filters.role.includes(company.role))
+  //     );
+  //   }) || [];
+
+  // return (
+  //   <div className="home-container">
+  //     {/* View Company Dialogue */}
+  //     <CompanyView
+  //       open={viewCompanyId !== null}
+  //       onOpenChange={() => setViewCompanyId(null)}
+  //       companyId={viewCompanyId}
+  //     />
+
+  //     {/* Add Company Dialogue */}
+  //     <AddCompanyDialog open={addDialogOpen} onOpenChange={setAddDialogOpen} />
+
   const filteredCompanies = companies?.filter((company) => {
     const matchesTechnology =
       filters.technology.length === 0 ||
@@ -72,7 +113,9 @@ function Home() {
       <h1 className="hero-title">
         <span className="brand-highlight">Job</span>Native
       </h1>
+
       <h2 className="hero-subtitle">Find the company of your dreams</h2>
+
       <p className="hero-text">
         Explore job opportunities that match your skills and interests.
       </p>
@@ -83,10 +126,12 @@ function Home() {
         <p>No companies found.</p>
       ) : (
         <div className="company-grid">
-          {filteredCompanies?.map((company) => (
+          {filteredCompanies.map((company) => (
             <CompanyCard
               key={company.id}
               company={company}
+              // colourClass={getRandomColourClass()}
+              // onClick={() => setViewCompanyId(company.id)}
               colourClass={getColourClass(company.id)}
               onClick={() => {
                 setSelectedCompanyId(company.id);
@@ -97,9 +142,9 @@ function Home() {
       )}
 
       <div className="add-company-link">
-        <Link to="/add-company" className="btn-primary">
+        <button className="btn-primary" onClick={() => setAddDialogOpen(true)}>
           Add a Company
-        </Link>
+        </button>
       </div>
     </div>
   );

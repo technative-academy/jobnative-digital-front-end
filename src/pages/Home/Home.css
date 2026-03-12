@@ -19,7 +19,14 @@
 }
 
 .brand-highlight {
-  color: var(--colour-primary);
+  background: -webkit-linear-gradient(
+    90deg,
+    var(--colour-secondary),
+    var(--colour-primary)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  /*color: var(--colour-primary);*/
 
   font-family: "montserrat", sans-serif;
 }
@@ -27,11 +34,12 @@
 .hero-subtitle {
   margin-top: 2rem;
   margin-bottom: 0.5rem;
-  font-size: 35px;
+  font-size: var(--font-size-heading);
   font-weight: 700;
   color: var(--colour-secondary-light);
+}
 
-  /*background: -webkit-linear-gradient(
+/*background: -webkit-linear-gradient(
     90deg,
     var(--colour-secondary),
     var(--colour-secondary-light),
@@ -39,13 +47,12 @@
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;*/
-}
 
 .hero-text {
   text-align: center;
   color: var(--colour-text-medium);
   margin-bottom: 1rem;
-  font-size: 25px;
+  font-size: var(--font-size-subheading);
 }
 
 .add-company-link {
