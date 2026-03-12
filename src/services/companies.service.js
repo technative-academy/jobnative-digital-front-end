@@ -1,9 +1,24 @@
-import { httpClient } from "./httpClient";
+import { httpClient } from './httpClient';
+
+function buildQueryString(params = {}) {
+  const searchParams = new URLSearchParams();
+
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== "") {
+      searchParams.set(key, value);
+    }
+  });
+
+  const queryString = searchParams.toString();
+
+  return queryString ? `?${queryString}` : "";
+}
 
 export const companiesService = {
-  getAll: () => httpClient.get("api/companies"),
+  getAll: (params = {}) =>
+    httpClient.get(`api/companies${buildQueryString(params)}`),
   getById: (id) => httpClient.get(`api/companies/${id}`),
-  create: (payload) => httpClient.post("api/companies", payload),
+  create: (payload) => httpClient.post('api/companies', payload),
   update: (id, payload) => httpClient.put(`api/companies/${id}`, payload),
   delete: (id) => httpClient.del(`api/companies/${id}`),
 };
