@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { companiesService } from "../../services/companies.service";
+import { eventsService } from "../../services/events.service";
 import { Button } from "@/components/ui/button";
 import Tag from "../../components/Tag/Tag";
 import { getRandomColor } from "../../utils.js";
@@ -7,6 +8,7 @@ import "./Admin.css";
 
 function Admin() {
   const [companies, setCompanies] = useState([]);
+  const [events, setEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [actionMessage, setActionMessage] = useState(null);
@@ -14,8 +16,12 @@ function Admin() {
   async function loadPending() {
     try {
       setIsLoading(true);
-      const data = await companiesService.getPending();
-      setCompanies(data);
+      const [companyData, eventData] = await Promise.all([
+        companiesService.getPending(),
+        eventsService.getPending(),
+      ]);
+      setCompanies(companyData);
+      setEvents(eventData);
     } catch (err) {
       setError(err);
     } finally {
@@ -27,7 +33,7 @@ function Admin() {
     loadPending();
   }, []);
 
-  async function handleApprove(id) {
+  async function handleApproveCompany(id) {
     try {
       await companiesService.approve(id);
       setActionMessage("Company approved.");
@@ -37,7 +43,7 @@ function Admin() {
     }
   }
 
-  async function handleReject(id) {
+  async function handleRejectCompany(id) {
     try {
       await companiesService.reject(id);
       setActionMessage("Company rejected.");
@@ -47,17 +53,38 @@ function Admin() {
     }
   }
 
-  if (isLoading) return <p>Loading pending companies...</p>;
-  if (error) return <p>Something went wrong loading pending companies.</p>;
+  async function handleApproveEvent(id) {
+    try {
+      await eventsService.approve(id);
+      setActionMessage("Event approved.");
+      setEvents((prev) => prev.filter((e) => e.id !== id));
+    } catch (err) {
+      setActionMessage("Failed to approve event.");
+    }
+  }
+
+  async function handleRejectEvent(id) {
+    try {
+      await eventsService.reject(id);
+      setActionMessage("Event rejected.");
+      setEvents((prev) => prev.filter((e) => e.id !== id));
+    } catch (err) {
+      setActionMessage("Failed to reject event.");
+    }
+  }
+
+  if (isLoading) return <p>Loading pending items...</p>;
+  if (error) return <p>Something went wrong loading pending items.</p>;
 
   return (
     <div className="admin-container">
-      <h1 className="admin-title">Admin - Pending Companies</h1>
+      <h1 className="admin-title">Admin - Moderation</h1>
 
       {actionMessage && (
         <p className="admin-message">{actionMessage}</p>
       )}
 
+      <h2 className="admin-section-title">Pending Companies</h2>
       {companies.length === 0 ? (
         <p>No pending companies to review.</p>
       ) : (
@@ -82,8 +109,57 @@ function Admin() {
                 {company.industry && <Tag text={company.industry} colour="lightpink" />}
               </div>
               <div className="admin-card-actions">
-                <Button onClick={() => handleApprove(company.id)}>Approve</Button>
-                <Button variant="destructive" onClick={() => handleReject(company.id)}>Reject</Button>
+                <Button onClick={() => handleApproveCompany(company.id)}>Approve</Button>
+                <Button variant="destructive" onClick={() => handleRejectCompany(company.id)}>Reject</Button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <h2 className="admin-section-title">Pending Events</h2>
+      {events.length === 0 ? (
+        <p>No pending events to review.</p>
+      ) : (
+        <div className="admin-list">
+          {events.map((event) => (
+            <div key={event.id} className="admin-card">
+              <div className="admin-card-header">
+                <h2>{event.name}</h2>
+                {event.website && (
+                  <a href={event.website} target="_blank" rel="noreferrer" className="admin-link">
+                    Website
+                  </a>
+                )}
+              </div>
+              {event.location && (
+                <p className="admin-card-meta">{event.location}</p>
+              )}
+              {(event.start_time || event.startTime) && (
+                <p className="admin-card-meta">
+                  {new Date(event.start_time || event.startTime).toLocaleString()}
+                  {(event.end_time || event.endTime) &&
+                    ` — ${new Date(event.end_time || event.endTime).toLocaleString()}`}
+                </p>
+              )}
+              {event.description && (
+                <p className="admin-card-description">{event.description}</p>
+              )}
+              <div className="admin-card-tags">
+                {event.technologies?.map((tech) => (
+                  <Tag key={tech.name || tech} text={tech.name || tech} colour={getRandomColor()} />
+                ))}
+              </div>
+              {event.sponsors?.length > 0 && (
+                <div className="admin-card-tags">
+                  {event.sponsors.map((sponsor) => (
+                    <Tag key={sponsor.id || sponsor.name} text={sponsor.name} colour="lightyellow" />
+                  ))}
+                </div>
+              )}
+              <div className="admin-card-actions">
+                <Button onClick={() => handleApproveEvent(event.id)}>Approve</Button>
+                <Button variant="destructive" onClick={() => handleRejectEvent(event.id)}>Reject</Button>
               </div>
             </div>
           ))}

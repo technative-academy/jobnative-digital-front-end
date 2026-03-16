@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { commentsService } from "../services/comments.service";
+import { useAuth } from "./useAuth";
 
 export function useComments(companyId) {
+  const { user } = useAuth();
   const [comments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -27,17 +29,17 @@ export function useComments(companyId) {
   }, [companyId]);
 
   const addComment = async (body) => {
-    const newComment = await commentsService.create(companyId, { body });
+    const newComment = await commentsService.create(companyId, { body, user_id: user?.id });
     setComments((prev) => [...prev, newComment]);
   };
 
   const editComment = async (commentId, body) => {
-    const updated = await commentsService.update(commentId, { body });
+    const updated = await commentsService.update(commentId, { body, user_id: user?.id });
     setComments((prev) => prev.map((c) => c.id === commentId ? updated : c));
   };
 
   const deleteComment = async (commentId) => {
-    await commentsService.delete(commentId);
+    await commentsService.delete(commentId, { user_id: user?.id });
     setComments((prev) => prev.filter((c) => c.id !== commentId));
   };
 
