@@ -21,4 +21,7 @@ export const companiesService = {
   create: (payload) => httpClient.post('api/companies', payload),
   update: (id, payload) => httpClient.put(`api/companies/${id}`, payload),
   delete: (id) => httpClient.del(`api/companies/${id}`),
+  getPending: () => httpClient.get('api/admin/companies/pending'),
+  approve: (id) => httpClient.patch(`api/admin/companies/${id}/approve`),
+  reject: (id) => httpClient.patch(`api/admin/companies/${id}/reject`),
 };

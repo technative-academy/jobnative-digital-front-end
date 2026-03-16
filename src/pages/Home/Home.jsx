@@ -1,14 +1,15 @@
 import "./Home.css";
 import { useState } from "react";
 import { useCompanies } from "../../hooks/useCompanies";
-import { Link } from "react-router-dom";
 import Filters from "../../components/Filters/Filters";
 import CompanyCard from "../../components/CompanyCard/CompanyCard";
 import CompanyView from "../Company/CompanyView";
 import AddCompanyDialog from "../../components/AddCompanyDialog/AddCompanyDialog";
+import { useAuth } from "../../hooks/useAuth";
 
 function Home() {
   const { data: companies, isLoading, error } = useCompanies();
+  const { isAuthenticated } = useAuth();
 
   // dialog state
   const [viewCompanyId, setViewCompanyId] = useState(null);
@@ -90,11 +91,13 @@ function Home() {
         </div>
       )}
 
-      <div className="add-company-link">
-        <button className="btn-primary" onClick={() => setAddDialogOpen(true)}>
-          Add a Company
-        </button>
-      </div>
+      {isAuthenticated && (
+        <div className="add-company-link">
+          <button className="btn-primary" onClick={() => setAddDialogOpen(true)}>
+            Add a Company
+          </button>
+        </div>
+      )}
     </div>
   );
 }

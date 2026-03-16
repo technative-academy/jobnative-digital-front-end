@@ -13,7 +13,6 @@ function Events() {
   const [eventDialogOpen, setEventDialogOpen] = useState(false);
   const [selectedEventId, setSelectedEventId] = useState(null);
   const [addEventDialogOpen, setAddEventDialogOpen] = useState(false);
-  console.log(events)
 
   const [filters, setFilters] = useState({
     location: [],

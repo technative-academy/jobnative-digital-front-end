@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import {
   Dialog,
   DialogContent,
@@ -8,14 +6,6 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -23,19 +13,22 @@ import { Label } from "@/components/ui/label";
 import { useCreateCompany } from "../../hooks/useCreateCompany";
 
 function AddCompanyDialog({ open, onOpenChange }) {
-  const createCompany = useCreateCompany();
-  const [industry, setIndustry] = useState("");
+  const { createCompany } = useCreateCompany();
 
   async function handleSubmit(e) {
     e.preventDefault();
 
     const formData = new FormData(e.target);
 
+    const techValue = formData.get("technologies");
+    const rolesValue = formData.get("jobroles");
+
     const newCompany = {
       name: formData.get("name"),
       website: formData.get("website"),
       linkedin: formData.get("linkedin"),
-      technologies: formData.get("technologies"),
+      technologyStack: techValue ? [techValue] : [],
+      jobRoles: rolesValue ? rolesValue.split(",").map((r) => r.trim()).filter(Boolean) : [],
       industry: formData.get("industry"),
       description: formData.get("description"),
     };

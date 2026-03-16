@@ -20,8 +20,17 @@ async function request(path, options = {}) {
     ...(customHeaders || {}),
   };
 
-  if (token) {
-    headers.Authorization = `Bearer ${token}`;
+  const authToken = token ?? (() => {
+    try {
+      const stored = JSON.parse(localStorage.getItem('jobnative.auth'));
+      return stored?.accessToken ?? null;
+    } catch {
+      return null;
+    }
+  })();
+
+  if (authToken) {
+    headers.Authorization = `Bearer ${authToken}`;
   }
 
   const res = await fetch(url, {
