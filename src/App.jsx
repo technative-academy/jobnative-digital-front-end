@@ -7,6 +7,7 @@ import Navbar from "./components/NavBar/NavBar";
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
 import { ProtectedRoute, PublicOnlyRoute } from "./components/ProtectedRoute";
+import Events from "./pages/Events/Events";
 
 function App() {
   const location = useLocation();
@@ -25,6 +26,14 @@ function App() {
               <ProtectedRoute>
                 <Dashboard />
               </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/events"
+            element={
+              <PublicOnlyRoute>
+                <Events />
+              </PublicOnlyRoute>
             }
           />
           <Route

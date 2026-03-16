@@ -67,7 +67,7 @@ a {
 }
 
 /* Buttons */
-button {
+button:not([data-slot="button"]):not(:where(.date-picker *, .date-picker__popover *)) {
   border-radius: var(--border-radius-m);
   padding: 0.6em 1.2em;
   font-size: var(--font-size-body);
@@ -79,6 +79,6 @@ button {
   transition: opacity 0.2s ease;
 }
 
-button:hover {
+button:not([data-slot="button"]):not(:where(.date-picker *, .date-picker__popover *)):hover {
   opacity: 0.85;
 }
