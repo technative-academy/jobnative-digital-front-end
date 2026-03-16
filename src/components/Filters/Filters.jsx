@@ -2,13 +2,14 @@ import { useState } from "react";
 import FilterDropdown from "./FilterDropdown";
 import "./Filters.css";
 
-function Filters({ filters, setFilters }) {
+function Filters({ filters, setFilters, addButton }) {
   const [openDropdown, setOpenDropdown] = useState(null);
 
   return (
     <div className="filter-container">
       <div className="filter-header">
         <h2>Filter companies by:</h2>
+        {addButton}
       </div>
       <div className="filters">
         <FilterDropdown

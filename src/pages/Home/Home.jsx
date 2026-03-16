@@ -74,7 +74,20 @@ function Home() {
         Explore job opportunities that match your skills and interests.
       </p>
 
-      <Filters filters={filters} setFilters={setFilters} />
+      <Filters
+        filters={filters}
+        setFilters={setFilters}
+        addButton={
+          isAuthenticated && (
+            <button
+              className="btn-primary"
+              onClick={() => setAddDialogOpen(true)}
+            >
+              + Add Company
+            </button>
+          )
+        }
+      />
 
       {filteredCompanies?.length === 0 ? (
         <p>No companies found.</p>
@@ -93,7 +106,10 @@ function Home() {
 
       {isAuthenticated && (
         <div className="add-company-link">
-          <button className="btn-primary" onClick={() => setAddDialogOpen(true)}>
+          <button
+            className="btn-primary"
+            onClick={() => setAddDialogOpen(true)}
+          >
             Add a Company
           </button>
         </div>
