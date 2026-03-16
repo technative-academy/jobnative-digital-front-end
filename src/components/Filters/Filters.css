@@ -3,8 +3,8 @@
   gap: 1rem;
   margin: 0 auto 2rem auto;
   background-color: white;
-  border: 1px solid var(--colour-background-light);
-  border-radius: 100px;
+  border: 2px solid var(--colour-background-light);
+  border-radius: 15px;
   padding: 0.5rem 1rem;
   width: fit-content;
 }
@@ -33,7 +33,7 @@
 .filter-button:hover {
   background-color: var(--colour-primary);
   color: white;
-  border-radius: 50px; /*not sure if i like this*/
+  border-radius: 15px; /*not sure if i like this*/
   width: 110%;
   height: 100%;
 
