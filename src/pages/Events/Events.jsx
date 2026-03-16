@@ -1,6 +1,7 @@
 import "./Events.css";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { useAuth } from "../../hooks/useAuth";
 import Filters from "../../components/Filters/Filters";
 import EventDialog from "../EventDialog/EventDialog";
 import { useEvents } from "../../hooks/useEvents";
@@ -10,10 +11,10 @@ import { Button } from "../../components/ui/button";
 
 function Events() {
   const { data: events, isLoading, error } = useEvents();
+  const { isAuthenticated } = useAuth();
   const [eventDialogOpen, setEventDialogOpen] = useState(false);
   const [selectedEventId, setSelectedEventId] = useState(null);
   const [addEventDialogOpen, setAddEventDialogOpen] = useState(false);
-  console.log(events)
 
   const [filters, setFilters] = useState({
     location: [],
@@ -111,16 +112,18 @@ function Events() {
             </div>
           )}
 
-          <div className="add-event-link">
-            <Button
-              onClick={() => {
-                setAddEventDialogOpen(true);
-              }}
-              className="btn-primary"
-            >
-              Add an event
-            </Button>
-          </div>
+          {isAuthenticated && (
+            <div className="add-event-link">
+              <Button
+                onClick={() => {
+                  setAddEventDialogOpen(true);
+                }}
+                className="btn-primary"
+              >
+                Add an event
+              </Button>
+            </div>
+          )}
         </>
       )}
     </div>

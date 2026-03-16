@@ -3,23 +3,32 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Field, FieldGroup } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import Tag from "../../components/Tag/Tag";
 import { useCompany } from "../../hooks/useCompany";
 import { getRandomColor } from "../../utils.js";
 import { ArrowUpRightIcon } from "lucide-react";
+import { useComments } from "../../hooks/useComments";
+import { useState } from "react";
+import { useAuth } from "../../hooks/useAuth";
 
 import "./Company.css";
 
-function Comment() {
+function Comment({ comment, onEdit, onDelete, isOwner }) {
+  const [editing, setEditing] = useState(false);
+  const [value, setValue] = useState(comment.body);
+
+  const handleSave = async () => {
+    await onEdit(comment.id, value);
+    setEditing(false);
+  };
+
   return (
     <div className="flex gap-10 p-3">
       <span>
@@ -29,40 +38,60 @@ function Comment() {
             alt="Profile"
             className="h-14 w-14 rounded-full object-cover"
           />
-          <p>Danny</p>
+          <p>{comment.user?.name ?? "User"}</p>
         </div>
       </span>
-      <span className="min-w-9/12 max-w-11/12">
-        <Textarea id="comment-1" disabled defaultValue="I Love this company!" />
+      <span className="min-w-9/12 max-w-11/12 flex flex-col gap-1">
+        <Textarea
+          disabled={!editing}
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+        />
+        {isOwner && (
+          <div className="flex gap-2 justify-end">
+            {editing ? (
+              <>
+                <Button size="sm" onClick={handleSave}>Save</Button>
+                <Button size="sm" variant="outline" onClick={() => setEditing(false)}>Cancel</Button>
+              </>
+            ) : (
+              <>
+                <Button size="sm" variant="outline" onClick={() => setEditing(true)}>Edit</Button>
+                <Button size="sm" variant="destructive" onClick={() => onDelete(comment.id)}>Delete</Button>
+              </>
+            )}
+          </div>
+        )}
       </span>
     </div>
   );
 }
 
-const lorem = `Proident ut eiusmod commodo ex fugiat proident irure sint commodo cillum nulla qui consequat. Enim fugiat nostrud id dolor fugiat ad culpa occaecat mollit ullamco qui enim quis. Ad labore officia do aliqua mollit ipsum nulla voluptate et. Dolore commodo Lorem ut non quis aute ex cillum adipisicing culpa quis non.
-Commodo occaecat ea sunt aliqua pariatur exercitation enim nisi. Laboris officia officia aliquip culpa excepteur nostrud occaecat sint ullamco. Laborum nulla mollit tempor aute dolore enim. Cillum nisi irure anim cupidatat esse pariatur ipsum. Cupidatat excepteur sunt do reprehenderit adipisicing elit est proident aliquip laboris reprehenderit consectetur. Excepteur consectetur sunt et ex et sint nulla veniam ad culpa pariatur. Amet consectetur elit culpa id.
-
-Pariatur duis fugiat tempor ea quis in esse voluptate veniam et. Sunt incididunt Lorem laborum ipsum anim fugiat amet ex incididunt eu. Duis quis nostrud irure sit nisi ad. Ipsum anim enim exercitation dolor nostrud sunt laborum minim consequat culpa. Sit labore sit qui sunt aute. Deserunt do aliqua ad id id eiusmod sint.
-
-Non irure laboris fugiat magna nulla sint culpa. Pariatur et laboris amet qui est consequat exercitation anim fugiat consequat nisi. Cillum nisi nostrud anim consequat culpa nostrud fugiat id. Commodo elit excepteur cillum fugiat nostrud minim. Dolor dolor veniam qui exercitation laboris mollit nostrud irure voluptate cupidatat eu et cupidatat minim.
-
-Mollit dolore ut adipisicing veniam id aliqua pariatur mollit nostrud. Cillum sit est exercitation et consequat sit. Cupidatat quis est aute elit nisi dolore fugiat laborum aute voluptate. Et sit aute sit Lorem sunt veniam minim ex adipisicing nisi. Proident nisi voluptate incididunt consectetur enim. Amet aute velit minim ipsum cupidatat nisi tempor nostrud occaecat ea. Velit consequat pariatur nulla pariatur consequat ut aliqua sit amet minim.`;
-
 function CompanyView({ open, onOpenChange, companyId }) {
   const { data, isLoading, error } = useCompany(companyId);
+  const { user, isAuthenticated } = useAuth();
+  const { comments, addComment, editComment, deleteComment } = useComments(companyId);
+  const [newComment, setNewComment] = useState("");
 
   if (!companyId) return null;
 
-  console.log(data);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!newComment.trim()) return;
+    try {
+      await addComment(newComment);
+      setNewComment("");
+    } catch (err) {
+      alert("You must be logged in to add a comment.");
+    }
+  };
 
   return (
-    // TODO add functionality for this to be opened from the main page
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[90vh] min-w-11/12 overflow-y-auto">
         <DialogHeader>
           <div className="flex items-center justify-between">
             <DialogTitle>{data?.name}</DialogTitle>
-            {/* change below to use a select component */}
             <div className="text-sm mr-35 capitalize">
               Status: {data?.status}
             </div>
@@ -95,10 +124,6 @@ function CompanyView({ open, onOpenChange, companyId }) {
               </svg>
             </a>
           </div>
-          {/* <DialogDescription>
-              Make changes to your profile here. Click save when you&apos;re
-              done.
-            </DialogDescription> */}
         </DialogHeader>
         <FieldGroup>
           <Field>
@@ -111,9 +136,6 @@ function CompanyView({ open, onOpenChange, companyId }) {
                   colour={getRandomColor()}
                 />
               ))}
-              {/* <Tag text="React" colour="lightblue" />
-                <Tag text="JavaScript" colour="yellow" />
-                <Tag text="TypeScript" colour="lightblue" /> */}
             </div>
           </Field>
           <Field>
@@ -131,12 +153,10 @@ function CompanyView({ open, onOpenChange, companyId }) {
             </div>
           </Field>
           <Field>
-            {/* <Label className="text-base">Location:</Label> */}
             <div>Location: {data?.location}</div>
           </Field>
           <Field>
             <Label htmlFor="description">Description</Label>
-            {/* <Input id="username-1" name="username" placeholder="Enter a desription for this company" /> */}
             <Textarea
               id="description"
               className="min-h-30 max-h-60"
@@ -148,35 +168,44 @@ function CompanyView({ open, onOpenChange, companyId }) {
 
           <Field>
             <Label htmlFor="comments">Comments</Label>
-            {/* <Input id="username-1" name="username" placeholder="Enter a desription for this company" /> */}
             <div className="max-h-40 space-y-4 overflow-y-scroll rounded-md border-2 border-muted/70 pr-3">
-              <Comment />
-              <Comment />
-              <Comment />
-              <Comment />
+              {comments.length === 0 && <p className="p-3 text-sm text-muted-foreground">No comments yet.</p>}
+              {comments.map((comment) => (
+                <Comment
+                  key={comment.id}
+                  comment={comment}
+                  onEdit={editComment}
+                  onDelete={deleteComment}
+                  isOwner={comment.userId === user?.id}
+                />
+              ))}
             </div>
           </Field>
 
-          <Field>
-            <Label htmlFor="add-comment">Add Comment:</Label>
-            {/* <Input id="username-1" name="username" placeholder="Enter a desription for this company" /> */}
-            <div className="flex flex-col justify-end max-w-8/12">
-              <Textarea
-                id="add-comment"
-                className="mb-2"
-                placeholder="Type comment here"
-              />
-              <Button type="submit" className="max-w-2/12 min-w-3/24 self-end">
-                Submit
-              </Button>
-            </div>
-          </Field>
+          {isAuthenticated ? (
+            <Field>
+              <Label htmlFor="add-comment">Add Comment:</Label>
+              <div className="flex flex-col justify-end max-w-8/12">
+                <Textarea
+                  id="add-comment"
+                  className="mb-2"
+                  placeholder="Type comment here"
+                  value={newComment}
+                  onChange={(e) => setNewComment(e.target.value)}
+                />
+                <Button onClick={handleSubmit} className="max-w-2/12 min-w-3/24 self-end">
+                  Submit
+                </Button>
+              </div>
+            </Field>
+          ) : (
+            <p className="text-sm text-muted-foreground">Log in to leave a comment.</p>
+          )}
         </FieldGroup>
         <DialogFooter>
           <DialogClose asChild>
-            <Button>Cancel</Button>
+            <Button>Close</Button>
           </DialogClose>
-          <Button type="submit">Save changes</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

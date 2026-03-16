@@ -1,4 +1,4 @@
-import { companiesService } from "@/services/companies.service";
+import { eventsService } from "@/services/events.service";
 import { useState } from "react";
 
 export function useCreateEvent() {
@@ -8,21 +8,8 @@ export function useCreateEvent() {
   async function createEvent(newEvent) {
     try {
       setLoading(true);
-
-    //   const res = await fetch("/api/events", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(newEvent),
-    //   });
-      const res = await companiesService.create(newEvent)
-
-      if (!res.ok) {
-        throw new Error("Failed to create event");
-      }
-
-      return await res.json();
+      const data = await eventsService.create(newEvent);
+      return data;
     } catch (err) {
       setError(err);
       throw err;

@@ -2,7 +2,6 @@ import { formatDate, stringArrayToString } from "../../utils";
 import "./EventCard.css";
 
 function EventCard({ event, colourClass, onClick }) {
-  console.log(event)
   return (
     <div
       className={`event-card ${colourClass}`}

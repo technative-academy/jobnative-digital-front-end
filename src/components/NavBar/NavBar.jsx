@@ -22,9 +22,17 @@ function Navbar() {
         <NavLink className={getNavItemClassName} to="/">
           Home
         </NavLink>
+        <NavLink className={getNavItemClassName} to="/events">
+          Events
+        </NavLink>
         {isAuthenticated ? (
           <NavLink className={getNavItemClassName} to="/dashboard">
             Dashboard
+          </NavLink>
+        ) : null}
+        {user?.role === 'admin' ? (
+          <NavLink className={getNavItemClassName} to="/admin">
+            Admin
           </NavLink>
         ) : null}
       </div>
@@ -57,4 +65,4 @@ function Navbar() {
   );
 }
 
-export default NavBar;
+export default Navbar;

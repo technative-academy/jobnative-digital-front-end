@@ -1,3 +1,4 @@
+import { companiesService } from "@/services/companies.service";
 import { useState } from "react";
 
 export function useCreateCompany() {
@@ -7,20 +8,8 @@ export function useCreateCompany() {
   async function createCompany(newCompany) {
     try {
       setLoading(true);
-
-      const res = await fetch("/api/companies", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newCompany),
-      });
-
-      if (!res.ok) {
-        throw new Error("Failed to create company");
-      }
-
-      return await res.json();
+      const data = await companiesService.create(newCompany);
+      return data;
     } catch (err) {
       setError(err);
       throw err;
