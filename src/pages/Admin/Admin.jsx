@@ -38,7 +38,7 @@ function Admin() {
       await companiesService.approve(id);
       setActionMessage("Company approved.");
       setCompanies((prev) => prev.filter((c) => c.id !== id));
-    } catch (err) {
+    } catch {
       setActionMessage("Failed to approve company.");
     }
   }
@@ -48,7 +48,7 @@ function Admin() {
       await companiesService.reject(id);
       setActionMessage("Company rejected.");
       setCompanies((prev) => prev.filter((c) => c.id !== id));
-    } catch (err) {
+    } catch {
       setActionMessage("Failed to reject company.");
     }
   }
@@ -58,7 +58,7 @@ function Admin() {
       await eventsService.approve(id);
       setActionMessage("Event approved.");
       setEvents((prev) => prev.filter((e) => e.id !== id));
-    } catch (err) {
+    } catch {
       setActionMessage("Failed to approve event.");
     }
   }
@@ -68,7 +68,7 @@ function Admin() {
       await eventsService.reject(id);
       setActionMessage("Event rejected.");
       setEvents((prev) => prev.filter((e) => e.id !== id));
-    } catch (err) {
+    } catch {
       setActionMessage("Failed to reject event.");
     }
   }
