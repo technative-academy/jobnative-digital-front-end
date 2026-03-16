@@ -61,7 +61,20 @@
   margin-bottom: 0.75rem;
 }
 
+.admin-card-meta {
+  font-size: 0.875rem;
+  color: var(--color-muted-foreground, #6b7280);
+  margin-bottom: 0.25rem;
+}
+
 .admin-card-actions {
   display: flex;
   gap: 0.5rem;
+}
+
+.admin-section-title {
+  font-size: 1.35rem;
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
 }

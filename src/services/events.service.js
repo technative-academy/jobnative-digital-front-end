@@ -6,4 +6,7 @@ export const eventsService = {
   create: (payload) => httpClient.post("api/events", payload),
   update: (id, payload) => httpClient.put(`api/events/${id}`, payload),
   delete: (id) => httpClient.del(`api/events/${id}`),
+  getPending: () => httpClient.get("api/admin/events/pending"),
+  approve: (id) => httpClient.patch(`api/admin/events/${id}/approve`),
+  reject: (id) => httpClient.patch(`api/admin/events/${id}/reject`),
 };
