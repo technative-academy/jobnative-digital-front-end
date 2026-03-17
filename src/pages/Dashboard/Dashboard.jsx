@@ -174,7 +174,7 @@ function DashboardCompanyRow({ isExpanded, item, onRemove, onSave, onToggle }) {
 
   return (
     <article
-      className={`dashboard-row ${isExpanded ? 'dashboard-row--expanded' : ''}`}
+      className={`dashboard-row${isExpanded ? ' dashboard-row--expanded' : ''}`}
     >
       <button
         aria-controls={detailsId}
@@ -214,96 +214,98 @@ function DashboardCompanyRow({ isExpanded, item, onRemove, onSave, onToggle }) {
         </span>
       </button>
 
-      {isExpanded ? (
-        <div className="dashboard-row__details" id={detailsId}>
-          <div className="dashboard-row__detail-meta">
-            {company?.location ? (
-              <span>
-                <MapPin size={14} strokeWidth={2} />
-                {company.location}
-              </span>
-            ) : null}
-            {company?.website ? (
-              <a href={company.website} rel="noreferrer" target="_blank">
-                <ExternalLink size={14} strokeWidth={2} />
-                Website
-              </a>
-            ) : null}
-          </div>
-
-          {company?.technologyList?.length ? (
-            <div className="dashboard-chip-row">
-              {company.technologyList.slice(0, 4).map((technology) => (
-                <span
-                  className="dashboard-chip"
-                  key={`${item.companyId}-${technology}`}
-                >
-                  {technology}
-                </span>
-              ))}
-            </div>
+      <div
+        aria-hidden={!isExpanded}
+        className="dashboard-row__details"
+        id={detailsId}
+      >
+        <div className="dashboard-row__detail-meta">
+          {company?.location ? (
+            <span>
+              <MapPin size={14} strokeWidth={2} />
+              {company.location}
+            </span>
           ) : null}
-
-          <label
-            className="dashboard-row__notes-label"
-            htmlFor={`dashboard-notes-${item.companyId}`}
-          >
-            Private notes
-          </label>
-          <Textarea
-            className="dashboard-row__notes"
-            id={`dashboard-notes-${item.companyId}`}
-            onChange={(event) => setNotesDraft(event.target.value)}
-            placeholder="Add reminders, outreach notes, or next steps."
-            value={notesDraft}
-          />
-
-          <div className="dashboard-row__actions">
-            <div className="dashboard-row__move-row">
-              {DASHBOARD_COLUMNS.filter(
-                (column) => column.value !== item.dashboardColumn,
-              ).map((column) => (
-                <button
-                  className="dashboard-move-button"
-                  disabled={Boolean(pendingAction)}
-                  key={`${item.companyId}-${column.value}`}
-                  onClick={() => handleMove(column.value)}
-                  type="button"
-                >
-                  Move to {column.shortLabel}
-                </button>
-              ))}
-            </div>
-
-            <div className="dashboard-row__button-row">
-              <button
-                className="dashboard-row__control dashboard-row__control--primary"
-                disabled={!hasNoteChanges || Boolean(pendingAction)}
-                onClick={handleSaveNotes}
-                type="button"
-              >
-                Save notes
-              </button>
-              <button
-                className="dashboard-row__control dashboard-row__control--danger"
-                disabled={Boolean(pendingAction)}
-                onClick={handleRemove}
-                type="button"
-              >
-                <Trash2 size={15} strokeWidth={2} />
-                Remove
-              </button>
-            </div>
-          </div>
-
-          {feedback ? <p className="dashboard-feedback">{feedback}</p> : null}
-          {error ? (
-            <p className="dashboard-feedback dashboard-feedback--error">
-              {error}
-            </p>
+          {company?.website ? (
+            <a href={company.website} rel="noreferrer" target="_blank">
+              <ExternalLink size={14} strokeWidth={2} />
+              Website
+            </a>
           ) : null}
         </div>
-      ) : null}
+
+        {company?.technologyList?.length ? (
+          <div className="dashboard-chip-row">
+            {company.technologyList.slice(0, 4).map((technology) => (
+              <span
+                className="dashboard-chip"
+                key={`${item.companyId}-${technology}`}
+              >
+                {technology}
+              </span>
+            ))}
+          </div>
+        ) : null}
+
+        <label
+          className="dashboard-row__notes-label"
+          htmlFor={`dashboard-notes-${item.companyId}`}
+        >
+          Private notes
+        </label>
+        <Textarea
+          className="dashboard-row__notes"
+          id={`dashboard-notes-${item.companyId}`}
+          onChange={(event) => setNotesDraft(event.target.value)}
+          placeholder="Add reminders, outreach notes, or next steps."
+          value={notesDraft}
+        />
+
+        <div className="dashboard-row__actions">
+          <div className="dashboard-row__move-row">
+            {DASHBOARD_COLUMNS.filter(
+              (column) => column.value !== item.dashboardColumn,
+            ).map((column) => (
+              <button
+                className="dashboard-move-button"
+                disabled={Boolean(pendingAction)}
+                key={`${item.companyId}-${column.value}`}
+                onClick={() => handleMove(column.value)}
+                type="button"
+              >
+                Move to {column.shortLabel}
+              </button>
+            ))}
+          </div>
+
+          <div className="dashboard-row__button-row">
+            <button
+              className="dashboard-row__control dashboard-row__control--primary"
+              disabled={!hasNoteChanges || Boolean(pendingAction)}
+              onClick={handleSaveNotes}
+              type="button"
+            >
+              Save notes
+            </button>
+            <button
+              className="dashboard-row__control dashboard-row__control--danger"
+              disabled={Boolean(pendingAction)}
+              onClick={handleRemove}
+              type="button"
+            >
+              <Trash2 size={15} strokeWidth={2} />
+              Remove
+            </button>
+          </div>
+        </div>
+
+        {feedback ? <p className="dashboard-feedback">{feedback}</p> : null}
+        {error ? (
+          <p className="dashboard-feedback dashboard-feedback--error">
+            {error}
+          </p>
+        ) : null}
+      </div>
     </article>
   );
 }
@@ -630,8 +632,7 @@ function Dashboard() {
         {columnSections.map((column) => (
           <div
             aria-labelledby={`dashboard-tab-${column.value}`}
-            className="dashboard-saved__panel"
-            hidden={activeTab !== column.value}
+            className={`dashboard-saved__panel${activeTab === column.value ? ' dashboard-saved__panel--active' : ''}`}
             id={`dashboard-tab-panel-${column.value}`}
             key={column.value}
             role="tabpanel"
