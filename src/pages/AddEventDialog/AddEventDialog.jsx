@@ -1,95 +1,37 @@
-import React, { useMemo, useState } from "react";
-import { Button } from "@/components/ui/button";
-import "./AddEventDialog.css";
+import { useMemo, useState } from "react";
+import { X } from "lucide-react";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
 } from "@/components/ui/dialog";
-import { DatePicker } from "../../components/DatePicker/DatePicker.jsx";
-import { Field } from "../../components/ui/field"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
+import TagInput from "../../components/TagInput/TagInput";
 import { useCompanies } from "../../hooks/useCompanies.js";
 import { useCreateEvent } from "../../hooks/useCreateEvent.js";
-
-
-const buildDateTime = (date, time) => {
-  if (!date) return null;
-  const [hours, minutes, seconds] = (time || "00:00:00").split(":");
-  const combined = new Date(date);
-  combined.setHours(Number(hours || 0), Number(minutes || 0), Number(seconds || 0), 0);
-  return combined.toISOString();
-};
-
-const TECHNOLOGY_OPTIONS = [
-  "React",
-  "TypeScript",
-  "JavaScript",
-  "Node.js",
-  "Python",
-  "Java",
-  "SQL",
-  "PostgreSQL",
-  "MongoDB",
-  "Redis",
-  "Docker",
-  "Kubernetes",
-  "AWS",
-  "Azure",
-  "Google Cloud",
-  "Terraform",
-  "GraphQL",
-  "CI/CD",
-  "CSS",
-  "HTML",
-  "AI",
-  "React Native",
-  "Rust",
-  "Cybersecurity",
-];
+import { getAvatarTone, getCompanyMonogram } from "../../utils/colorSystem";
+import "./AddEventDialog.css";
 
 const LOCATION_OPTIONS = [
-  "London",
-  "Manchester",
-  "Birmingham",
-  "Leeds",
-  "Liverpool",
-  "Sheffield",
-  "Bristol",
-  "Newcastle upon Tyne",
-  "Nottingham",
-  "Leicester",
-  "Cambridge",
-  "Oxford",
-  "Brighton",
-  "Edinburgh",
-  "Glasgow",
-  "Cardiff",
-  "Belfast",
-  "Bath",
-  "York",
-  "Southampton",
-  "Portsmouth",
+  "London", "Manchester", "Birmingham", "Leeds", "Liverpool",
+  "Sheffield", "Bristol", "Newcastle upon Tyne", "Nottingham",
+  "Leicester", "Cambridge", "Oxford", "Brighton", "Edinburgh",
+  "Glasgow", "Cardiff", "Belfast", "Bath", "York",
+  "Southampton", "Portsmouth",
 ];
+
 function AddEventDialog({ open, onOpenChange }) {
-  // const { data, isLoading, error } = useEvent(eventId);
   const { data: companies, isLoading, error } = useCompanies();
   const { createEvent, loading: isCreating, error: createError } = useCreateEvent();
+
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [website, setWebsite] = useState("");
-  const [startDate, setStartDate] = useState(undefined);
-  const [startTime, setStartTime] = useState("10:30:00");
-  const [endDate, setEndDate] = useState(undefined);
-  const [endTime, setEndTime] = useState("10:30:00");
+  const [startDateTime, setStartDateTime] = useState("");
+  const [endDateTime, setEndDateTime] = useState("");
   const [submitError, setSubmitError] = useState(null);
   const [selectedTech, setSelectedTech] = useState([]);
-  const [selectedSponsors, setSelectedSponsors] = useState([]);
+  const [selectedSponsor, setSelectedSponsor] = useState(null);
   const [selectedLocation, setSelectedLocation] = useState("");
+
   const sponsorOptions = useMemo(() => {
     if (!companies) return [];
     return [...companies]
@@ -97,41 +39,20 @@ function AddEventDialog({ open, onOpenChange }) {
       .slice(0, 50);
   }, [companies]);
 
-  const toggleTech = (value) => {
-    setSelectedTech((prev) =>
-      prev.includes(value)
-        ? prev.filter((item) => item !== value)
-        : [...prev, value]
-    );
-  };
-
-  const toggleSponsors = (value) => {
-    setSelectedSponsors((prev) => {
-      const exists = prev.some((item) => item.id === value.id);
-      return exists ? prev.filter((item) => item.id !== value.id) : [...prev, value];
-    });
-  };
-
-  const toggleLocation = (value) => {
-    setSelectedLocation((prev) => (prev === value ? "" : value));
-  };
-
   const resetForm = () => {
     setName("");
     setDescription("");
     setWebsite("");
-    setStartDate(undefined);
-    setStartTime("10:30:00");
-    setEndDate(undefined);
-    setEndTime("10:30:00");
+    setStartDateTime("");
+    setEndDateTime("");
     setSelectedTech([]);
-    setSelectedSponsors([]);
-  setSelectedLocation("");
+    setSelectedSponsor(null);
+    setSelectedLocation("");
     setSubmitError(null);
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     setSubmitError(null);
 
     if (!name.trim()) {
@@ -143,11 +64,11 @@ function AddEventDialog({ open, onOpenChange }) {
       name: name.trim(),
       description: description.trim(),
       website: website.trim(),
-  location: selectedLocation || null,
+      location: selectedLocation || null,
       technologyStack: selectedTech,
-      sponsorCompanyIds: selectedSponsors.map((company) => (company.id)),
-      start_time: buildDateTime(startDate, startTime),
-      end_time: buildDateTime(endDate, endTime)
+      sponsorCompanyIds: selectedSponsor ? [selectedSponsor.id] : [],
+      start_time: startDateTime ? new Date(startDateTime).toISOString() : null,
+      end_time: endDateTime ? new Date(endDateTime).toISOString() : null,
     };
 
     try {
@@ -161,155 +82,190 @@ function AddEventDialog({ open, onOpenChange }) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="event-dialog">
+      <DialogContent className="add-ev" showCloseButton={false}>
         <form onSubmit={handleSubmit}>
-          <DialogHeader className="event-dialog__header">
-            <div className="event-dialog__title-block">
-              <DialogTitle className="event-dialog__title">
-                Add Event
-              </DialogTitle>
-            </div>
-          </DialogHeader>
+          {/* Header */}
+          <div className="add-ev__header">
+            <h2 className="add-ev__title">Add Event</h2>
+            <button
+              type="button"
+              className="add-ev__close-x"
+              onClick={() => onOpenChange(false)}
+            >
+              <X size={16} />
+            </button>
+          </div>
+          <p className="add-ev__subtitle">
+            Submit a new tech event for the community.
+          </p>
 
-        <div className="event-dialog__body">
-          <div className="event-dialog__meta-item">
-            <Field>
-              <span className="event-dialog__meta-label">Event Name</span>
-              <Input
-                id="input-field-name"
+          <div className="add-ev__body">
+            {/* Event Name */}
+            <div className="add-ev__group">
+              <label className="add-ev__label">
+                Event Name <span className="add-ev__required">*</span>
+              </label>
+              <input
                 type="text"
-                placeholder="Enter event name"
+                className="add-ev__input"
+                placeholder="e.g. Brighton React Meetup"
                 value={name}
-                onChange={(event) => setName(event.target.value)}
+                onChange={(e) => setName(e.target.value)}
               />
-            </Field>
-          </div>
+            </div>
 
-            <div className="event-dialog__meta">
-              <div className="event-dialog__meta-item event-dialog__meta-item--picker">
-                <span className="event-dialog__meta-label">Starts</span>
-                <DatePicker
-                  idPrefix="event-start"
-                  date={startDate}
-                  time={startTime}
-                  onChange={({ date, time }) => {
-                    setStartDate(date);
-                    setStartTime(time);
-                  }}
+            {/* Description */}
+            <div className="add-ev__group">
+              <label className="add-ev__label">
+                Description <span className="add-ev__required">*</span>
+              </label>
+              <textarea
+                className="add-ev__input add-ev__textarea"
+                placeholder="What's this event about?"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </div>
+
+            {/* Divider */}
+            <div className="add-ev__divider">
+              <span>Date &amp; Location</span>
+            </div>
+
+            {/* Start / End / Location row */}
+            <div className="add-ev__row-3">
+              <div className="add-ev__group">
+                <label className="add-ev__label">
+                  Start Date <span className="add-ev__required">*</span>
+                </label>
+                <input
+                  type="datetime-local"
+                  className="add-ev__input"
+                  value={startDateTime}
+                  onChange={(e) => setStartDateTime(e.target.value)}
                 />
               </div>
-
-              <div className="event-dialog__meta-item event-dialog__meta-item--picker">
-                <span className="event-dialog__meta-label">Ends</span>
-                <DatePicker
-                  idPrefix="event-end"
-                  date={endDate}
-                  time={endTime}
-                  onChange={({ date, time }) => {
-                    setEndDate(date);
-                    setEndTime(time);
-                  }}
+              <div className="add-ev__group">
+                <label className="add-ev__label">End Date</label>
+                <input
+                  type="datetime-local"
+                  className="add-ev__input"
+                  value={endDateTime}
+                  onChange={(e) => setEndDateTime(e.target.value)}
                 />
+              </div>
+              <div className="add-ev__group">
+                <label className="add-ev__label">
+                  Location <span className="add-ev__required">*</span>
+                </label>
+                <select
+                  className="add-ev__input add-ev__select"
+                  value={selectedLocation}
+                  onChange={(e) => setSelectedLocation(e.target.value)}
+                >
+                  <option value="" disabled>Select</option>
+                  {LOCATION_OPTIONS.map((loc) => (
+                    <option key={loc} value={loc}>{loc}</option>
+                  ))}
+                </select>
               </div>
             </div>
 
-            <section className="event-dialog__section">
-              <span className="event-dialog__meta-label">Website</span>
-              <Input
-                className="mt-2"
+            {/* Website */}
+            <div className="add-ev__group">
+              <label className="add-ev__label">Event Website</label>
+              <input
                 type="url"
-                placeholder="https://example.com"
+                className="add-ev__input"
+                placeholder="https://..."
                 value={website}
-                onChange={(event) => setWebsite(event.target.value)}
+                onChange={(e) => setWebsite(e.target.value)}
               />
-            </section>
+            </div>
 
-            <section className="event-dialog__section">
-              <span className="event-dialog__meta-label">Event Description</span>
-              <Textarea
-                className="mt-2 h-25"
-                placeholder="Enter a description for this event"
-                value={description}
-                onChange={(event) => setDescription(event.target.value)}
-              />
-            </section>
+            {/* Divider */}
+            <div className="add-ev__divider">
+              <span>Details</span>
+            </div>
 
-            <section className="event-dialog__section">
-              <span className="event-dialog__meta-label">Technologies</span>
-              <div className="event-dialog__checkboxes">
-                {TECHNOLOGY_OPTIONS.map((tech) => (
-                  <label key={tech} className="event-dialog__checkbox">
-                    <input
-                      type="checkbox"
-                      checked={selectedTech.includes(tech)}
-                      onChange={() => toggleTech(tech)}
-                    />
-                    <span>{tech}</span>
-                  </label>
-                ))}
-              </div>
-            </section>
+            {/* Tech Focus */}
+            <div className="add-ev__group">
+              <label className="add-ev__label">Tech Focus</label>
+              <TagInput value={selectedTech} onChange={setSelectedTech} />
+            </div>
 
-            <section className="event-dialog__section">
-              <span className="event-dialog__meta-label">Location</span>
-              <div className="event-dialog__checkboxes">
-                {LOCATION_OPTIONS.map((location) => (
-                  <label key={location} className="event-dialog__checkbox">
-                    <input
-                      type="radio"
-                      name="event-location"
-                      checked={selectedLocation === location}
-                      onChange={() => toggleLocation(location)}
-                    />
-                    <span>{location}</span>
-                  </label>
-                ))}
-              </div>
-            </section>
-
-            <section className="event-dialog__section">
-              <span className="event-dialog__meta-label">Sponsors</span>
-              {isLoading && (
-                <div className="event-dialog__state">Loading sponsors…</div>
-              )}
-              {error && !isLoading && (
-                <div className="event-dialog__state event-dialog__state--error">
-                  We couldn&apos;t load sponsors right now.
+            {/* Sponsor */}
+            <div className="add-ev__group">
+              <label className="add-ev__label">Sponsor</label>
+              {selectedSponsor ? (
+                <div className="add-ev__sponsor-selected">
+                  <div
+                    className={`add-ev__sponsor-avatar add-ev__sponsor-avatar--${getAvatarTone(selectedSponsor.name)}`}
+                  >
+                    {getCompanyMonogram(selectedSponsor.name)}
+                  </div>
+                  <span className="add-ev__sponsor-name">
+                    {selectedSponsor.name}
+                  </span>
+                  <button
+                    type="button"
+                    className="add-ev__sponsor-remove"
+                    onClick={() => setSelectedSponsor(null)}
+                  >
+                    <X size={16} />
+                  </button>
                 </div>
-              )}
-              {!isLoading && !error && (
-                <div className="event-dialog__checkboxes">
-                  {sponsorOptions.map((company) => (
-                    <label key={company.id} className="event-dialog__checkbox">
-                      <input
-                        type="checkbox"
-                        checked={selectedSponsors.some(
-                          (item) => item.id === company.id,
-                        )}
-                        onChange={() => toggleSponsors(company)}
-                      />
-                      <span>{company.name}</span>
-                    </label>
+              ) : (
+                <select
+                  className="add-ev__input add-ev__select"
+                  value=""
+                  onChange={(e) => {
+                    const company = sponsorOptions.find(
+                      (c) => c.id === Number(e.target.value)
+                    );
+                    if (company) setSelectedSponsor(company);
+                  }}
+                  disabled={isLoading}
+                >
+                  <option value="" disabled>
+                    {isLoading ? "Loading..." : error ? "Could not load companies" : "Search for a company..."}
+                  </option>
+                  {sponsorOptions.map((c) => (
+                    <option key={c.id} value={c.id}>{c.name}</option>
                   ))}
-                </div>
+                </select>
               )}
-            </section>
+              <p className="add-ev__hint">
+                Search for a company to add as sponsor
+              </p>
+            </div>
           </div>
 
+          {/* Error */}
           {(submitError || createError) && (
-            <div className="event-dialog__state event-dialog__state--error">
-              {(submitError || createError)?.message || "We couldn’t create this event."}
+            <div className="add-ev__error">
+              {(submitError || createError)?.message ||
+                "We couldn't create this event."}
             </div>
           )}
 
-          <DialogFooter className="event-dialog__footer">
-            <DialogClose asChild>
-              <Button variant="outline" type="button">Close</Button>
-            </DialogClose>
-            <Button type="submit" disabled={isCreating}>
-              {isCreating ? "Creating…" : "Create Event"}
-            </Button>
-          </DialogFooter>
+          {/* Footer */}
+          <div className="add-ev__footer">
+            <button
+              type="button"
+              className="add-ev__btn-cancel"
+              onClick={() => onOpenChange(false)}
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="add-ev__btn-submit"
+              disabled={isCreating}
+            >
+              {isCreating ? "Creating..." : "Submit for Review"}
+            </button>
+          </div>
         </form>
       </DialogContent>
     </Dialog>

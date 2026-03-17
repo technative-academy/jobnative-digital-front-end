@@ -1,5 +1,4 @@
 import './Events.css';
-import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import Filters from '../../components/Filters/Filters';
@@ -9,7 +8,6 @@ import { isPendingEvent } from '../../lib/eventData';
 import EventCard from '../../components/EventCard/EventCard';
 import EventCardSkeleton from '../../components/EventCard/EventCardSkeleton';
 import AddEventDialog from '../AddEventDialog/AddEventDialog';
-import { Button } from '../../components/ui/button';
 
 function Events() {
   const { data: events, isLoading, error } = useEvents();
@@ -25,26 +23,7 @@ function Events() {
     role: [],
   });
 
-  const colourClasses = [
-    'card-colour-1',
-    'card-colour-2',
-    'card-colour-3',
-    'card-colour-4',
-    'card-colour-5',
-  ];
-
-  function getDeterministicColourIndex(value) {
-    const strValue = String(value ?? '');
-    let hash = 0;
-
-    for (let i = 0; i < strValue.length; i += 1) {
-      hash = (hash * 31 + strValue.charCodeAt(i)) % 4294967296;
-    }
-
-    return hash;
-  }
-
-  if (error) return <p>Something went wrong.</p>;
+  if (error) return <p className="events-status">Something went wrong.</p>;
 
   const filteredEvents = events?.filter((event) => {
     return (
@@ -54,27 +33,17 @@ function Events() {
         filters.industry.includes(event.industry)) &&
       (filters.technology.length === 0 ||
         event.technologyList?.some((tech) => filters.technology.includes(tech)))
-      //     &&
-      //   (filters.role.length === 0 || filters.role.includes(company.role))
     );
   });
 
-  let lastClass = null;
-  const colourAssignments = filteredEvents?.map((event, index) => {
-    const baseIndex =
-      getDeterministicColourIndex(event.id ?? index) % colourClasses.length;
-    let selectedClass = colourClasses[baseIndex];
-
-    if (selectedClass === lastClass && colourClasses.length > 1) {
-      selectedClass = colourClasses[(baseIndex + 1) % colourClasses.length];
-    }
-
-    lastClass = selectedClass;
-    return selectedClass;
-  });
+  const upcomingCount =
+    events?.filter((e) => {
+      if (!e?.startTime) return false;
+      return new Date(e.startTime) >= new Date();
+    }).length ?? 0;
 
   return (
-    <div className="home-container page-transition">
+    <div className="events-page page-transition">
       <EventDialog
         open={eventDialogOpen}
         onOpenChange={setEventDialogOpen}
@@ -83,13 +52,23 @@ function Events() {
       <AddEventDialog
         open={addEventDialogOpen}
         onOpenChange={setAddEventDialogOpen}
-        // eventId={selectedEventId}
       />
-      <h1 className="hero-title">
-        <span className="brand-highlight">Job</span>Native
-      </h1>
-      <h2 className="hero-subtitle">Tech events going on near you.</h2>
-      <p className="hero-text">Find tech events going on near you.</p>
+
+      <div className="events-hero">
+        <div className="events-hero__brand">
+          <span className="events-hero__brand--primary">Job</span>
+          <span className="events-hero__brand--dark">Native</span>
+        </div>
+        <h1 className="events-hero__title">Tech events near you</h1>
+        <p className="events-hero__subtitle">
+          Find tech events going on near you.
+        </p>
+        {upcomingCount > 0 && (
+          <span className="events-hero__badge">
+            {upcomingCount} upcoming event{upcomingCount !== 1 ? 's' : ''}
+          </span>
+        )}
+      </div>
 
       {isLoading ? (
         <div className="filter-bar">
@@ -99,54 +78,48 @@ function Events() {
           />
         </div>
       ) : (
-        <Filters filters={filters} setFilters={setFilters} />
+        <Filters
+          filters={filters}
+          setFilters={setFilters}
+          addButton={
+            isAuthenticated && (
+              <button
+                className="events-add-btn"
+                onClick={() => setAddEventDialogOpen(true)}
+                type="button"
+              >
+                + Add Event
+              </button>
+            )
+          }
+        />
       )}
+
       {isLoading ? (
-        <div className="event-grid">
+        <div className="events-card-grid">
           {Array.from({ length: 6 }).map((_, i) => (
-            <EventCardSkeleton
-              key={i}
-              colourClass={colourClasses[i % colourClasses.length]}
+            <EventCardSkeleton key={i} />
+          ))}
+        </div>
+      ) : filteredEvents?.length === 0 ? (
+        <p className="events-empty">No events match the current filters.</p>
+      ) : (
+        <div className="events-card-grid">
+          {filteredEvents?.map((event) => (
+            <EventCard
+              key={event.id}
+              event={event}
+              onClick={
+                isPendingEvent(event)
+                  ? undefined
+                  : () => {
+                      setSelectedEventId(event.id);
+                      setEventDialogOpen(true);
+                    }
+              }
             />
           ))}
         </div>
-      ) : (
-        <>
-          {filteredEvents?.length === 0 ? (
-            <p>No events found.</p>
-          ) : (
-            <div className="event-grid">
-              {filteredEvents?.map((event, index) => (
-                <EventCard
-                  key={event.id}
-                  event={event}
-                  colourClass={colourAssignments?.[index]}
-                  onClick={
-                    isPendingEvent(event)
-                      ? undefined
-                      : () => {
-                          setSelectedEventId(event.id);
-                          setEventDialogOpen(true);
-                        }
-                  }
-                />
-              ))}
-            </div>
-          )}
-
-          {isAuthenticated && (
-            <div className="add-event-link">
-              <Button
-                onClick={() => {
-                  setAddEventDialogOpen(true);
-                }}
-                className="btn-primary"
-              >
-                Add an event
-              </Button>
-            </div>
-          )}
-        </>
       )}
     </div>
   );

@@ -1,54 +1,79 @@
+/* Event Card — white card + gradient date strip */
 .event-card {
-  border: 1px solid var(--colour-background-light);
-  cursor: default;
-  padding: 1.5rem;
-  border-radius: 12px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  overflow: hidden;
   transition: all 0.2s ease;
+  cursor: default;
 }
 
-.event-card[role="button"] {
+.event-card[role='button'] {
   cursor: pointer;
 }
 
-.event-card[role="button"]:hover {
+.event-card[role='button']:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-.event-card__title-row {
-  align-items: center;
+/* Date strip */
+.event-card__date-strip {
+  padding: 14px 24px;
+  background: linear-gradient(135deg, #561ce5, #1939e0);
+  color: white;
   display: flex;
-  gap: 0.75rem;
-  margin-bottom: 1rem;
+  align-items: center;
+  gap: 10px;
 }
 
-.event-name {
-  flex: 1;
-  font-size: 25px;
-  font-weight: 600;
-  margin-bottom: 0;
-  color: var(--colour-text-dark);
-  padding: 0 0 0.2rem;
+.event-card__date-strip--upcoming {
+  background: linear-gradient(135deg, #059669, #34d399);
+}
+
+.event-card__day {
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.event-card__month-time {
+  font-size: 12px;
+  font-weight: 500;
+  opacity: 0.9;
+  line-height: 1.4;
 }
 
 .event-card__status {
+  margin-left: auto;
   flex-shrink: 0;
   font-size: 11px;
-  padding: 6px 10px;
+  padding: 4px 10px;
+}
+
+/* Card body */
+.event-card__body {
+  padding: 20px 24px 24px;
+}
+
+.event-card__title {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 12px;
+  color: #1a1a2e;
 }
 
 .event-card__meta {
   display: flex;
   flex-direction: column;
-  gap: 0.55rem;
-  margin-bottom: 0.9rem;
+  gap: 8px;
+  margin-bottom: 16px;
 }
 
 .event-card__meta-row {
-  align-items: center;
-  color: var(--colour-text-medium);
   display: flex;
-  gap: 0.45rem;
+  align-items: center;
+  gap: 8px;
   font-size: 13px;
   font-weight: 500;
 }
@@ -56,17 +81,19 @@
 .event-card__icon {
   color: #94a3b8;
   flex-shrink: 0;
+  width: 15px;
+  height: 15px;
 }
 
 .event-card__value {
   color: #64748b;
 }
 
-.event-card__badges {
+.event-card__tags {
   display: flex;
-  flex-wrap: wrap;
   gap: 6px;
-  margin-bottom: 0.9rem;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
 }
 
 .event-card__sponsor {
@@ -75,33 +102,9 @@
   font-size: 12px;
   font-weight: 500;
   margin: 0;
-  padding-top: 0.8rem;
+  padding-top: 12px;
 }
 
 .event-card__sponsor strong {
   color: #64748b;
-}
-
-.card-colour-1 {
-  background-color: #a3ffd8;
-}
-
-.card-colour-2 {
-  background-color: #fdceff;
-}
-
-.card-colour-3 {
-  background-color: #9fc5ff;
-}
-
-.card-colour-4 {
-  background-color: #a89fff;
-}
-
-.card-colour-5 {
-  background-color: #a1f4ff;
-}
-
-.card-colour-6 {
-  background-color: #d39aff;
 }

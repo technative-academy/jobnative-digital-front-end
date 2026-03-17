@@ -1,0 +1,102 @@
+/* TagInput — reusable chip-based tag input */
+.tag-input-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px 12px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  background: #f8f9fc;
+  min-height: 42px;
+  align-items: center;
+  transition: all 0.2s;
+  cursor: text;
+}
+
+.tag-input-wrapper:focus-within {
+  border-color: #561ce5;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(86, 28, 229, 0.1);
+}
+
+.tag-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px 3px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.tag-chip--purple {
+  background: rgba(86, 28, 229, 0.08);
+  color: #561ce5;
+}
+.tag-chip--green {
+  background: rgba(5, 150, 105, 0.08);
+  color: #059669;
+}
+.tag-chip--blue {
+  background: rgba(37, 99, 235, 0.08);
+  color: #2563eb;
+}
+.tag-chip--amber {
+  background: rgba(217, 119, 6, 0.08);
+  color: #d97706;
+}
+.tag-chip--violet {
+  background: rgba(124, 58, 237, 0.08);
+  color: #7c3aed;
+}
+.tag-chip--orange {
+  background: rgba(234, 88, 12, 0.08);
+  color: #ea580c;
+}
+.tag-chip--cyan {
+  background: rgba(8, 145, 178, 0.08);
+  color: #0891b2;
+}
+.tag-chip--pink {
+  background: rgba(219, 39, 119, 0.08);
+  color: #db2777;
+}
+
+.tag-chip__remove {
+  background: none;
+  border: none;
+  color: inherit;
+  opacity: 0.6;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.tag-chip__remove:hover {
+  opacity: 1;
+}
+
+.tag-input-wrapper input {
+  border: none;
+  background: none;
+  outline: none;
+  font-size: 13px;
+  font-family: inherit;
+  color: #1a1a2e;
+  flex: 1;
+  min-width: 80px;
+  padding: 2px 0;
+}
+
+.tag-input-wrapper input::placeholder {
+  color: #94a3b8;
+}
+
+.tag-input__hint {
+  font-size: 11px;
+  color: #94a3b8;
+  margin-top: 4px;
+}
