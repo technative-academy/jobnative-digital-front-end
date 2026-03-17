@@ -19,9 +19,15 @@ function Filters({ filters, setFilters, addButton }) {
             "All",
             "London",
             "Remote",
-            "Manchester",
+
             "Brighton",
             "Worthing",
+            "Crawley",
+            "Lewes",
+            "Haywards Heath",
+            "Burgess Hill",
+            "East Sussex",
+            "West Sussex",
           ]}
           filters={filters}
           setFilters={setFilters}
@@ -32,7 +38,18 @@ function Filters({ filters, setFilters, addButton }) {
         <FilterDropdown
           label="Industry"
           name="industry"
-          options={["FinTech", "SaaS", "Charity", "HealthTech", "Travel"]}
+          options={[
+            "Software & Digital Services",
+            "Fintech & Financial Services",
+            "Data, AI & Machine Learning",
+            "Cybersecurity & IT Infrastructure",
+            "Healthtech & Biotechnology",
+            "E-commerce & Retail",
+            "Game Development & Media",
+            "Manufacturing & Engineering",
+            "Logistics & Transportation",
+            "Public Sector & Education",
+          ]}
           filters={filters}
           setFilters={setFilters}
           openDropdown={openDropdown}
@@ -42,7 +59,20 @@ function Filters({ filters, setFilters, addButton }) {
         <FilterDropdown
           label="Technology"
           name="technology"
-          options={["React", "Node", "Python"]}
+          options={[
+            "React",
+            "Node.js",
+            "Python",
+            "Django",
+            "TypeScript",
+            "JavaScript",
+            "Java",
+
+            "AWS",
+
+            "Ruby",
+            "PHP",
+          ]}
           filters={filters}
           setFilters={setFilters}
           openDropdown={openDropdown}
@@ -52,7 +82,13 @@ function Filters({ filters, setFilters, addButton }) {
         <FilterDropdown
           label="Role"
           name="role"
-          options={["Frontend Developer", "Backend Developer", "Data Engineer"]}
+          options={[
+            "Frontend Developer",
+            "Backend Developer",
+            "Data Engineer",
+            "Full Stack Developer",
+            "Software engineer",
+          ]}
           filters={filters}
           setFilters={setFilters}
           openDropdown={openDropdown}
