@@ -33,3 +33,104 @@
     width: 20px;
     fill: var(--color-black);
 }
+
+.company-tracker {
+    border: 1px solid rgba(86, 28, 229, 0.14);
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    margin-top: 0.75rem;
+    padding: 1rem;
+}
+
+.company-tracker__intro,
+.company-tracker__saved-state,
+.company-tracker__loading {
+    color: #5f6475;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.company-tracker__columns {
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.company-tracker__column-button {
+    align-items: flex-start;
+    background: #ffffff;
+    border: 1px solid rgba(203, 213, 225, 0.8);
+    border-radius: 0.9rem;
+    color: #334155;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    min-height: 6.8rem;
+    padding: 1rem;
+    text-align: left;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+}
+
+.company-tracker__column-button:hover:not(:disabled) {
+    border-color: rgba(86, 28, 229, 0.28);
+    box-shadow: 0 10px 24px rgba(86, 28, 229, 0.08);
+    transform: translateY(-2px);
+}
+
+.company-tracker__column-button--active {
+    background: linear-gradient(180deg, rgba(86, 28, 229, 0.06), rgba(25, 57, 224, 0.03));
+    border-color: rgba(86, 28, 229, 0.36);
+    color: #2f174e;
+}
+
+.company-tracker__column-button span {
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+.company-tracker__column-button small {
+    color: #64748b;
+    font-size: 0.78rem;
+    line-height: 1.5;
+}
+
+.company-tracker__notes-label {
+    color: #64748b;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.company-tracker__notes {
+    min-height: 7rem;
+}
+
+.company-tracker__message {
+    color: #0f766e;
+    font-size: 0.88rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.company-tracker__message--error {
+    color: #b91c1c;
+}
+
+.company-tracker__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+@media (max-width: 820px) {
+    .company-tracker__columns {
+        grid-template-columns: 1fr;
+    }
+}
