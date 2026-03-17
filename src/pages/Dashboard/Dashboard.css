@@ -162,7 +162,13 @@
 .dashboard-saved__tabs {
   border-bottom: 1px solid var(--dashboard-border);
   display: flex;
+  overflow-x: auto;
   padding: 0 1rem;
+  scrollbar-width: none;
+}
+
+.dashboard-saved__tabs::-webkit-scrollbar {
+  display: none;
 }
 
 .dashboard-saved__tab {
@@ -175,6 +181,7 @@
   color: var(--dashboard-text-medium);
   cursor: pointer;
   display: inline-flex;
+  flex-shrink: 0;
   font-family: inherit;
   font-size: 0.9rem;
   font-weight: 600;
@@ -184,6 +191,7 @@
   transition:
     color 0.25s ease-in-out,
     border-color 0.25s ease-in-out;
+  white-space: nowrap;
 }
 
 .dashboard-saved__tab:hover {
@@ -699,19 +707,61 @@
     flex-wrap: wrap;
   }
 
-  .dashboard-card,
-  .dashboard-saved__header,
-  .dashboard-saved__panel {
+  .dashboard-card {
     padding-left: 1rem;
     padding-right: 1rem;
+  }
+
+  .dashboard-saved__header {
+    padding: 1.2rem 1rem 1rem;
+  }
+
+  .dashboard-saved__panel {
+    padding: 1.1rem 1rem 1.4rem;
+  }
+
+  .dashboard-saved__tabs {
+    padding: 0 0.5rem;
+  }
+
+  .dashboard-saved__tab {
+    font-size: 0.85rem;
+    padding: 0.75rem 0.6rem;
   }
 }
 
 @media (max-width: 560px) {
-  .dashboard-row__summary-top,
-  .dashboard-row__button-row {
+  .dashboard-page {
+    gap: 1rem;
+  }
+
+  .dashboard-banner {
+    padding: clamp(1.2rem, 4vw, 1.8rem);
+  }
+
+  .dashboard-saved__header h2 {
+    font-size: 1.05rem;
+  }
+
+  .dashboard-saved__tab {
+    font-size: 0.82rem;
+    gap: 0.35rem;
+    padding: 0.7rem 0.5rem;
+  }
+
+  .dashboard-saved__tab-count {
+    font-size: 0.7rem;
+    padding: 0.15rem 0.35rem;
+  }
+
+  .dashboard-row__summary {
+    padding: 0.85rem;
+  }
+
+  .dashboard-row__summary-top {
     align-items: flex-start;
     flex-direction: column;
+    gap: 0.4rem;
   }
 
   .dashboard-row__summary-badges {
@@ -720,6 +770,21 @@
 
   .dashboard-row__updated {
     align-self: flex-start;
+  }
+
+  .dashboard-row__move-row {
+    flex-wrap: wrap;
+  }
+
+  .dashboard-move-button {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+
+  .dashboard-row__button-row {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 0.5rem;
   }
 
   .dashboard-row__control {
