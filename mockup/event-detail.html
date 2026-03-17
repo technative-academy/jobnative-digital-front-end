@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JobNative - Event Detail Mockup</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --primary: #561ce5;
+      --primary-light: #7e57e1;
+      --primary-dark: #3d0fa8;
+      --secondary: #1939e0;
+      --secondary-light: #6b80fa;
+      --bg-white: #ffffff;
+      --bg-light: #f8f9fc;
+      --text-dark: #1a1a2e;
+      --text-medium: #64748b;
+      --text-light: #94a3b8;
+      --border: #e2e8f0;
+      --radius: 12px;
+      --radius-lg: 16px;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: rgba(15, 10, 30, 0.6);
+      color: var(--text-dark);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .modal {
+      background: var(--bg-white);
+      border-radius: 20px;
+      max-width: 780px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.25);
+    }
+
+    /* BANNER */
+    .event-banner {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      padding: 32px;
+      border-radius: 20px 20px 0 0;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+    .event-banner::after {
+      content: '';
+      position: absolute;
+      top: -40%;
+      right: -15%;
+      width: 250px;
+      height: 250px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 50%;
+    }
+    .event-banner h1 {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.8px;
+      margin-bottom: 12px;
+      position: relative;
+      z-index: 1;
+    }
+    .visit-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 8px;
+      color: white;
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+      position: relative;
+      z-index: 1;
+    }
+    .visit-link:hover { background: rgba(255,255,255,0.25); }
+
+    /* META ROW */
+    .event-meta-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      padding: 20px 32px;
+      background: var(--bg-light);
+    }
+    .event-meta-item {
+      background: var(--bg-white);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+    }
+    .event-meta-item .label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+    .event-meta-item .value {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+
+    /* SECTIONS */
+    .event-section {
+      padding: 24px 32px;
+    }
+    .event-section + .event-section {
+      border-top: 1px solid var(--border);
+    }
+    .event-section h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 10px;
+    }
+    .event-section p {
+      font-size: 14px;
+      color: var(--text-medium);
+      line-height: 1.7;
+    }
+
+    /* TAGS */
+    .tags-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .tag {
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .tag.purple { background: rgba(86, 28, 229, 0.08); color: var(--primary); }
+    .tag.blue { background: rgba(37, 99, 235, 0.08); color: #2563eb; }
+    .tag.green { background: rgba(5, 150, 105, 0.08); color: #059669; }
+    .tag.amber { background: rgba(217, 119, 6, 0.08); color: #d97706; }
+
+    /* SPONSOR */
+    .sponsor-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 18px;
+      background: var(--bg-light);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      width: fit-content;
+    }
+    .sponsor-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #d97706, #fbbf24);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    .sponsor-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+    .sponsor-label {
+      font-size: 11px;
+      color: var(--text-light);
+      font-weight: 500;
+    }
+
+    /* FOOTER */
+    .modal-footer {
+      padding: 16px 32px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: flex-end;
+    }
+    .btn-close {
+      padding: 8px 20px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      background: none;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-medium);
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+    .btn-close:hover {
+      border-color: var(--text-medium);
+      color: var(--text-dark);
+    }
+
+    /* RESPONSIVE - TABLET */
+    @media (max-width: 768px) {
+      body { padding: 20px; }
+      .modal { border-radius: 14px; max-height: 90vh; }
+      .event-banner { padding: 24px 20px; }
+      .event-banner h1 { font-size: 22px; }
+      .event-meta-row { grid-template-columns: 1fr; gap: 8px; padding: 16px 20px; }
+      .event-section { padding: 20px; }
+      .modal-footer { padding: 14px 20px; }
+    }
+
+    /* RESPONSIVE - MOBILE */
+    @media (max-width: 480px) {
+      body { padding: 10px; align-items: flex-start; }
+      .modal { border-radius: 12px; max-height: 95vh; }
+      .event-banner { padding: 20px 16px; }
+      .event-banner h1 { font-size: 20px; }
+      .event-meta-row { padding: 12px 16px; }
+      .event-section { padding: 16px; }
+      .modal-footer { padding: 12px 16px; }
+      .sponsor-card { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="modal">
+    <!-- BANNER -->
+    <div class="event-banner">
+      <h1>Brighton Tech Meetup</h1>
+      <a href="#" class="visit-link">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Visit website
+      </a>
+    </div>
+
+    <!-- META -->
+    <div class="event-meta-row">
+      <div class="event-meta-item">
+        <div class="label">Starts</div>
+        <div class="value">Mar 30, 2026, 6:42 PM</div>
+      </div>
+      <div class="event-meta-item">
+        <div class="label">Ends</div>
+        <div class="value">Mar 30, 2026, 8:42 PM</div>
+      </div>
+      <div class="event-meta-item">
+        <div class="label">Location</div>
+        <div class="value">Brighton</div>
+      </div>
+    </div>
+
+    <!-- ABOUT -->
+    <div class="event-section">
+      <h3>About the event</h3>
+      <p>Monthly meetup focused on modern web development and cloud infrastructure. Network with local developers, hear lightning talks, and explore new tools and frameworks.</p>
+    </div>
+
+    <!-- TECH FOCUS -->
+    <div class="event-section">
+      <h3>Tech focus</h3>
+      <div class="tags-row">
+        <span class="tag amber">AWS</span>
+        <span class="tag purple">React</span>
+      </div>
+    </div>
+
+    <!-- SPONSORS -->
+    <div class="event-section">
+      <h3>Sponsors</h3>
+      <div class="sponsor-card">
+        <div class="sponsor-avatar">DA</div>
+        <div>
+          <div class="sponsor-name">DabApps</div>
+          <div class="sponsor-label">Event sponsor</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-close">Close</button>
+    </div>
+  </div>
+</body>
+</html>

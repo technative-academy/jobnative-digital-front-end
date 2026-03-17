@@ -7,16 +7,17 @@ function FilterDropdown({
   openDropdown,
   setOpenDropdown,
 }) {
+  const selectedValues = filters[name] || [];
+  const isActive = selectedValues.length > 0;
+
   function toggleDropdown() {
     setOpenDropdown((prev) => (prev === name ? null : name));
   }
 
   function handleCheckboxChange(value) {
-    const currentValues = filters[name] || [];
-
-    const newValues = currentValues.includes(value)
-      ? currentValues.filter((v) => v !== value)
-      : [...currentValues, value];
+    const newValues = selectedValues.includes(value)
+      ? selectedValues.filter((v) => v !== value)
+      : [...selectedValues, value];
 
     setFilters({
       ...filters,
@@ -24,10 +25,16 @@ function FilterDropdown({
     });
   }
 
+  const buttonLabel = isActive ? `${label} (${selectedValues.length})` : label;
+
   return (
     <div className="filter-dropdown">
-      <button className="filter-button" onClick={toggleDropdown} type="button">
-        {label}
+      <button
+        className={`filter-button${isActive ? ' filter-button--active' : ''}`}
+        onClick={toggleDropdown}
+        type="button"
+      >
+        {buttonLabel}
       </button>
 
       {openDropdown === name && (
@@ -36,7 +43,7 @@ function FilterDropdown({
             <label key={option} className="filter-option">
               <input
                 type="checkbox"
-                checked={filters[name]?.includes(option) || false}
+                checked={selectedValues.includes(option)}
                 onChange={() => handleCheckboxChange(option)}
               />
               {option}

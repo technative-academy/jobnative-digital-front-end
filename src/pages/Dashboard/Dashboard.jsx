@@ -69,6 +69,7 @@ function getCompanyMeta(company) {
   return parts.join(' • ');
 }
 
+// eslint-disable-next-line no-unused-vars
 function ActionCard({ description, icon: Icon, title, to, tone = 'purple' }) {
   return (
     <Link className="dashboard-action" to={to}>
