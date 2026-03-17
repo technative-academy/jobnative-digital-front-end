@@ -7,37 +7,21 @@
 /* Hero */
 .events-hero {
   text-align: center;
-  padding: 48px 40px 36px;
+  padding: 60px 60px 60px;
   max-width: 720px;
   margin: 0 auto;
 }
 
-.events-hero__brand {
-  font-size: 52px;
-  font-weight: 800;
-  letter-spacing: -1px;
-  margin-bottom: 14px;
-  line-height: 1.1;
-}
-
-.events-hero__brand--primary {
-  color: #059669;
-}
-
-.events-hero__brand--dark {
-  color: #1a1a2e;
-}
-
 .events-hero__title {
-  font-size: 36px;
+  font-size: 40px;
   font-weight: 700;
   line-height: 1.2;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   color: #059669;
 }
 
 .events-hero__subtitle {
-  font-size: 16px;
+  font-size: 15px;
   color: #64748b;
   max-width: 480px;
   margin: 0 auto;
@@ -50,50 +34,56 @@
   color: #059669;
   font-size: 13px;
   font-weight: 600;
-  padding: 6px 14px;
+  padding: 5px 14px;
   border-radius: 100px;
-  margin-top: 16px;
+  margin-top: 10px;
 }
 
-/* Add Event button */
-.events-add-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 10px 20px;
-  background: #059669;
-  color: white;
-  border: none;
-  border-radius: 12px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-  font-family: inherit;
-  box-shadow: 0 2px 8px rgba(5, 150, 105, 0.3);
-}
-
-.events-add-btn:hover {
-  background: #047857;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.4);
-}
-
-/* Sort bar */
-.events-sort-bar {
+/* Toolbar — single row: filters left, sort + add right */
+.events-toolbar {
   max-width: 1200px;
   margin: 0 auto 20px;
   padding: 0 40px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: space-between;
+  gap: 12px;
   flex-wrap: wrap;
+}
+
+.events-toolbar__right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.events-toolbar__right > .events-sort-bar + button {
+  margin-left: 6px;
+  padding-left: 16px;
+  border-left: 1px solid #e2e8f0;
+}
+
+/* Sort bar — inline within toolbar */
+.events-sort-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .events-sort-bar__icon {
   color: #94a3b8;
   flex-shrink: 0;
+}
+
+/* Smooth sort button transitions */
+.events-sort-btn {
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease !important;
 }
 
 /* Card grid */
@@ -104,6 +94,48 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 20px;
+}
+
+/* Card entrance animation */
+@keyframes eventsCardIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.events-card-grid > * {
+  animation: eventsCardIn 0.3s ease both;
+}
+
+.events-card-grid > *:nth-child(1) {
+  animation-delay: 0s;
+}
+.events-card-grid > *:nth-child(2) {
+  animation-delay: 0.04s;
+}
+.events-card-grid > *:nth-child(3) {
+  animation-delay: 0.08s;
+}
+.events-card-grid > *:nth-child(4) {
+  animation-delay: 0.12s;
+}
+.events-card-grid > *:nth-child(5) {
+  animation-delay: 0.16s;
+}
+.events-card-grid > *:nth-child(6) {
+  animation-delay: 0.2s;
+}
+.events-card-grid > *:nth-child(7) {
+  animation-delay: 0.24s;
+}
+.events-card-grid > *:nth-child(8) {
+  animation-delay: 0.28s;
+}
+.events-card-grid > *:nth-child(9) {
+  animation-delay: 0.32s;
 }
 
 .events-empty {
@@ -123,24 +155,27 @@
 /* Responsive — tablet */
 @media (max-width: 768px) {
   .events-hero {
-    padding: 32px 20px 24px;
-  }
-
-  .events-hero__brand {
-    font-size: 40px;
+    padding: 28px 20px 16px;
   }
 
   .events-hero__title {
-    font-size: 28px;
+    font-size: 30px;
   }
 
   .events-hero__subtitle {
     font-size: 14px;
   }
 
-  .events-sort-bar {
+  .events-toolbar {
     padding: 0 16px;
-    gap: 6px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .events-toolbar__right {
+    justify-content: space-between;
+    flex-wrap: nowrap;
   }
 
   .events-card-grid {
@@ -152,24 +187,20 @@
 /* Responsive — mobile */
 @media (max-width: 480px) {
   .events-hero {
-    padding: 24px 16px 20px;
-  }
-
-  .events-hero__brand {
-    font-size: 32px;
+    padding: 24px 16px 12px;
   }
 
   .events-hero__title {
-    font-size: 24px;
+    font-size: 22px;
   }
 
   .events-hero__subtitle {
     font-size: 13px;
   }
 
-  .events-sort-bar {
+  .events-toolbar {
     padding: 0 12px;
-    margin-bottom: 16px;
+    gap: 10px;
   }
 
   .events-card-grid {

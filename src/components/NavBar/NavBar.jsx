@@ -1,32 +1,42 @@
-import { NavLink, useNavigate } from "react-router-dom";
-import { useAuth } from "../../hooks/useAuth";
-import "./NavBar.css";
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../hooks/useAuth';
+import './NavBar.css';
 
 function getNavItemClassName({ isActive }) {
-  return isActive ? "nav-item nav-item--active" : "nav-item";
+  return isActive ? 'nav-item nav-item--active' : 'nav-item';
+}
+
+function getEventsNavItemClassName({ isActive }) {
+  return isActive ? 'nav-item nav-item--active-green' : 'nav-item';
 }
 
 function Navbar() {
   const { isAuthenticated, logout, user } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const isEventsPage = location.pathname.startsWith('/events');
 
   async function handleLogout() {
     await logout();
-    navigate("/login");
+    navigate('/login');
   }
 
   return (
     <nav className="navbar">
       <div className="navbar-left">
         <NavLink className="navbar-brand" to="/">
-          <span className="navbar-brand__job">Job</span>
+          <span
+            className={`navbar-brand__job${isEventsPage ? ' navbar-brand__job--green' : ''}`}
+          >
+            Job
+          </span>
           <span className="navbar-brand__native">Native</span>
         </NavLink>
         <div className="navbar-links">
           <NavLink className={getNavItemClassName} to="/">
             Home
           </NavLink>
-          <NavLink className={getNavItemClassName} to="/events">
+          <NavLink className={getEventsNavItemClassName} to="/events">
             Events
           </NavLink>
           {isAuthenticated ? (
@@ -34,7 +44,7 @@ function Navbar() {
               Dashboard
             </NavLink>
           ) : null}
-          {user?.role === "admin" ? (
+          {user?.role === 'admin' ? (
             <NavLink className={getNavItemClassName} to="/admin">
               Admin
             </NavLink>
@@ -45,7 +55,7 @@ function Navbar() {
       <div className="navbar-right">
         {isAuthenticated ? (
           <>
-            <span className="navbar-user">{user?.name || "Member"}</span>
+            <span className="navbar-user">{user?.name || 'Member'}</span>
             <button
               className="navbar-logout"
               onClick={handleLogout}

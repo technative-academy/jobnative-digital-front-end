@@ -75,8 +75,6 @@ function Events() {
   const [sortField, setSortField] = useState('startTime');
   const [sortDir, setSortDir] = useState(1);
 
-  if (error) return <p className="events-status">Something went wrong.</p>;
-
   const filteredEvents = events?.filter((event) => {
     return (
       (filters.location.length === 0 ||
@@ -100,6 +98,8 @@ function Events() {
   }, [filteredEvents, sortField, sortDir]);
 
   const totalCount = sortedEvents.length;
+
+  if (error) return <p className="events-status">Something went wrong.</p>;
 
   async function handleDeleteEvent() {
     if (!eventPendingDelete) {
@@ -181,10 +181,6 @@ function Events() {
       </AlertDialog>
 
       <div className="events-hero">
-        <div className="events-hero__brand">
-          <span className="events-hero__brand--primary">Job</span>
-          <span className="events-hero__brand--dark">Native</span>
-        </div>
         <h1 className="events-hero__title">Tech events near you</h1>
         <p className="events-hero__subtitle">
           Find tech events going on near you.
@@ -196,61 +192,63 @@ function Events() {
         )}
       </div>
 
-      {isLoading ? (
-        <div className="filter-bar">
+      <div className="events-toolbar">
+        {isLoading ? (
           <div
             className="skeleton"
             style={{ height: 44, width: 340, borderRadius: 12 }}
           />
-        </div>
-      ) : (
-        <Filters
-          filters={filters}
-          setFilters={setFilters}
-          addButton={
-            isAuthenticated && (
-              <Button
-                className="bg-[#059669] hover:bg-[#047857] text-white shadow-sm"
-                onClick={() => setAddEventDialogOpen(true)}
-                type="button"
-              >
-                + Add Event
-              </Button>
-            )
-          }
-        />
-      )}
+        ) : (
+          <Filters
+            filters={filters}
+            setFilters={setFilters}
+            bare
+            variant="green"
+          />
+        )}
 
-      {!isLoading && (
-        <div className="events-sort-bar">
-          <ArrowDownUp size={14} className="events-sort-bar__icon" />
-          {SORT_FIELDS.map((field) => {
-            const isActive = sortField === field.key;
-            return (
-              <Button
-                key={field.key}
-                variant="outline"
-                size="sm"
-                className={
-                  isActive
-                    ? 'bg-[#059669] hover:bg-[#047857] !text-white border-[#059669] font-semibold'
-                    : 'text-[#1a1a2e] font-medium'
-                }
-                onClick={() => {
-                  if (isActive) {
-                    setSortDir((d) => d * -1);
-                  } else {
-                    setSortField(field.key);
-                    setSortDir(1);
-                  }
-                }}
-              >
-                {field.label} {isActive ? (sortDir === 1 ? '↑' : '↓') : ''}
-              </Button>
-            );
-          })}
+        <div className="events-toolbar__right">
+          {!isLoading && (
+            <div className="events-sort-bar">
+              <ArrowDownUp size={14} className="events-sort-bar__icon" />
+              {SORT_FIELDS.map((field) => {
+                const isActive = sortField === field.key;
+                return (
+                  <Button
+                    key={field.key}
+                    variant="outline"
+                    size="sm"
+                    className={
+                      isActive
+                        ? 'events-sort-btn events-sort-btn--active bg-[#059669] hover:bg-[#047857] text-white! border-[#059669] font-semibold'
+                        : 'events-sort-btn text-[#1a1a2e] font-medium'
+                    }
+                    onClick={() => {
+                      if (isActive) {
+                        setSortDir((d) => d * -1);
+                      } else {
+                        setSortField(field.key);
+                        setSortDir(1);
+                      }
+                    }}
+                  >
+                    {field.label} {isActive ? (sortDir === 1 ? '↑' : '↓') : ''}
+                  </Button>
+                );
+              })}
+            </div>
+          )}
+          {isAuthenticated && (
+            <Button
+              className="bg-[#059669] hover:bg-[#047857] text-white shadow-sm"
+              onClick={() => setAddEventDialogOpen(true)}
+              type="button"
+            >
+              + Add Event
+            </Button>
+          )}
         </div>
-      )}
+      </div>
 
       {isLoading ? (
         <div className="events-card-grid">
@@ -261,7 +259,7 @@ function Events() {
       ) : sortedEvents.length === 0 ? (
         <p className="events-empty">No events match the current filters.</p>
       ) : (
-        <div className="events-card-grid">
+        <div className="events-card-grid" key={`${sortField}-${sortDir}`}>
           {sortedEvents.map((event) => {
             const canManage =
               user &&

@@ -29,6 +29,11 @@
 
 .navbar-brand__job {
   color: #561ce5;
+  transition: color 0.2s;
+}
+
+.navbar-brand__job--green {
+  color: #059669;
 }
 
 .navbar-brand__native {
@@ -59,6 +64,11 @@
 .nav-item--active {
   background: rgba(86, 28, 229, 0.06);
   color: #561ce5;
+}
+
+.nav-item--active-green {
+  background: rgba(5, 150, 105, 0.06);
+  color: #059669;
 }
 
 .navbar-right {
