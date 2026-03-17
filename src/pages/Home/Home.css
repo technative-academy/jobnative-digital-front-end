@@ -6,6 +6,7 @@
   --hp-text-light: #94a3b8;
   --hp-border: #e2e8f0;
   flex: 1;
+  width: 100%;
 }
 
 /* Hero */

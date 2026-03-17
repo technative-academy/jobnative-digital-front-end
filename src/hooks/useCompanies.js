@@ -18,19 +18,31 @@ function getNames(items) {
 }
 
 function unique(values) {
-  return [...new Set(values)];
+  const seen = new Set();
+
+  return values.filter((value) => {
+    const key =
+      typeof value === "string" ? value.trim().toLowerCase() : String(value);
+
+    if (!key || seen.has(key)) {
+      return false;
+    }
+
+    seen.add(key);
+    return true;
+  });
 }
 
 function normalizeCompany(company) {
   const technologyList = unique([
-    ...getNames(company?.technologyStack),
     ...getNames(company?.technologies),
+    ...getNames(company?.technologyStack),
     ...getNames(company?.technology ? [company.technology] : []),
   ]);
 
   const roleList = unique([
-    ...getNames(company?.jobRoles),
     ...getNames(company?.jobRoleTags),
+    ...getNames(company?.jobRoles),
     ...getNames(company?.role ? [company.role] : []),
   ]);
 

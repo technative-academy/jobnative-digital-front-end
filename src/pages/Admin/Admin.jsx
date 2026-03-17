@@ -3,7 +3,6 @@ import { companiesService } from "../../services/companies.service";
 import { eventsService } from "../../services/events.service";
 import { Button } from "@/components/ui/button";
 import Tag from "../../components/Tag/Tag";
-import { getRandomColor } from "../../utils.js";
 import "./Admin.css";
 
 function Admin() {
@@ -104,9 +103,11 @@ function Admin() {
               )}
               <div className="admin-card-tags">
                 {company.technologies?.map((tech) => (
-                  <Tag key={tech.name} text={tech.name} colour={getRandomColor()} />
+                  <Tag category="technology" key={tech.name} text={tech.name} />
                 ))}
-                {company.industry && <Tag text={company.industry} colour="lightpink" />}
+                {company.industry && (
+                  <Tag category="industry" text={company.industry} />
+                )}
               </div>
               <div className="admin-card-actions">
                 <Button onClick={() => handleApproveCompany(company.id)}>Approve</Button>
@@ -147,13 +148,21 @@ function Admin() {
               )}
               <div className="admin-card-tags">
                 {event.technologies?.map((tech) => (
-                  <Tag key={tech.name || tech} text={tech.name || tech} colour={getRandomColor()} />
+                  <Tag
+                    category="technology"
+                    key={tech.name || tech}
+                    text={tech.name || tech}
+                  />
                 ))}
               </div>
               {event.sponsors?.length > 0 && (
                 <div className="admin-card-tags">
                   {event.sponsors.map((sponsor) => (
-                    <Tag key={sponsor.id || sponsor.name} text={sponsor.name} colour="lightyellow" />
+                    <Tag
+                      category="sponsor"
+                      key={sponsor.id || sponsor.name}
+                      text={sponsor.name}
+                    />
                   ))}
                 </div>
               )}

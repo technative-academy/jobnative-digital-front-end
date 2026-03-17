@@ -34,6 +34,37 @@
     fill: var(--color-black);
 }
 
+.company-meta-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+}
+
+.company-meta-group__label {
+    color: #64748b;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.company-meta-group__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.company-meta-group__value,
+.company-meta-group__empty {
+    color: #334155;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.company-meta-group__empty {
+    color: #94a3b8;
+}
+
 .company-tracker {
     border: 1px solid rgba(86, 28, 229, 0.14);
     border-radius: 1rem;

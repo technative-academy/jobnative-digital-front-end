@@ -12,17 +12,24 @@
 .app-shell--default {
   display: flex;
   flex-direction: column;
-  margin: 0 auto;
-  max-width: 1280px;
   min-height: 100vh;
-  padding: 2rem;
-  text-align: center;
+  width: 100%;
 }
 
-.app-main--default {
+.app-main--fluid {
   display: flex;
   flex: 1;
   flex-direction: column;
+  width: 100%;
+}
+
+.app-main--contained {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  margin: 0 auto;
+  padding: 1.5rem 0 2rem;
+  width: min(1280px, calc(100% - 2rem));
 }
 
 .app-shell--auth {
@@ -171,8 +178,9 @@
 }
 
 @media (max-width: 640px) {
-  .app-shell--default {
-    padding: 1rem;
+  .app-main--contained {
+    padding: 1rem 0 1.4rem;
+    width: calc(100% - 1.2rem);
   }
 
   .app-main--auth {

@@ -13,6 +13,7 @@ import {
   Trash2,
 } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
+import Tag from '../../components/Tag/Tag';
 import { useAuth } from '../../hooks/useAuth';
 import { useCompanies } from '../../hooks/useCompanies';
 import { companiesService } from '../../services/companies.service';
@@ -238,12 +239,11 @@ function DashboardCompanyRow({ isExpanded, item, onRemove, onSave, onToggle }) {
         {company?.technologyList?.length ? (
           <div className="dashboard-chip-row">
             {company.technologyList.slice(0, 4).map((technology) => (
-              <span
-                className="dashboard-chip"
+              <Tag
+                category="technology"
                 key={`${item.companyId}-${technology}`}
-              >
-                {technology}
-              </span>
+                text={technology}
+              />
             ))}
           </div>
         ) : null}

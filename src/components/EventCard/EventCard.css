@@ -15,13 +15,52 @@
   font-weight: 600;
   margin-bottom: 1rem;
   color: var(--colour-text-dark);
-  border-bottom: 1px solid var(--colour-text-dark);
-  padding: 15px;
+  padding: 0 0 0.2rem;
 }
 
-.event-card p {
-  margin: 0.3rem 0;
-  color: var(--colour-text-dark);
+.event-card__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-bottom: 0.9rem;
+}
+
+.event-card__meta-row {
+  align-items: center;
+  color: var(--colour-text-medium);
+  display: flex;
+  gap: 0.45rem;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.event-card__icon {
+  color: #94a3b8;
+  flex-shrink: 0;
+}
+
+.event-card__value {
+  color: #64748b;
+}
+
+.event-card__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 0.9rem;
+}
+
+.event-card__sponsor {
+  border-top: 1px solid #e2e8f0;
+  color: #94a3b8;
+  font-size: 12px;
+  font-weight: 500;
+  margin: 0;
+  padding-top: 0.8rem;
+}
+
+.event-card__sponsor strong {
+  color: #64748b;
 }
 
 .card-colour-1 {
