@@ -1,12 +1,13 @@
-import "./Home.css";
-import { useState } from "react";
-import { useCompanies } from "../../hooks/useCompanies";
-import { isPendingCompany } from "../../lib/companyData";
-import Filters from "../../components/Filters/Filters";
-import CompanyCard from "../../components/CompanyCard/CompanyCard";
-import CompanyView from "../Company/CompanyView";
-import AddCompanyDialog from "../../components/AddCompanyDialog/AddCompanyDialog";
-import { useAuth } from "../../hooks/useAuth";
+import './Home.css';
+import { useState } from 'react';
+import { useCompanies } from '../../hooks/useCompanies';
+import { isPendingCompany } from '../../lib/companyData';
+import Filters from '../../components/Filters/Filters';
+import CompanyCard from '../../components/CompanyCard/CompanyCard';
+import CompanyCardSkeleton from '../../components/CompanyCard/CompanyCardSkeleton';
+import CompanyView from '../Company/CompanyView';
+import AddCompanyDialog from '../../components/AddCompanyDialog/AddCompanyDialog';
+import { useAuth } from '../../hooks/useAuth';
 
 function Home() {
   const { data: companies, isLoading, error } = useCompanies();
@@ -22,7 +23,6 @@ function Home() {
     role: [],
   });
 
-  if (isLoading) return <p className="home-status">Loading companies…</p>;
   if (error) return <p className="home-status">Something went wrong.</p>;
 
   const filteredCompanies =
@@ -42,7 +42,7 @@ function Home() {
     }) || [];
 
   return (
-    <div className="home-page">
+    <div className="home-page page-transition">
       <CompanyView
         open={viewCompanyId !== null}
         onOpenChange={() => setViewCompanyId(null)}
@@ -59,30 +59,45 @@ function Home() {
         <p className="home-hero__subtitle">
           Explore job opportunities that match your skills and interests.
         </p>
-        {companies.length > 0 && (
+        {companies?.length > 0 && (
           <span className="home-hero__badge">
             {companies.length}+ companies listed
           </span>
         )}
       </div>
 
-      <Filters
-        filters={filters}
-        setFilters={setFilters}
-        addButton={
-          isAuthenticated && (
-            <button
-              className="home-add-btn"
-              onClick={() => setAddDialogOpen(true)}
-              type="button"
-            >
-              + Add Company
-            </button>
-          )
-        }
-      />
+      {isLoading ? (
+        <div className="filter-bar">
+          <div
+            className="skeleton"
+            style={{ height: 44, width: 340, borderRadius: 12 }}
+          />
+        </div>
+      ) : (
+        <Filters
+          filters={filters}
+          setFilters={setFilters}
+          addButton={
+            isAuthenticated && (
+              <button
+                className="home-add-btn"
+                onClick={() => setAddDialogOpen(true)}
+                type="button"
+              >
+                + Add Company
+              </button>
+            )
+          }
+        />
+      )}
 
-      {filteredCompanies.length === 0 ? (
+      {isLoading ? (
+        <div className="home-card-grid">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <CompanyCardSkeleton key={i} />
+          ))}
+        </div>
+      ) : filteredCompanies.length === 0 ? (
         <p className="home-empty">No companies match the current filters.</p>
       ) : (
         <div className="home-card-grid">

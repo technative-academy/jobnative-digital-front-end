@@ -519,7 +519,7 @@ function Dashboard() {
     : 'User';
 
   return (
-    <section className="dashboard-page">
+    <section className="dashboard-page page-transition">
       <div className="dashboard-banner">
         <div>
           <h1>Welcome back, {user?.name || 'there'}</h1>
@@ -637,8 +637,25 @@ function Dashboard() {
             tabIndex={0}
           >
             {isLoadingStates ? (
-              <div className="dashboard-empty-card">
-                Loading your saved companies…
+              <div className="dashboard-saved__list">
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <div key={i} className="dashboard-row-skeleton">
+                    <div
+                      className="skeleton skeleton--rounded"
+                      style={{ width: 38, height: 38, flexShrink: 0 }}
+                    />
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div
+                        className="skeleton"
+                        style={{ width: '55%', height: 15, marginBottom: 8 }}
+                      />
+                      <div
+                        className="skeleton"
+                        style={{ width: '35%', height: 12 }}
+                      />
+                    </div>
+                  </div>
+                ))}
               </div>
             ) : statesError ? (
               <div className="dashboard-empty-card dashboard-empty-card--error">

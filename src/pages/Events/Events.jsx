@@ -1,14 +1,15 @@
-import "./Events.css";
-import { Link } from "react-router-dom";
-import { useState } from "react";
-import { useAuth } from "../../hooks/useAuth";
-import Filters from "../../components/Filters/Filters";
-import EventDialog from "../EventDialog/EventDialog";
-import { useEvents } from "../../hooks/useEvents";
-import { isPendingEvent } from "../../lib/eventData";
-import EventCard from "../../components/EventCard/EventCard";
-import AddEventDialog from "../AddEventDialog/AddEventDialog";
-import { Button } from "../../components/ui/button";
+import './Events.css';
+import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { useAuth } from '../../hooks/useAuth';
+import Filters from '../../components/Filters/Filters';
+import EventDialog from '../EventDialog/EventDialog';
+import { useEvents } from '../../hooks/useEvents';
+import { isPendingEvent } from '../../lib/eventData';
+import EventCard from '../../components/EventCard/EventCard';
+import EventCardSkeleton from '../../components/EventCard/EventCardSkeleton';
+import AddEventDialog from '../AddEventDialog/AddEventDialog';
+import { Button } from '../../components/ui/button';
 
 function Events() {
   const { data: events, isLoading, error } = useEvents();
@@ -25,15 +26,15 @@ function Events() {
   });
 
   const colourClasses = [
-    "card-colour-1",
-    "card-colour-2",
-    "card-colour-3",
-    "card-colour-4",
-    "card-colour-5",
+    'card-colour-1',
+    'card-colour-2',
+    'card-colour-3',
+    'card-colour-4',
+    'card-colour-5',
   ];
 
   function getDeterministicColourIndex(value) {
-    const strValue = String(value ?? "");
+    const strValue = String(value ?? '');
     let hash = 0;
 
     for (let i = 0; i < strValue.length; i += 1) {
@@ -52,11 +53,9 @@ function Events() {
       (filters.industry.length === 0 ||
         filters.industry.includes(event.industry)) &&
       (filters.technology.length === 0 ||
-        event.technologyList?.some((tech) =>
-          filters.technology.includes(tech),
-        ))
-    //     &&
-    //   (filters.role.length === 0 || filters.role.includes(company.role))
+        event.technologyList?.some((tech) => filters.technology.includes(tech)))
+      //     &&
+      //   (filters.role.length === 0 || filters.role.includes(company.role))
     );
   });
 
@@ -75,7 +74,7 @@ function Events() {
   });
 
   return (
-    <div className="home-container">
+    <div className="home-container page-transition">
       <EventDialog
         open={eventDialogOpen}
         onOpenChange={setEventDialogOpen}
@@ -92,9 +91,25 @@ function Events() {
       <h2 className="hero-subtitle">Tech events going on near you.</h2>
       <p className="hero-text">Find tech events going on near you.</p>
 
-      <Filters filters={filters} setFilters={setFilters} />
       {isLoading ? (
-        <p>Loading events...</p>
+        <div className="filter-bar">
+          <div
+            className="skeleton"
+            style={{ height: 44, width: 340, borderRadius: 12 }}
+          />
+        </div>
+      ) : (
+        <Filters filters={filters} setFilters={setFilters} />
+      )}
+      {isLoading ? (
+        <div className="event-grid">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <EventCardSkeleton
+              key={i}
+              colourClass={colourClasses[i % colourClasses.length]}
+            />
+          ))}
+        </div>
       ) : (
         <>
           {filteredEvents?.length === 0 ? (
