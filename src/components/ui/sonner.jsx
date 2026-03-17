@@ -23,11 +23,16 @@ const Toaster = ({
         error: <OctagonXIcon className="size-4" />,
         loading: <Loader2Icon className="size-4 animate-spin" />,
       }}
+      toastOptions={{
+        style: {
+          fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+        },
+      }}
       style={
         {
           "--normal-bg": "#ffffff",
           "--normal-text": "#1d1633",
-          "--normal-border": "#e8e2ff",
+          "--normal-border": "#10b981",
           "--border-radius": "16px"
         }
       }

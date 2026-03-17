@@ -21,7 +21,7 @@
 }
 
 .events-hero__brand--primary {
-  color: #561ce5;
+  color: #059669;
 }
 
 .events-hero__brand--dark {
@@ -33,7 +33,7 @@
   font-weight: 700;
   line-height: 1.2;
   margin-bottom: 10px;
-  color: #561ce5;
+  color: #059669;
 }
 
 .events-hero__subtitle {
@@ -61,7 +61,7 @@
   align-items: center;
   gap: 6px;
   padding: 10px 20px;
-  background: #561ce5;
+  background: #059669;
   color: white;
   border: none;
   border-radius: 12px;
@@ -71,13 +71,29 @@
   transition: all 0.2s ease;
   white-space: nowrap;
   font-family: inherit;
-  box-shadow: 0 2px 8px rgba(86, 28, 229, 0.3);
+  box-shadow: 0 2px 8px rgba(5, 150, 105, 0.3);
 }
 
 .events-add-btn:hover {
-  background: #3d0fa8;
+  background: #047857;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(86, 28, 229, 0.4);
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.4);
+}
+
+/* Sort bar */
+.events-sort-bar {
+  max-width: 1200px;
+  margin: 0 auto 20px;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.events-sort-bar__icon {
+  color: #94a3b8;
+  flex-shrink: 0;
 }
 
 /* Card grid */
@@ -122,6 +138,11 @@
     font-size: 14px;
   }
 
+  .events-sort-bar {
+    padding: 0 16px;
+    gap: 6px;
+  }
+
   .events-card-grid {
     padding: 0 16px 60px;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -146,9 +167,9 @@
     font-size: 13px;
   }
 
-  .events-add-btn {
-    padding: 8px 14px;
-    font-size: 13px;
+  .events-sort-bar {
+    padding: 0 12px;
+    margin-bottom: 16px;
   }
 
   .events-card-grid {

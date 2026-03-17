@@ -32,9 +32,9 @@ import { getAvatarTone, getCompanyMonogram } from '../../utils/colorSystem';
 import './AddEventDialog.css';
 
 const successToastStyle = {
-  background: '#f7f5ff',
-  border: '1px solid #ddd2ff',
-  color: '#221b3c',
+  background: '#ecfdf5',
+  border: '2px solid #10b981',
+  color: '#065f46',
 };
 
 const errorToastStyle = {
@@ -416,11 +416,6 @@ function EventFormContent({
           <DialogTitle className="add-ev__title">
             {isEditMode ? 'Update event details' : 'Share a new event'}
           </DialogTitle>
-          <DialogDescription className="add-ev__subtitle">
-            {isEditMode
-              ? 'Keep the published details tidy and up to date.'
-              : 'Add the essentials first so people can decide at a glance whether to attend.'}
-          </DialogDescription>
         </div>
         <button
           type="button"

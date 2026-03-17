@@ -39,6 +39,17 @@ function getSponsorLabel(event) {
   return event?.sponsorNames || '';
 }
 
+const STRIP_COLORS = [
+  'purple', 'green', 'yellow', 'red', 'pink', 'blue',
+  'sky', 'indigo', 'teal', 'orange', 'rose', 'violet',
+  'cyan', 'fuchsia', 'lime', 'amber', 'emerald', 'slate',
+];
+
+function getStripColor(eventId) {
+  const id = typeof eventId === 'number' ? eventId : String(eventId).length;
+  return STRIP_COLORS[id % STRIP_COLORS.length];
+}
+
 function isUpcoming(startTime) {
   if (!startTime) return false;
   const start = new Date(startTime);
@@ -76,6 +87,7 @@ function EventCard({ event, onClick, onEdit, onDelete }) {
   const sponsorLabel = getSponsorLabel(event);
   const upcoming = isUpcoming(event?.startTime);
   const { day, monthYear, time } = formatDateStrip(event?.startTime);
+  const stripColor = getStripColor(event?.id);
 
   return (
     <div
@@ -95,7 +107,7 @@ function EventCard({ event, onClick, onEdit, onDelete }) {
       }
     >
       <div
-        className={`event-card__date-strip ${upcoming ? 'event-card__date-strip--upcoming' : ''}`}
+        className={`event-card__date-strip event-card__date-strip--${stripColor} ${upcoming ? 'event-card__date-strip--upcoming' : ''}`}
       >
         <span className="event-card__day">{day}</span>
         <div className="event-card__month-time">

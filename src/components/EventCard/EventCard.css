@@ -31,6 +31,78 @@
   background: linear-gradient(135deg, #059669, #34d399);
 }
 
+.event-card__date-strip--purple {
+  background: linear-gradient(135deg, #561ce5, #7e57e1);
+}
+
+.event-card__date-strip--green {
+  background: linear-gradient(135deg, #059669, #34d399);
+}
+
+.event-card__date-strip--yellow {
+  background: linear-gradient(135deg, #d97706, #fbbf24);
+}
+
+.event-card__date-strip--red {
+  background: linear-gradient(135deg, #dc2626, #f87171);
+}
+
+.event-card__date-strip--pink {
+  background: linear-gradient(135deg, #db2777, #f472b6);
+}
+
+.event-card__date-strip--blue {
+  background: linear-gradient(135deg, #2563eb, #60a5fa);
+}
+
+.event-card__date-strip--sky {
+  background: linear-gradient(135deg, #0ea5e9, #38bdf8);
+}
+
+.event-card__date-strip--indigo {
+  background: linear-gradient(135deg, #6366f1, #818cf8);
+}
+
+.event-card__date-strip--teal {
+  background: linear-gradient(135deg, #14b8a6, #5eead4);
+}
+
+.event-card__date-strip--orange {
+  background: linear-gradient(135deg, #f97316, #fb923c);
+}
+
+.event-card__date-strip--rose {
+  background: linear-gradient(135deg, #e11d48, #fb7185);
+}
+
+.event-card__date-strip--violet {
+  background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+}
+
+.event-card__date-strip--cyan {
+  background: linear-gradient(135deg, #06b6d4, #22d3ee);
+}
+
+.event-card__date-strip--fuchsia {
+  background: linear-gradient(135deg, #c026d3, #e879f9);
+}
+
+.event-card__date-strip--lime {
+  background: linear-gradient(135deg, #65a30d, #a3e635);
+}
+
+.event-card__date-strip--amber {
+  background: linear-gradient(135deg, #d97706, #fcd34d);
+}
+
+.event-card__date-strip--emerald {
+  background: linear-gradient(135deg, #047857, #6ee7b7);
+}
+
+.event-card__date-strip--slate {
+  background: linear-gradient(135deg, #475569, #94a3b8);
+}
+
 .event-card__day {
   font-size: 28px;
   font-weight: 800;

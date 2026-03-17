@@ -1,7 +1,8 @@
 import './Events.css';
-import { useState } from 'react';
-import { Trash2 } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import { ArrowDownUp, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { Button } from '@/components/ui/button';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -23,10 +24,15 @@ import EventCard from '../../components/EventCard/EventCard';
 import EventCardSkeleton from '../../components/EventCard/EventCardSkeleton';
 import AddEventDialog from '../AddEventDialog/AddEventDialog';
 
+const SORT_FIELDS = [
+  { key: 'startTime', label: 'Event date' },
+  { key: 'createdAt', label: 'Date added' },
+];
+
 const successToastStyle = {
-  background: '#f7f5ff',
-  border: '1px solid #ddd2ff',
-  color: '#221b3c',
+  background: '#ecfdf5',
+  border: '2px solid #10b981',
+  color: '#065f46',
 };
 
 const errorToastStyle = {
@@ -66,6 +72,8 @@ function Events() {
     technology: [],
     role: [],
   });
+  const [sortField, setSortField] = useState('startTime');
+  const [sortDir, setSortDir] = useState(1);
 
   if (error) return <p className="events-status">Something went wrong.</p>;
 
@@ -80,7 +88,18 @@ function Events() {
     );
   });
 
-  const totalCount = filteredEvents?.length ?? 0;
+  const sortedEvents = useMemo(() => {
+    if (!filteredEvents) return [];
+    return [...filteredEvents].sort((a, b) => {
+      const aVal = a[sortField] ?? '';
+      const bVal = b[sortField] ?? '';
+      if (aVal < bVal) return -1 * sortDir;
+      if (aVal > bVal) return 1 * sortDir;
+      return 0;
+    });
+  }, [filteredEvents, sortField, sortDir]);
+
+  const totalCount = sortedEvents.length;
 
   async function handleDeleteEvent() {
     if (!eventPendingDelete) {
@@ -130,7 +149,7 @@ function Events() {
           }
         }}
       >
-        <AlertDialogContent className="border-[#e8e2ff] sm:max-w-md">
+        <AlertDialogContent className="border-[#bbf7d0] sm:max-w-md">
           <AlertDialogHeader>
             <AlertDialogMedia className="bg-[#fff3f2] text-[#dc2626]">
               <Trash2 className="size-7" />
@@ -190,16 +209,47 @@ function Events() {
           setFilters={setFilters}
           addButton={
             isAuthenticated && (
-              <button
-                className="events-add-btn"
+              <Button
+                className="bg-[#059669] hover:bg-[#047857] text-white shadow-sm"
                 onClick={() => setAddEventDialogOpen(true)}
                 type="button"
               >
                 + Add Event
-              </button>
+              </Button>
             )
           }
         />
+      )}
+
+      {!isLoading && (
+        <div className="events-sort-bar">
+          <ArrowDownUp size={14} className="events-sort-bar__icon" />
+          {SORT_FIELDS.map((field) => {
+            const isActive = sortField === field.key;
+            return (
+              <Button
+                key={field.key}
+                variant="outline"
+                size="sm"
+                className={
+                  isActive
+                    ? 'bg-[#059669] hover:bg-[#047857] !text-white border-[#059669] font-semibold'
+                    : 'text-[#1a1a2e] font-medium'
+                }
+                onClick={() => {
+                  if (isActive) {
+                    setSortDir((d) => d * -1);
+                  } else {
+                    setSortField(field.key);
+                    setSortDir(1);
+                  }
+                }}
+              >
+                {field.label} {isActive ? (sortDir === 1 ? '↑' : '↓') : ''}
+              </Button>
+            );
+          })}
+        </div>
       )}
 
       {isLoading ? (
@@ -208,11 +258,11 @@ function Events() {
             <EventCardSkeleton key={i} />
           ))}
         </div>
-      ) : filteredEvents?.length === 0 ? (
+      ) : sortedEvents.length === 0 ? (
         <p className="events-empty">No events match the current filters.</p>
       ) : (
         <div className="events-card-grid">
-          {filteredEvents?.map((event) => {
+          {sortedEvents.map((event) => {
             const canManage =
               user &&
               (user.id === event.createdByUserId || user.role === 'admin');
