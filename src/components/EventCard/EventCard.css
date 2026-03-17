@@ -1,21 +1,40 @@
 .event-card {
+  border: 1px solid var(--colour-background-light);
+  cursor: default;
   padding: 1.5rem;
   border-radius: 12px;
-  border: 1px solid var(--colour-background-light);
   transition: all 0.2s ease;
 }
 
-.event-card:hover {
+.event-card[role="button"] {
+  cursor: pointer;
+}
+
+.event-card[role="button"]:hover {
   transform: translateY(-3px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
 }
 
+.event-card__title-row {
+  align-items: center;
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
 .event-name {
+  flex: 1;
   font-size: 25px;
   font-weight: 600;
-  margin-bottom: 1rem;
+  margin-bottom: 0;
   color: var(--colour-text-dark);
   padding: 0 0 0.2rem;
+}
+
+.event-card__status {
+  flex-shrink: 0;
+  font-size: 11px;
+  padding: 6px 10px;
 }
 
 .event-card__meta {

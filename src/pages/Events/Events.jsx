@@ -5,6 +5,7 @@ import { useAuth } from "../../hooks/useAuth";
 import Filters from "../../components/Filters/Filters";
 import EventDialog from "../EventDialog/EventDialog";
 import { useEvents } from "../../hooks/useEvents";
+import { isPendingEvent } from "../../lib/eventData";
 import EventCard from "../../components/EventCard/EventCard";
 import AddEventDialog from "../AddEventDialog/AddEventDialog";
 import { Button } from "../../components/ui/button";
@@ -51,7 +52,9 @@ function Events() {
       (filters.industry.length === 0 ||
         filters.industry.includes(event.industry)) &&
       (filters.technology.length === 0 ||
-        filters.technology.includes(event.technology)) 
+        event.technologyList?.some((tech) =>
+          filters.technology.includes(tech),
+        ))
     //     &&
     //   (filters.role.length === 0 || filters.role.includes(company.role))
     );
@@ -103,10 +106,14 @@ function Events() {
                   key={event.id}
                   event={event}
                   colourClass={colourAssignments?.[index]}
-                  onClick={() => {
-                    setSelectedEventId(event.id);
-                    setEventDialogOpen(true);
-                  }}
+                  onClick={
+                    isPendingEvent(event)
+                      ? undefined
+                      : () => {
+                          setSelectedEventId(event.id);
+                          setEventDialogOpen(true);
+                        }
+                  }
                 />
               ))}
             </div>

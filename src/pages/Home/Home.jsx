@@ -1,6 +1,7 @@
 import "./Home.css";
 import { useState } from "react";
 import { useCompanies } from "../../hooks/useCompanies";
+import { isPendingCompany } from "../../lib/companyData";
 import Filters from "../../components/Filters/Filters";
 import CompanyCard from "../../components/CompanyCard/CompanyCard";
 import CompanyView from "../Company/CompanyView";
@@ -89,7 +90,11 @@ function Home() {
             <CompanyCard
               key={company.id}
               company={company}
-              onClick={() => setViewCompanyId(company.id)}
+              onClick={
+                isPendingCompany(company)
+                  ? undefined
+                  : () => setViewCompanyId(company.id)
+              }
             />
           ))}
         </div>

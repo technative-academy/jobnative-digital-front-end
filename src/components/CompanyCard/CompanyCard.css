@@ -2,12 +2,16 @@
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 16px;
+  cursor: default;
   padding: 24px;
   transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.company-card[role="button"] {
   cursor: pointer;
 }
 
-.company-card:hover {
+.company-card[role="button"]:hover {
   transform: translateY(-3px);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
@@ -61,7 +65,15 @@
   min-width: 0;
 }
 
+.company-card__title-row {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  min-width: 0;
+}
+
 .company-card__name {
+  flex: 1;
   font-size: 16px;
   font-weight: 700;
   color: #1a1a2e;
@@ -69,6 +81,12 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.company-card__status {
+  flex-shrink: 0;
+  font-size: 11px;
+  padding: 6px 10px;
 }
 
 .company-card__subtitle {

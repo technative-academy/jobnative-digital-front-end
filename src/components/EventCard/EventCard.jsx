@@ -1,5 +1,6 @@
 import { MapPin } from "lucide-react";
 import Badge from "../Badge/Badge";
+import { isPendingEvent } from "../../lib/eventData";
 import { formatDate } from "../../utils";
 import "./EventCard.css";
 
@@ -39,6 +40,8 @@ function getSponsorLabel(event) {
 }
 
 function EventCard({ event, colourClass, onClick }) {
+  const pending = isPendingEvent(event);
+  const startLabel = event?.startTime ? formatDate(event.startTime) : "Date TBC";
   const technologies = getTechnologyLabels(event);
   const sponsorLabel = getSponsorLabel(event);
 
@@ -59,14 +62,24 @@ function EventCard({ event, colourClass, onClick }) {
           : undefined
       }
     >
-      <h3 className="event-name">{event.name}</h3>
+      <div className="event-card__title-row">
+        <h3 className="event-name">{event.name}</h3>
+        {pending ? (
+          <Badge
+            className="event-card__status"
+            colour="rgba(217, 119, 6, 0.12)"
+            text="Pending review"
+            textColour="#b45309"
+          />
+        ) : null}
+      </div>
       <div className="event-card__meta">
         <div className="event-card__meta-row">
           <MapPin className="event-card__icon" size={15} strokeWidth={2} />
-          <span className="event-card__value">{event.location}</span>
+          <span className="event-card__value">{event.location || "Location TBC"}</span>
         </div>
         <div className="event-card__meta-row">
-          <span className="event-card__value">{formatDate(event.startTime)}</span>
+          <span className="event-card__value">{startLabel}</span>
         </div>
       </div>
 

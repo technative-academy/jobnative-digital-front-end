@@ -1,22 +1,29 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { eventsService } from "@/services/events.service";
-import { useState } from "react";
+import {
+  buildLocalEvent,
+  EVENTS_QUERY_KEY,
+  LOCAL_EVENTS_QUERY_KEY,
+  mergeEvents,
+} from "../lib/eventData";
 
 export function useCreateEvent() {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: (newEvent) => eventsService.create(newEvent),
+    onSuccess: (createdEvent, submittedEvent) => {
+      const localEvent = buildLocalEvent(createdEvent, submittedEvent);
 
-  async function createEvent(newEvent) {
-    try {
-      setLoading(true);
-      const data = await eventsService.create(newEvent);
-      return data;
-    } catch (err) {
-      setError(err);
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  }
+      queryClient.setQueryData(LOCAL_EVENTS_QUERY_KEY, (current = []) =>
+        mergeEvents([current, localEvent]),
+      );
+      void queryClient.invalidateQueries({ queryKey: EVENTS_QUERY_KEY });
+    },
+  });
 
-  return { createEvent, loading, error };
+  return {
+    createEvent: mutation.mutateAsync,
+    loading: mutation.isPending,
+    error: mutation.error,
+  };
 }

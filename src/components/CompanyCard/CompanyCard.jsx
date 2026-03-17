@@ -1,5 +1,6 @@
 import { MapPin, Monitor } from "lucide-react";
 import Badge from "../Badge/Badge";
+import { isPendingCompany } from "../../lib/companyData";
 import { getAvatarTone, getCompanyMonogram } from "../../utils/colorSystem";
 import "./CompanyCard.css";
 
@@ -13,6 +14,7 @@ function isMeaningful(value) {
 }
 
 function CompanyCard({ company, onClick }) {
+  const pending = isPendingCompany(company);
   const palette = getAvatarTone(company.name);
   const initials = getCompanyMonogram(company.name);
   const location = isMeaningful(company.location) ? company.location : null;
@@ -43,7 +45,17 @@ function CompanyCard({ company, onClick }) {
           {initials}
         </div>
         <div className="company-card__header-text">
-          <h3 className="company-card__name">{company.name}</h3>
+          <div className="company-card__title-row">
+            <h3 className="company-card__name">{company.name}</h3>
+            {pending ? (
+              <Badge
+                className="company-card__status"
+                colour="rgba(217, 119, 6, 0.12)"
+                text="Pending review"
+                textColour="#b45309"
+              />
+            ) : null}
+          </div>
           {industry && <p className="company-card__subtitle">{industry}</p>}
         </div>
       </div>
