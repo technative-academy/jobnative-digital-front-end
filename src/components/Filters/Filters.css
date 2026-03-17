@@ -9,6 +9,14 @@
   width: fit-content;
 }
 
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 550px;
+  margin: 2rem auto 0.5rem auto;
+}
+
 .filter-dropdown {
   position: relative;
   padding: 0 0.5rem;
