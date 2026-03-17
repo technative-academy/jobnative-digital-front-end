@@ -23,17 +23,12 @@ import {
   getDashboardColumnMeta,
   normalizeDashboardNotes,
 } from "../../utils/dashboardState";
-import { getRandomColor } from "../../utils.js";
 import "./Company.css";
 
 function Comment({ comment, isOwner, onDelete, onEdit }) {
   const [editing, setEditing] = useState(false);
-  const [value, setValue] = useState(comment.body);
-
-  useEffect(() => {
-    setValue(comment.body);
-    setEditing(false);
-  }, [comment.body]);
+  const [draftValue, setDraftValue] = useState(comment.body);
+  const value = editing ? draftValue : comment.body;
 
   async function handleSave() {
     const trimmedValue = value.trim();
@@ -43,6 +38,7 @@ function Comment({ comment, isOwner, onDelete, onEdit }) {
     }
 
     await onEdit(comment.id, trimmedValue);
+    setDraftValue(trimmedValue);
     setEditing(false);
   }
 
@@ -61,7 +57,7 @@ function Comment({ comment, isOwner, onDelete, onEdit }) {
       <span className="min-w-9/12 max-w-11/12 flex flex-col gap-1">
         <Textarea
           disabled={!editing}
-          onChange={(event) => setValue(event.target.value)}
+          onChange={(event) => setDraftValue(event.target.value)}
           value={value}
         />
         {isOwner ? (
@@ -73,7 +69,7 @@ function Comment({ comment, isOwner, onDelete, onEdit }) {
                 </Button>
                 <Button
                   onClick={() => {
-                    setValue(comment.body);
+                    setDraftValue(comment.body);
                     setEditing(false);
                   }}
                   size="sm"
@@ -86,7 +82,10 @@ function Comment({ comment, isOwner, onDelete, onEdit }) {
             ) : (
               <>
                 <Button
-                  onClick={() => setEditing(true)}
+                  onClick={() => {
+                    setDraftValue(comment.body);
+                    setEditing(true);
+                  }}
                   size="sm"
                   type="button"
                   variant="outline"
@@ -336,42 +335,75 @@ function CompanyView({ companyId, onOpenChange, open }) {
 
             <FieldGroup>
               <Field>
-                <div>
-                  Tech:
-                  {data?.technologies?.map((tech) => (
-                    <Tag
-                      colour={getRandomColor()}
-                      key={tech.name}
-                      text={tech.name}
-                    />
-                  ))}
+                <div className="company-meta-group">
+                  <span className="company-meta-group__label">Tech</span>
+                  <div className="company-meta-group__tags">
+                    {data?.technologies?.length ? (
+                      data.technologies.map((tech) => (
+                        <Tag
+                          category="technology"
+                          key={tech.name}
+                          text={tech.name}
+                        />
+                      ))
+                    ) : (
+                      <span className="company-meta-group__empty">
+                        Not specified
+                      </span>
+                    )}
+                  </div>
                 </div>
               </Field>
 
               <Field>
-                <div>
-                  Industry:
-                  <Tag colour="lightpink" text={data?.industry || "Not specified"} />
+                <div className="company-meta-group">
+                  <span className="company-meta-group__label">Industry</span>
+                  <div className="company-meta-group__tags">
+                    {data?.industry ? (
+                      <Tag category="industry" text={data.industry} />
+                    ) : (
+                      <span className="company-meta-group__empty">
+                        Not specified
+                      </span>
+                    )}
+                  </div>
                 </div>
               </Field>
 
               <Field>
-                <div>
-                  Job Roles:
-                  {data?.jobRoles?.map((job) => (
-                    <Tag colour={getRandomColor()} key={job} text={job} />
-                  ))}
+                <div className="company-meta-group">
+                  <span className="company-meta-group__label">Job Roles</span>
+                  <div className="company-meta-group__tags">
+                    {data?.jobRoles?.length ? (
+                      data.jobRoles.map((job) => {
+                        const label = job?.name ?? job;
+
+                        return (
+                          <Tag category="role" key={label} text={label} />
+                        );
+                      })
+                    ) : (
+                      <span className="company-meta-group__empty">
+                        Not specified
+                      </span>
+                    )}
+                  </div>
                 </div>
               </Field>
 
               <Field>
-                <div>Location: {data?.location || "Not specified"}</div>
+                <div className="company-meta-group">
+                  <span className="company-meta-group__label">Location</span>
+                  <span className="company-meta-group__value">
+                    {data?.location || "Not specified"}
+                  </span>
+                </div>
               </Field>
 
               <Field>
                 <Label htmlFor="description">Description</Label>
                 <Textarea
-                  className="max-h-60 min-h-[7.5rem]"
+                  className="max-h-60 min-h-30"
                   defaultValue={data?.description || "No description provided yet."}
                   disabled
                   id="description"

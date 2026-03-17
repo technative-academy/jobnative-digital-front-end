@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/dialog";
 import Tag from "../../components/Tag/Tag";
 import { useEvent } from "../../hooks/useEvent.js";
-import { getRandomColor } from "../../utils.js";
 import { ArrowUpRightIcon } from "lucide-react";
 
 const formatDateTime = (value) => {
@@ -23,13 +22,14 @@ const formatDateTime = (value) => {
   });
 };
 
-const renderTagList = (items, fallback) => {
+const renderTagList = (items, category, fallback) => {
   if (!items || items.length === 0) {
     return <span className="event-dialog__empty">{fallback}</span>;
   }
+
   return items.map((item) => {
     const label = item?.name ?? item?.title ?? item;
-    return <Tag key={label} text={label} colour={getRandomColor()} />;
+    return <Tag category={category} key={`${category}-${label}`} text={label} />;
   });
 };
 
@@ -108,14 +108,14 @@ function EventDialog({ open, onOpenChange, eventId }) {
             <section className="event-dialog__section">
               <h3>Tech focus</h3>
               <div className="event-dialog__tags">
-                {renderTagList(techList, "Tech stack coming soon.")}
+                {renderTagList(techList, "technology", "Tech stack coming soon.")}
               </div>
             </section>
 
             <section className="event-dialog__section">
               <h3>Sponsors</h3>
               <div className="event-dialog__tags">
-                {renderTagList(sponsorList, "No sponsors listed yet.")}
+                {renderTagList(sponsorList, "sponsor", "No sponsors listed yet.")}
               </div>
             </section>
           </div>

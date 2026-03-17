@@ -6,20 +6,16 @@ function Filters({ filters, setFilters, addButton }) {
   const [openDropdown, setOpenDropdown] = useState(null);
 
   return (
-    <div className="filter-container">
-      <div className="filter-header">
-        <h2>Filter companies by:</h2>
-        {addButton}
-      </div>
-      <div className="filters">
+    <div className="filter-bar">
+      <div className="filter-group">
+        <span className="filter-label">Filter by</span>
+
         <FilterDropdown
           label="Location"
           name="location"
           options={[
-            "All",
             "London",
             "Remote",
-
             "Brighton",
             "Worthing",
             "Crawley",
@@ -67,9 +63,7 @@ function Filters({ filters, setFilters, addButton }) {
             "TypeScript",
             "JavaScript",
             "Java",
-
             "AWS",
-
             "Ruby",
             "PHP",
           ]}
@@ -95,6 +89,8 @@ function Filters({ filters, setFilters, addButton }) {
           setOpenDropdown={setOpenDropdown}
         />
       </div>
+
+      {addButton}
     </div>
   );
 }

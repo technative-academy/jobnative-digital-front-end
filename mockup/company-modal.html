@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JobNative - Company Modal Mockup</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --primary: #561ce5;
+      --primary-light: #7e57e1;
+      --primary-dark: #3d0fa8;
+      --secondary: #1939e0;
+      --secondary-light: #6b80fa;
+      --bg-white: #ffffff;
+      --bg-light: #f8f9fc;
+      --text-dark: #1a1a2e;
+      --text-medium: #64748b;
+      --text-light: #94a3b8;
+      --border: #e2e8f0;
+      --shadow-sm: 0 1px 3px rgba(86, 28, 229, 0.06);
+      --shadow-lg: 0 8px 32px rgba(86, 28, 229, 0.12);
+      --radius: 12px;
+      --radius-lg: 16px;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: rgba(15, 10, 30, 0.6);
+      color: var(--text-dark);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .modal {
+      background: var(--bg-white);
+      border-radius: 20px;
+      max-width: 720px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.25);
+    }
+
+    /* HEADER */
+    .modal-header {
+      padding: 32px 32px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .modal-header-left {
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+    }
+    .company-avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #059669, #34d399);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 800;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .company-info h1 {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+    .company-links {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .company-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .link-website {
+      background: rgba(86, 28, 229, 0.08);
+      color: var(--primary);
+    }
+    .link-website:hover { background: rgba(86, 28, 229, 0.14); }
+    .link-linkedin {
+      background: rgba(37, 99, 235, 0.08);
+      color: #2563eb;
+    }
+    .link-linkedin:hover { background: rgba(37, 99, 235, 0.14); }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 600;
+      background: rgba(5, 150, 105, 0.08);
+      color: #059669;
+    }
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #059669;
+    }
+
+    /* META GRID */
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      padding: 24px 32px;
+    }
+    .meta-item {
+      background: var(--bg-light);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+    }
+    .meta-item .label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+    .meta-item .value {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+    .meta-tags {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+    }
+    .tag {
+      padding: 3px 8px;
+      border-radius: 5px;
+      font-size: 11px;
+      font-weight: 600;
+      background: rgba(86, 28, 229, 0.06);
+      color: var(--primary);
+    }
+    .tag.green { background: rgba(5, 150, 105, 0.08); color: #059669; }
+    .tag.blue { background: rgba(37, 99, 235, 0.08); color: #2563eb; }
+
+    /* DESCRIPTION */
+    .section {
+      padding: 0 32px 24px;
+    }
+    .section h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 8px;
+    }
+    .section textarea {
+      width: 100%;
+      min-height: 80px;
+      padding: 14px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--text-medium);
+      resize: vertical;
+      outline: none;
+      background: var(--bg-light);
+      transition: all 0.2s;
+    }
+    .section textarea:focus {
+      border-color: var(--primary);
+      background: white;
+      box-shadow: 0 0 0 3px rgba(86, 28, 229, 0.1);
+    }
+
+    /* COMMENTS */
+    .comments-section {
+      padding: 0 32px 32px;
+    }
+    .comments-section h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 16px;
+    }
+    .comment {
+      display: flex;
+      gap: 12px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .comment:last-of-type { border-bottom: none; }
+    .comment-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary-light), var(--secondary-light));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+    .comment-body {
+      flex: 1;
+    }
+    .comment-author {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+    .comment-text {
+      font-size: 14px;
+      color: var(--text-medium);
+      margin-top: 2px;
+    }
+
+    /* ADD COMMENT */
+    .add-comment {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+    .add-comment textarea {
+      flex: 1;
+      padding: 12px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: inherit;
+      resize: none;
+      outline: none;
+      min-height: 44px;
+      background: var(--bg-light);
+      transition: all 0.2s;
+    }
+    .add-comment textarea:focus {
+      border-color: var(--primary);
+      background: white;
+      box-shadow: 0 0 0 3px rgba(86, 28, 229, 0.1);
+    }
+    .btn-submit {
+      padding: 10px 20px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .btn-submit:hover {
+      background: var(--primary-dark);
+    }
+
+    /* MODAL FOOTER */
+    .modal-footer {
+      padding: 16px 32px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: flex-end;
+    }
+    .btn-close {
+      padding: 8px 20px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      background: none;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-medium);
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+    .btn-close:hover {
+      border-color: var(--text-medium);
+      color: var(--text-dark);
+    }
+
+    /* RESPONSIVE - TABLET */
+    @media (max-width: 768px) {
+      body { padding: 20px; }
+      .modal { border-radius: 14px; max-height: 90vh; }
+      .modal-header { padding: 24px 20px 0; }
+      .modal-header-left { gap: 12px; }
+      .company-avatar { width: 44px; height: 44px; font-size: 15px; border-radius: 12px; }
+      .company-info h1 { font-size: 18px; }
+      .meta-grid { padding: 16px 20px; grid-template-columns: 1fr 1fr; }
+      .section { padding: 0 20px 20px; }
+      .comments-section { padding: 0 20px 24px; }
+      .modal-footer { padding: 14px 20px; }
+      .add-comment { flex-direction: column; }
+      .btn-submit { width: 100%; }
+    }
+
+    /* RESPONSIVE - MOBILE */
+    @media (max-width: 480px) {
+      body { padding: 10px; align-items: flex-start; }
+      .modal { border-radius: 12px; max-height: 95vh; }
+      .modal-header { padding: 20px 16px 0; flex-direction: column; gap: 12px; }
+      .company-info h1 { font-size: 17px; }
+      .meta-grid { padding: 12px 16px; grid-template-columns: 1fr; gap: 8px; }
+      .section { padding: 0 16px 16px; }
+      .comments-section { padding: 0 16px 20px; }
+      .modal-footer { padding: 12px 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="modal">
+    <!-- HEADER -->
+    <div class="modal-header">
+      <div class="modal-header-left">
+        <div class="company-avatar">15B</div>
+        <div class="company-info">
+          <h1>15Below</h1>
+          <div class="company-links">
+            <a href="#" class="link-website">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              Website
+            </a>
+            <a href="#" class="link-linkedin">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+              LinkedIn
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="status-badge">
+        <div class="status-dot"></div>
+        Approved
+      </div>
+    </div>
+
+    <!-- META -->
+    <div class="meta-grid">
+      <div class="meta-item">
+        <div class="label">Location</div>
+        <div class="value">Brighton</div>
+      </div>
+      <div class="meta-item">
+        <div class="label">Industry</div>
+        <div class="value"><span class="tag" style="background: #fce7f3; color: #db2777;">Travel Tech</span></div>
+      </div>
+      <div class="meta-item">
+        <div class="label">Tech Stack</div>
+        <div class="meta-tags">
+          <span class="tag">React</span>
+          <span class="tag green">Node.js</span>
+        </div>
+      </div>
+      <div class="meta-item">
+        <div class="label">Job Roles</div>
+        <div class="value" style="font-size: 13px; color: var(--text-light);">None listed</div>
+      </div>
+    </div>
+
+    <!-- DESCRIPTION -->
+    <div class="section">
+      <h3>Description</h3>
+      <textarea placeholder="Enter a description for this company..."></textarea>
+    </div>
+
+    <!-- COMMENTS -->
+    <div class="comments-section">
+      <h3>Comments</h3>
+      <div class="comment">
+        <div class="comment-avatar">U</div>
+        <div class="comment-body">
+          <div class="comment-author">User</div>
+          <div class="comment-text">another comment</div>
+        </div>
+      </div>
+      <div class="comment">
+        <div class="comment-avatar">U</div>
+        <div class="comment-body">
+          <div class="comment-author">User</div>
+          <div class="comment-text">hello</div>
+        </div>
+      </div>
+
+      <div class="add-comment">
+        <textarea placeholder="Type comment here..."></textarea>
+        <button class="btn-submit">Submit</button>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-close">Close</button>
+    </div>
+  </div>
+</body>
+</html>

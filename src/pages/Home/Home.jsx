@@ -1,17 +1,18 @@
-import "./Home.css";
-import { useState } from "react";
-import { useCompanies } from "../../hooks/useCompanies";
-import Filters from "../../components/Filters/Filters";
-import CompanyCard from "../../components/CompanyCard/CompanyCard";
-import CompanyView from "../Company/CompanyView";
-import AddCompanyDialog from "../../components/AddCompanyDialog/AddCompanyDialog";
-import { useAuth } from "../../hooks/useAuth";
+import './Home.css';
+import { useState } from 'react';
+import { useCompanies } from '../../hooks/useCompanies';
+import { isPendingCompany } from '../../lib/companyData';
+import Filters from '../../components/Filters/Filters';
+import CompanyCard from '../../components/CompanyCard/CompanyCard';
+import CompanyCardSkeleton from '../../components/CompanyCard/CompanyCardSkeleton';
+import CompanyView from '../Company/CompanyView';
+import AddCompanyDialog from '../../components/AddCompanyDialog/AddCompanyDialog';
+import { useAuth } from '../../hooks/useAuth';
 
 function Home() {
   const { data: companies, isLoading, error } = useCompanies();
   const { isAuthenticated } = useAuth();
 
-  // dialog state
   const [viewCompanyId, setViewCompanyId] = useState(null);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
 
@@ -22,20 +23,7 @@ function Home() {
     role: [],
   });
 
-  const colourClasses = [
-    "card-colour-1",
-    "card-colour-2",
-    "card-colour-3",
-    "card-colour-4",
-    "card-colour-5",
-  ];
-
-  function getRandomColourClass() {
-    return colourClasses[Math.floor(Math.random() * colourClasses.length)];
-  }
-
-  if (isLoading) return <p>Loading companies...</p>;
-  if (error) return <p>Something went wrong.</p>;
+  if (error) return <p className="home-status">Something went wrong.</p>;
 
   const filteredCompanies =
     companies?.filter((company) => {
@@ -45,73 +33,85 @@ function Home() {
         (filters.industry.length === 0 ||
           filters.industry.includes(company.industry)) &&
         (filters.technology.length === 0 ||
-          company.technologies?.some((tech) =>
-            filters.technology.includes(tech.name),
+          company.technologyList?.some((tech) =>
+            filters.technology.includes(tech),
           )) &&
-        (filters.role.length === 0 || filters.role.includes(company.role))
+        (filters.role.length === 0 ||
+          company.roleList?.some((role) => filters.role.includes(role)))
       );
     }) || [];
 
   return (
-    <div className="home-container">
-      {/* View Company Dialogue */}
+    <div className="home-page page-transition">
       <CompanyView
         open={viewCompanyId !== null}
         onOpenChange={() => setViewCompanyId(null)}
         companyId={viewCompanyId}
       />
-
-      {/* Add Company Dialogue */}
       <AddCompanyDialog open={addDialogOpen} onOpenChange={setAddDialogOpen} />
 
-      <h1 className="hero-title">
-        <span className="brand-highlight">Job</span>Native
-      </h1>
+      <div className="home-hero">
+        <div className="home-hero__brand">
+          <span className="home-hero__brand--primary">Job</span>
+          <span className="home-hero__brand--dark">Native</span>
+        </div>
+        <h1 className="home-hero__title">Find the company of your dreams</h1>
+        <p className="home-hero__subtitle">
+          Explore job opportunities that match your skills and interests.
+        </p>
+        {companies?.length > 0 && (
+          <span className="home-hero__badge">
+            {companies.length}+ companies listed
+          </span>
+        )}
+      </div>
 
-      <h2 className="hero-subtitle">Find the company of your dreams</h2>
-
-      <p className="hero-text">
-        Explore job opportunities that match your skills and interests.
-      </p>
-
-      <Filters
-        filters={filters}
-        setFilters={setFilters}
-        addButton={
-          isAuthenticated && (
-            <button
-              className="btn-primary"
-              onClick={() => setAddDialogOpen(true)}
-            >
-              + Add Company
-            </button>
-          )
-        }
-      />
-
-      {filteredCompanies?.length === 0 ? (
-        <p>No companies found.</p>
+      {isLoading ? (
+        <div className="filter-bar">
+          <div
+            className="skeleton"
+            style={{ height: 44, width: 340, borderRadius: 12 }}
+          />
+        </div>
       ) : (
-        <div className="company-grid">
+        <Filters
+          filters={filters}
+          setFilters={setFilters}
+          addButton={
+            isAuthenticated && (
+              <button
+                className="home-add-btn"
+                onClick={() => setAddDialogOpen(true)}
+                type="button"
+              >
+                + Add Company
+              </button>
+            )
+          }
+        />
+      )}
+
+      {isLoading ? (
+        <div className="home-card-grid">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <CompanyCardSkeleton key={i} />
+          ))}
+        </div>
+      ) : filteredCompanies.length === 0 ? (
+        <p className="home-empty">No companies match the current filters.</p>
+      ) : (
+        <div className="home-card-grid">
           {filteredCompanies.map((company) => (
             <CompanyCard
               key={company.id}
               company={company}
-              colourClass={getRandomColourClass()}
-              onClick={() => setViewCompanyId(company.id)}
+              onClick={
+                isPendingCompany(company)
+                  ? undefined
+                  : () => setViewCompanyId(company.id)
+              }
             />
           ))}
-        </div>
-      )}
-
-      {isAuthenticated && (
-        <div className="add-company-link">
-          <button
-            className="btn-primary"
-            onClick={() => setAddDialogOpen(true)}
-          >
-            Add a Company
-          </button>
         </div>
       )}
     </div>

@@ -1,81 +1,130 @@
-.filters {
+/* Filter bar: full-width row */
+.filter-bar {
+  max-width: 1200px;
+  margin: 0 auto 40px;
+  padding: 0 40px;
   display: flex;
-  gap: 1rem;
-  margin: 0 auto 2rem auto;
-  background-color: white;
-  border: 1px solid var(--colour-background-light);
-  border-radius: 100px;
-  padding: 0.5rem 1rem;
-  width: fit-content;
-}
-
-.filter-header {
-  display: flex;
-  justify-content: space-between;
   align-items: center;
-  max-width: 550px;
-  margin: 2rem auto 0.5rem auto;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
+/* Filter group: white pill containing the dropdowns */
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: #ffffff;
+  padding: 6px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(86, 28, 229, 0.06);
+  flex-wrap: wrap;
+}
+
+.filter-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #94a3b8;
+  padding: 0 6px 0 8px;
+  white-space: nowrap;
+}
+
+/* Individual dropdown wrapper */
 .filter-dropdown {
   position: relative;
-  padding: 0 0.5rem;
 }
 
 .filter-dropdown:not(:first-child) {
-  border-left: 1px solid #ddd;
+  border-left: 1px solid #e2e8f0;
+  padding-left: 4px;
 }
 
+/* The dropdown trigger button */
 .filter-button {
-  padding: 0.6rem 1rem;
-  font-size: var(--font-size-title);
-  background-color: white;
-  color: var(--colour-primary);
-  cursor: pointer;
-  width: 100%; /* fills dropdown width */
-  height: 100%; /* fills container height */
+  padding: 8px 16px;
   border: none;
-  text-align: left;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+  background: transparent;
+  color: #64748b;
+  font-family: inherit;
+  white-space: nowrap;
 }
 
 .filter-button:hover {
-  background-color: var(--colour-primary);
-  color: white;
-  border-radius: 50px; /*not sure if i like this*/
-  width: 110%;
-  height: 100%;
-
-  text-align: left;
+  background: #f8f9fc;
+  color: #1a1a2e;
 }
 
+.filter-button--active {
+  background: rgba(86, 28, 229, 0.08);
+  color: #561ce5;
+  font-weight: 600;
+}
+
+/* Dropdown menu panel */
 .filter-menu {
   position: absolute;
-  top: 110%;
+  top: calc(100% + 8px);
   left: 0;
-  background: white;
-  border: 1px solid #ddd;
-  padding: 1rem;
-  border-radius: 8px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  padding: 10px;
+  border-radius: 10px;
   min-width: 200px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-
+  box-shadow: 0 4px 16px rgba(86, 28, 229, 0.08);
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* left align items */
+  align-items: flex-start;
+  z-index: 50;
 }
 
 .filter-option {
-  display: block;
-  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  font-size: 13px;
+  color: #1a1a2e;
+  cursor: pointer;
+  width: 100%;
+  border-radius: 6px;
+}
+
+.filter-option:hover {
+  color: #561ce5;
+  background: rgba(86, 28, 229, 0.04);
 }
 
 input[type="checkbox"] {
-  margin-right: 0.5rem;
+  margin-right: 0;
+  accent-color: #561ce5;
 }
 
-.filter-header {
-  font-size: var(--font-size-subheading);
-  margin-top: 35px;
-  margin-bottom: 15px;
-  color: var(--colour-secondary);
+/* Responsive */
+@media (max-width: 768px) {
+  .filter-bar {
+    padding: 0 16px;
+  }
+
+  .filter-group {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 480px) {
+  .filter-bar {
+    padding: 0 12px;
+    margin-bottom: 24px;
+  }
+
+  .filter-button {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
 }

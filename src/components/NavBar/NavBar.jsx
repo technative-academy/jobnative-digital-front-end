@@ -1,10 +1,9 @@
-import { LogOut } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import "./NavBar.css";
 
 function getNavItemClassName({ isActive }) {
-  return isActive ? "nav-item nav-item-active" : "nav-item";
+  return isActive ? "nav-item nav-item--active" : "nav-item";
 }
 
 function Navbar() {
@@ -19,22 +18,28 @@ function Navbar() {
   return (
     <nav className="navbar">
       <div className="navbar-left">
-        <NavLink className={getNavItemClassName} to="/">
-          Home
+        <NavLink className="navbar-brand" to="/">
+          <span className="navbar-brand__job">Job</span>
+          <span className="navbar-brand__native">Native</span>
         </NavLink>
-        <NavLink className={getNavItemClassName} to="/events">
-          Events
-        </NavLink>
-        {isAuthenticated ? (
-          <NavLink className={getNavItemClassName} to="/dashboard">
-            Dashboard
+        <div className="navbar-links">
+          <NavLink className={getNavItemClassName} to="/">
+            Home
           </NavLink>
-        ) : null}
-        {user?.role === 'admin' ? (
-          <NavLink className={getNavItemClassName} to="/admin">
-            Admin
+          <NavLink className={getNavItemClassName} to="/events">
+            Events
           </NavLink>
-        ) : null}
+          {isAuthenticated ? (
+            <NavLink className={getNavItemClassName} to="/dashboard">
+              Dashboard
+            </NavLink>
+          ) : null}
+          {user?.role === "admin" ? (
+            <NavLink className={getNavItemClassName} to="/admin">
+              Admin
+            </NavLink>
+          ) : null}
+        </div>
       </div>
 
       <div className="navbar-right">
@@ -46,8 +51,7 @@ function Navbar() {
               onClick={handleLogout}
               type="button"
             >
-              <LogOut size={16} strokeWidth={2.25} />
-              Logout
+              Log out
             </button>
           </>
         ) : (

@@ -1,0 +1,1788 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JobNative - Homepage Mockup</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --primary: #561ce5;
+        --primary-light: #7e57e1;
+        --primary-dark: #3d0fa8;
+        --secondary: #1939e0;
+        --secondary-light: #6b80fa;
+        --accent: #fa161c;
+        --bg-white: #ffffff;
+        --bg-light: #f8f9fc;
+        --bg-card: #ffffff;
+        --text-dark: #1a1a2e;
+        --text-medium: #64748b;
+        --text-light: #94a3b8;
+        --border: #e2e8f0;
+        --shadow-sm: 0 1px 3px rgba(86, 28, 229, 0.06);
+        --shadow-md: 0 4px 16px rgba(86, 28, 229, 0.08);
+        --shadow-lg: 0 8px 32px rgba(86, 28, 229, 0.12);
+        --shadow-hover: 0 12px 40px rgba(86, 28, 229, 0.16);
+        --radius: 12px;
+        --radius-lg: 16px;
+      }
+
+      body {
+        font-family:
+          'Inter',
+          -apple-system,
+          sans-serif;
+        background: var(--bg-light);
+        color: var(--text-dark);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* NAV */
+      nav {
+        background: var(--bg-white);
+        border-bottom: 1px solid var(--border);
+        padding: 0 40px;
+        height: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        backdrop-filter: blur(12px);
+        background: rgba(255, 255, 255, 0.92);
+      }
+      .nav-left {
+        display: flex;
+        align-items: center;
+        gap: 32px;
+      }
+      .nav-brand {
+        font-size: 20px;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+      }
+      .nav-brand span:first-child {
+        color: var(--primary);
+      }
+      .nav-brand span:last-child {
+        color: var(--text-dark);
+      }
+      .nav-links {
+        display: flex;
+        gap: 4px;
+      }
+      .nav-links a {
+        text-decoration: none;
+        color: var(--text-medium);
+        font-size: 14px;
+        font-weight: 500;
+        padding: 8px 14px;
+        border-radius: 8px;
+        transition: all 0.2s;
+      }
+      .nav-links a:hover {
+        color: var(--text-dark);
+        background: var(--bg-light);
+      }
+      .nav-links a.active {
+        color: var(--primary);
+        background: rgba(86, 28, 229, 0.06);
+      }
+      .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .nav-user {
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--text-dark);
+      }
+      .btn-logout {
+        background: none;
+        border: 1.5px solid var(--border);
+        padding: 6px 16px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text-medium);
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .btn-logout:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+
+      /* HERO */
+      .hero {
+        text-align: center;
+        padding: 48px 40px 36px;
+        max-width: 720px;
+        margin: 0 auto;
+      }
+      .hero-brand {
+        font-size: 52px;
+        font-weight: 800;
+        letter-spacing: -1px;
+        margin-bottom: 14px;
+      }
+      .hero-brand span:first-child {
+        color: var(--primary);
+      }
+      .hero-brand span:nth-child(2) {
+        color: var(--text-dark);
+      }
+      .hero-brand-sub {
+        color: var(--text-medium);
+        font-weight: 600;
+      }
+      .hero-badge {
+        display: inline-block;
+        background: rgba(86, 28, 229, 0.06);
+        color: var(--primary);
+        font-size: 13px;
+        font-weight: 600;
+        padding: 6px 14px;
+        border-radius: 100px;
+        margin-top: 16px;
+      }
+      .hero h1 {
+        font-size: 36px;
+        font-weight: 700;
+        line-height: 1.2;
+        margin-bottom: 10px;
+        color: var(--primary);
+      }
+      .hero p {
+        font-size: 16px;
+        color: var(--text-medium);
+        max-width: 480px;
+        margin: 0 auto;
+      }
+
+      /* FILTERS */
+      .filter-bar {
+        max-width: 1200px;
+        margin: 0 auto 40px;
+        padding: 0 40px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+      .filter-group {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--bg-white);
+        padding: 6px;
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-sm);
+      }
+      .filter-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-medium);
+        padding-left: 10px;
+      }
+      .filter-btn {
+        padding: 8px 18px;
+        border: none;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+        background: transparent;
+        color: var(--text-medium);
+      }
+      .filter-btn:hover {
+        background: var(--bg-light);
+        color: var(--text-dark);
+      }
+      .filter-btn.active {
+        background: var(--primary);
+        color: white;
+      }
+      .btn-add {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 10px 20px;
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: var(--radius);
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .btn-add:hover {
+        background: var(--primary-dark);
+      }
+
+      /* CARD GRID */
+      .card-grid {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 40px 80px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+        gap: 20px;
+      }
+
+      .company-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 24px;
+        transition: all 0.2s ease;
+        cursor: pointer;
+      }
+      .company-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      }
+
+      .card-header {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 18px;
+      }
+      .card-avatar {
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--secondary-light)
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 700;
+        font-size: 16px;
+        flex-shrink: 0;
+      }
+      .card-avatar.green {
+        background: linear-gradient(135deg, #059669, #34d399);
+      }
+      .card-avatar.blue {
+        background: linear-gradient(135deg, #2563eb, #60a5fa);
+      }
+      .card-avatar.pink {
+        background: linear-gradient(135deg, #db2777, #f472b6);
+      }
+      .card-avatar.orange {
+        background: linear-gradient(135deg, #ea580c, #fb923c);
+      }
+      .card-avatar.cyan {
+        background: linear-gradient(135deg, #0891b2, #22d3ee);
+      }
+
+      .card-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--text-dark);
+      }
+      .card-subtitle {
+        font-size: 12px;
+        color: var(--text-light);
+        font-weight: 500;
+      }
+
+      .card-details {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .card-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+      }
+      .card-row .icon {
+        width: 16px;
+        height: 16px;
+        color: var(--text-light);
+      }
+      .card-row .label {
+        color: var(--text-light);
+        font-weight: 500;
+        min-width: 72px;
+      }
+      .card-row .value {
+        color: var(--text-dark);
+        font-weight: 500;
+      }
+
+      .card-tags {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-top: 16px;
+      }
+      .tag {
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 11px;
+        font-weight: 600;
+        background: rgba(86, 28, 229, 0.06);
+        color: var(--primary);
+      }
+      .tag.green {
+        background: rgba(5, 150, 105, 0.08);
+        color: #059669;
+      }
+      .tag.blue {
+        background: rgba(37, 99, 235, 0.08);
+        color: #2563eb;
+      }
+
+      /* RESPONSIVE - TABLET */
+      @media (max-width: 768px) {
+        nav {
+          padding: 0 16px;
+        }
+        .nav-left {
+          gap: 16px;
+        }
+        .nav-links a {
+          padding: 6px 10px;
+          font-size: 13px;
+        }
+        .nav-user {
+          display: none;
+        }
+        .hero {
+          padding: 32px 20px 24px;
+        }
+        .hero h1 {
+          font-size: 28px;
+        }
+        .hero p {
+          font-size: 14px;
+        }
+        .filter-bar {
+          padding: 0 16px;
+          flex-wrap: wrap;
+        }
+        .filter-group {
+          flex-wrap: wrap;
+        }
+        .card-grid {
+          padding: 0 16px 60px;
+          grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        }
+        .modal-overlay {
+          padding: 16px;
+        }
+        .modal {
+          border-radius: 12px;
+          max-height: 90vh;
+        }
+        .modal-header-bar {
+          padding: 20px 20px 0;
+        }
+        .meta-grid {
+          padding: 16px 20px;
+          grid-template-columns: 1fr 1fr;
+        }
+        .modal-section {
+          padding: 0 20px 20px;
+        }
+        .comments-section {
+          padding: 0 20px 24px;
+        }
+        .modal-footer {
+          padding: 12px 20px;
+        }
+        .add-modal-header {
+          padding: 20px 20px 0;
+        }
+        .add-modal-subtitle {
+          padding: 6px 20px 20px;
+        }
+        .form-body {
+          padding: 0 20px 24px;
+        }
+        .form-row {
+          grid-template-columns: 1fr;
+        }
+        .add-modal-footer {
+          padding: 12px 20px;
+        }
+      }
+
+      /* RESPONSIVE - MOBILE */
+      @media (max-width: 480px) {
+        nav {
+          padding: 0 12px;
+          height: 56px;
+        }
+        .nav-left {
+          gap: 10px;
+        }
+        .nav-brand {
+          font-size: 17px;
+        }
+        .nav-links a {
+          padding: 5px 8px;
+          font-size: 12px;
+        }
+        .btn-logout {
+          padding: 5px 12px;
+          font-size: 12px;
+        }
+        .hero {
+          padding: 24px 16px 20px;
+        }
+        .hero-badge {
+          font-size: 12px;
+          padding: 5px 12px;
+        }
+        .hero h1 {
+          font-size: 24px;
+        }
+        .hero p {
+          font-size: 13px;
+        }
+        .filter-bar {
+          padding: 0 12px;
+          margin-bottom: 24px;
+        }
+        .filter-btn {
+          padding: 6px 12px;
+          font-size: 12px;
+        }
+        .btn-add {
+          padding: 8px 14px;
+          font-size: 13px;
+        }
+        .card-grid {
+          padding: 0 12px 40px;
+          grid-template-columns: 1fr;
+          gap: 14px;
+        }
+        .company-card {
+          padding: 18px;
+        }
+        .modal-overlay {
+          padding: 8px;
+        }
+        .modal {
+          border-radius: 12px;
+        }
+        .modal-header-bar {
+          padding: 16px 16px 0;
+        }
+        .modal-company-name {
+          font-size: 18px;
+        }
+        .meta-grid {
+          padding: 12px 16px;
+          grid-template-columns: 1fr;
+          gap: 8px;
+        }
+        .modal-section {
+          padding: 0 16px 16px;
+        }
+        .comments-section {
+          padding: 0 16px 20px;
+        }
+        .modal-footer {
+          padding: 12px 16px;
+        }
+        .add-modal-header {
+          padding: 16px 16px 0;
+        }
+        .add-modal-subtitle {
+          padding: 6px 16px 16px;
+        }
+        .form-body {
+          padding: 0 16px 20px;
+        }
+        .add-modal-footer {
+          padding: 12px 16px;
+        }
+      }
+
+      /* MODAL OVERLAY */
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 10, 30, 0.55);
+        backdrop-filter: blur(4px);
+        z-index: 200;
+        align-items: center;
+        justify-content: center;
+        padding: 40px;
+        animation: fadeIn 0.2s ease;
+      }
+      .modal-overlay.active {
+        display: flex;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(16px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .modal {
+        background: var(--bg-white);
+        border-radius: 20px;
+        width: 100%;
+        max-height: 85vh;
+        overflow-y: auto;
+        box-shadow: 0 24px 80px rgba(0, 0, 0, 0.25);
+        animation: slideUp 0.25s ease;
+      }
+      .modal.company-modal {
+        max-width: 720px;
+      }
+      .modal.add-modal {
+        max-width: 560px;
+      }
+
+      /* COMPANY DETAIL MODAL */
+      .modal-header-bar {
+        padding: 28px 32px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+      }
+      .modal-header-left {
+        display: flex;
+        gap: 18px;
+        align-items: flex-start;
+      }
+      .company-avatar-lg {
+        width: 56px;
+        height: 56px;
+        border-radius: 14px;
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--secondary-light)
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 800;
+        font-size: 18px;
+        flex-shrink: 0;
+      }
+      .company-avatar-lg.green {
+        background: linear-gradient(135deg, #059669, #34d399);
+      }
+      .company-avatar-lg.blue {
+        background: linear-gradient(135deg, #2563eb, #60a5fa);
+      }
+      .company-avatar-lg.pink {
+        background: linear-gradient(135deg, #db2777, #f472b6);
+      }
+      .company-avatar-lg.orange {
+        background: linear-gradient(135deg, #ea580c, #fb923c);
+      }
+      .company-avatar-lg.cyan {
+        background: linear-gradient(135deg, #0891b2, #22d3ee);
+      }
+      .modal-company-name {
+        font-size: 22px;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+      }
+      .modal-company-links {
+        display: flex;
+        gap: 8px;
+        margin-top: 8px;
+      }
+      .modal-company-links a {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 5px 12px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.2s;
+      }
+      .link-website {
+        background: rgba(86, 28, 229, 0.08);
+        color: var(--primary);
+      }
+      .link-website:hover {
+        background: rgba(86, 28, 229, 0.14);
+      }
+      .link-linkedin {
+        background: rgba(37, 99, 235, 0.08);
+        color: #2563eb;
+      }
+      .link-linkedin:hover {
+        background: rgba(37, 99, 235, 0.14);
+      }
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 5px 12px;
+        border-radius: 100px;
+        font-size: 12px;
+        font-weight: 600;
+        background: rgba(5, 150, 105, 0.08);
+        color: #059669;
+      }
+      .status-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #059669;
+      }
+
+      .meta-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 12px;
+        padding: 24px 32px;
+      }
+      .meta-item {
+        background: var(--bg-light);
+        border-radius: var(--radius);
+        padding: 14px 16px;
+      }
+      .meta-item .m-label {
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--text-light);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 4px;
+      }
+      .meta-item .m-value {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text-dark);
+      }
+      .meta-tags {
+        display: flex;
+        gap: 5px;
+        flex-wrap: wrap;
+      }
+
+      .modal-section {
+        padding: 0 32px 24px;
+      }
+      .modal-section h3 {
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 8px;
+      }
+      .modal-section textarea {
+        width: 100%;
+        min-height: 80px;
+        padding: 14px 16px;
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius);
+        font-size: 14px;
+        font-family: inherit;
+        color: var(--text-medium);
+        resize: vertical;
+        outline: none;
+        background: var(--bg-light);
+        transition: all 0.2s;
+      }
+      .modal-section textarea:focus {
+        border-color: var(--primary);
+        background: white;
+        box-shadow: 0 0 0 3px rgba(86, 28, 229, 0.1);
+      }
+
+      .comments-section {
+        padding: 0 32px 32px;
+      }
+      .comments-section h3 {
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 16px;
+      }
+      .comment {
+        display: flex;
+        gap: 12px;
+        padding: 14px 0;
+        border-bottom: 1px solid var(--border);
+      }
+      .comment:last-of-type {
+        border-bottom: none;
+      }
+      .comment-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: linear-gradient(
+          135deg,
+          var(--primary-light),
+          var(--secondary-light)
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 700;
+        font-size: 13px;
+        flex-shrink: 0;
+      }
+      .comment-author {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-dark);
+      }
+      .comment-text {
+        font-size: 14px;
+        color: var(--text-medium);
+        margin-top: 2px;
+      }
+      .add-comment {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        padding-top: 16px;
+        border-top: 1px solid var(--border);
+      }
+      .add-comment textarea {
+        flex: 1;
+        padding: 12px 14px;
+        border: 1.5px solid var(--border);
+        border-radius: 10px;
+        font-size: 14px;
+        font-family: inherit;
+        resize: none;
+        outline: none;
+        min-height: 44px;
+        background: var(--bg-light);
+        transition: all 0.2s;
+      }
+      .add-comment textarea:focus {
+        border-color: var(--primary);
+        background: white;
+        box-shadow: 0 0 0 3px rgba(86, 28, 229, 0.1);
+      }
+      .btn-submit {
+        padding: 10px 20px;
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        font-family: inherit;
+        cursor: pointer;
+        transition: all 0.2s;
+        white-space: nowrap;
+      }
+      .btn-submit:hover {
+        background: var(--primary-dark);
+      }
+      .modal-footer {
+        padding: 16px 32px;
+        border-top: 1px solid var(--border);
+        display: flex;
+        justify-content: flex-end;
+      }
+      .btn-close {
+        padding: 8px 20px;
+        border: 1.5px solid var(--border);
+        border-radius: 8px;
+        background: none;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text-medium);
+        cursor: pointer;
+        font-family: inherit;
+        transition: all 0.2s;
+      }
+      .btn-close:hover {
+        border-color: var(--text-medium);
+        color: var(--text-dark);
+      }
+
+      /* ADD COMPANY MODAL */
+      .add-modal-header {
+        padding: 28px 32px 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .add-modal-header h2 {
+        font-size: 20px;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+      }
+      .btn-x {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        border: none;
+        background: var(--bg-light);
+        color: var(--text-light);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+      }
+      .btn-x:hover {
+        background: var(--border);
+        color: var(--text-dark);
+      }
+      .add-modal-subtitle {
+        padding: 6px 32px 24px;
+        font-size: 14px;
+        color: var(--text-medium);
+      }
+      .form-body {
+        padding: 0 32px 28px;
+      }
+      .form-group {
+        margin-bottom: 18px;
+      }
+      .form-group label {
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-dark);
+        margin-bottom: 6px;
+      }
+      .form-group label .required {
+        color: #ef4444;
+        margin-left: 2px;
+      }
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        width: 100%;
+        padding: 11px 14px;
+        border: 1.5px solid var(--border);
+        border-radius: 10px;
+        font-size: 14px;
+        font-family: inherit;
+        transition: all 0.2s;
+        outline: none;
+        background: var(--bg-light);
+        color: var(--text-dark);
+      }
+      .form-group input:focus,
+      .form-group select:focus,
+      .form-group textarea:focus {
+        border-color: var(--primary);
+        background: var(--bg-white);
+        box-shadow: 0 0 0 3px rgba(86, 28, 229, 0.1);
+      }
+      .form-group input::placeholder,
+      .form-group textarea::placeholder {
+        color: var(--text-light);
+      }
+      .form-group textarea {
+        min-height: 80px;
+        resize: vertical;
+      }
+      .form-group select {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 14px center;
+        padding-right: 36px;
+      }
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+      .tag-input-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 8px 12px;
+        border: 1.5px solid var(--border);
+        border-radius: 10px;
+        background: var(--bg-light);
+        min-height: 42px;
+        align-items: center;
+        transition: all 0.2s;
+        cursor: text;
+      }
+      .tag-input-wrapper:focus-within {
+        border-color: var(--primary);
+        background: var(--bg-white);
+        box-shadow: 0 0 0 3px rgba(86, 28, 229, 0.1);
+      }
+      .tag-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 3px 8px 3px 10px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        background: rgba(86, 28, 229, 0.08);
+        color: var(--primary);
+      }
+      .tag-chip button {
+        background: none;
+        border: none;
+        color: var(--primary-light);
+        cursor: pointer;
+        font-size: 14px;
+        line-height: 1;
+        padding: 0;
+      }
+      .tag-input-wrapper input {
+        border: none;
+        background: none;
+        outline: none;
+        font-size: 13px;
+        font-family: inherit;
+        color: var(--text-dark);
+        flex: 1;
+        min-width: 80px;
+        padding: 2px 0;
+      }
+      .tag-input-wrapper input::placeholder {
+        color: var(--text-light);
+      }
+      .form-hint {
+        font-size: 11px;
+        color: var(--text-light);
+        margin-top: 4px;
+      }
+      .add-modal-footer {
+        padding: 16px 32px;
+        border-top: 1px solid var(--border);
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+      }
+      .btn-cancel {
+        padding: 10px 20px;
+        border: 1.5px solid var(--border);
+        border-radius: 10px;
+        background: none;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--text-medium);
+        cursor: pointer;
+        font-family: inherit;
+        transition: all 0.2s;
+      }
+      .btn-cancel:hover {
+        border-color: var(--text-medium);
+        color: var(--text-dark);
+      }
+      .btn-submit-form {
+        padding: 10px 24px;
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        font-family: inherit;
+        cursor: pointer;
+        transition: all 0.2s;
+        box-shadow: 0 2px 8px rgba(86, 28, 229, 0.3);
+      }
+      .btn-submit-form:hover {
+        background: var(--primary-dark);
+        box-shadow: 0 4px 12px rgba(86, 28, 229, 0.4);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- NAV -->
+    <nav>
+      <div class="nav-left">
+        <div class="nav-brand"><span>Job</span><span>Native</span></div>
+        <div class="nav-links">
+          <a href="#" class="active">Home</a>
+          <a href="events.html">Events</a>
+          <a href="dashboard.html">Dashboard</a>
+          <a href="#">Admin</a>
+        </div>
+      </div>
+      <div class="nav-right">
+        <span class="nav-user">Alex Admin</span>
+        <button class="btn-logout">Log out</button>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-brand"><span>Job</span><span>Native</span></div>
+
+      <h1>Find the company of your dreams</h1>
+      <p>Explore job opportunities that match your skills and interests.</p>
+      <div class="hero-badge">120+ companies listed</div>
+    </section>
+
+    <!-- FILTERS -->
+    <div class="filter-bar">
+      <div class="filter-group">
+        <span class="filter-label">Filter by</span>
+        <button class="filter-btn active">Location</button>
+        <button class="filter-btn">Industry</button>
+        <button class="filter-btn">Technology</button>
+        <button class="filter-btn">Role</button>
+      </div>
+      <button class="btn-add">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+        >
+          <line x1="12" y1="5" x2="12" y2="19" />
+          <line x1="5" y1="12" x2="19" y2="12" />
+        </svg>
+        Add Company
+      </button>
+    </div>
+
+    <!-- CARD GRID -->
+    <div class="card-grid">
+      <!-- Card 1 -->
+      <div class="company-card">
+        <div class="card-header">
+          <div class="card-avatar">123</div>
+          <div>
+            <div class="card-title">123</div>
+            <div class="card-subtitle">Fintech</div>
+          </div>
+        </div>
+        <div class="card-details">
+          <div class="card-row">
+            <svg
+              class="icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
+            <span class="label">Location</span>
+            <span class="value">Brighton</span>
+          </div>
+          <div class="card-row">
+            <svg
+              class="icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+              <line x1="8" y1="21" x2="16" y2="21" />
+              <line x1="12" y1="17" x2="12" y2="21" />
+            </svg>
+            <span class="label">Industry</span>
+            <span class="value">Fintech</span>
+          </div>
+        </div>
+        <div class="card-tags">
+          <span class="tag">React</span>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="company-card">
+        <div class="card-header">
+          <div class="card-avatar green">15B</div>
+          <div>
+            <div class="card-title">15Below</div>
+            <div class="card-subtitle">Travel Tech</div>
+          </div>
+        </div>
+        <div class="card-details">
+          <div class="card-row">
+            <svg
+              class="icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
+            <span class="label">Location</span>
+            <span class="value">Brighton</span>
+          </div>
+          <div class="card-row">
+            <svg
+              class="icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+              <line x1="8" y1="21" x2="16" y2="21" />
+              <line x1="12" y1="17" x2="12" y2="21" />
+            </svg>
+            <span class="label">Industry</span>
+            <span class="value">Travel Tech</span>
+          </div>
+        </div>
+        <div class="card-tags">
+          <span class="tag blue">AWS</span>
+          <span class="tag green">Node.js</span>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="company-card">
+        <div class="card-header">
+          <div class="card-avatar blue">1X2</div>
+          <div>
+            <div class="card-title">1X2 Network</div>
+            <div class="card-subtitle">Gaming</div>
+          </div>
+        </div>
+        <div class="card-details">
+          <div class="card-row">
+            <svg
+              class="icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
+            <span class="label">Location</span>
+            <span class="value">Brighton</span>
+          </div>
+          <div class="card-row">
+            <svg
+              class="icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+              <line x1="8" y1="21" x2="16" y2="21" />
+              <line x1="12" y1="17" x2="12" y2="21" />
+            </svg>
+            <span class="label">Industry</span>
+            <span class="value">Gaming</span>
+          </div>
+        </div>
+        <div class="card-tags">
+          <span class="tag">React</span>
+          <span class="tag blue">TypeScript</span>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="company-card">
+        <div class="card-header">
+          <div class="card-avatar pink">a8</div>
+          <div>
+            <div class="card-title">a8learning</div>
+            <div class="card-subtitle">EdTech</div>
+          </div>
+        </div>
+        <div class="card-details">
+          <div class="card-row">
+            <svg
+              class="icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
+            <span class="label">Location</span>
+            <span class="value">Brighton</span>
+          </div>
+          <div class="card-row">
+            <svg
+              class="icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+              <line x1="8" y1="21" x2="16" y2="21" />
+              <line x1="12" y1="17" x2="12" y2="21" />
+            </svg>
+            <span class="label">Industry</span>
+            <span class="value">EdTech</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="company-card">
+        <div class="card-header">
+          <div class="card-avatar orange">Ar</div>
+          <div>
+            <div class="card-title">Aariyatech</div>
+            <div class="card-subtitle">Software</div>
+          </div>
+        </div>
+        <div class="card-details">
+          <div class="card-row">
+            <svg
+              class="icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
+            <span class="label">Location</span>
+            <span class="value">Brighton</span>
+          </div>
+          <div class="card-row">
+            <svg
+              class="icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+              <line x1="8" y1="21" x2="16" y2="21" />
+              <line x1="12" y1="17" x2="12" y2="21" />
+            </svg>
+            <span class="label">Industry</span>
+            <span class="value">Software</span>
+          </div>
+        </div>
+        <div class="card-tags">
+          <span class="tag green">Python</span>
+          <span class="tag">React</span>
+        </div>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="company-card">
+        <div class="card-header">
+          <div class="card-avatar cyan">AI</div>
+          <div>
+            <div class="card-title">ActiveInbox</div>
+            <div class="card-subtitle">Productivity</div>
+          </div>
+        </div>
+        <div class="card-details">
+          <div class="card-row">
+            <svg
+              class="icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
+            <span class="label">Location</span>
+            <span class="value">Brighton</span>
+          </div>
+          <div class="card-row">
+            <svg
+              class="icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+              <line x1="8" y1="21" x2="16" y2="21" />
+              <line x1="12" y1="17" x2="12" y2="21" />
+            </svg>
+            <span class="label">Industry</span>
+            <span class="value">Productivity</span>
+          </div>
+        </div>
+        <div class="card-tags">
+          <span class="tag blue">Vue.js</span>
+        </div>
+      </div>
+
+      <!-- Card 7 -->
+      <div class="company-card">
+        <div class="card-header">
+          <div class="card-avatar blue">AL</div>
+          <div>
+            <div class="card-title">Adaptive Lab</div>
+            <div class="card-subtitle">Consulting</div>
+          </div>
+        </div>
+        <div class="card-details">
+          <div class="card-row">
+            <svg
+              class="icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
+            <span class="label">Location</span>
+            <span class="value">London</span>
+          </div>
+          <div class="card-row">
+            <svg
+              class="icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+              <line x1="8" y1="21" x2="16" y2="21" />
+              <line x1="12" y1="17" x2="12" y2="21" />
+            </svg>
+            <span class="label">Industry</span>
+            <span class="value">Consulting</span>
+          </div>
+        </div>
+        <div class="card-tags">
+          <span class="tag">React</span>
+          <span class="tag green">Node.js</span>
+          <span class="tag blue">AWS</span>
+        </div>
+      </div>
+
+      <!-- Card 8 -->
+      <div class="company-card">
+        <div class="card-header">
+          <div class="card-avatar">AT</div>
+          <div>
+            <div class="card-title">Alchem Technologies</div>
+            <div class="card-subtitle">Enterprise</div>
+          </div>
+        </div>
+        <div class="card-details">
+          <div class="card-row">
+            <svg
+              class="icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
+            <span class="label">Location</span>
+            <span class="value">London</span>
+          </div>
+          <div class="card-row">
+            <svg
+              class="icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+              <line x1="8" y1="21" x2="16" y2="21" />
+              <line x1="12" y1="17" x2="12" y2="21" />
+            </svg>
+            <span class="label">Industry</span>
+            <span class="value">Enterprise</span>
+          </div>
+        </div>
+        <div class="card-tags">
+          <span class="tag">Java</span>
+          <span class="tag blue">Angular</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMPANY DETAIL MODAL -->
+    <div class="modal-overlay" id="companyModal">
+      <div class="modal company-modal">
+        <div class="modal-header-bar">
+          <div class="modal-header-left">
+            <div class="company-avatar-lg" id="modalAvatar">15B</div>
+            <div>
+              <div class="modal-company-name" id="modalName">15Below</div>
+              <div class="modal-company-links">
+                <a href="#" class="link-website">
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                  >
+                    <path
+                      d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
+                    />
+                    <polyline points="15 3 21 3 21 9" />
+                    <line x1="10" y1="14" x2="21" y2="3" />
+                  </svg>
+                  Website
+                </a>
+                <a href="#" class="link-linkedin">
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path
+                      d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
+                    />
+                  </svg>
+                  LinkedIn
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="status-badge">
+            <div class="status-dot"></div>
+            Approved
+          </div>
+        </div>
+
+        <div class="meta-grid">
+          <div class="meta-item">
+            <div class="m-label">Location</div>
+            <div class="m-value" id="modalLocation">Brighton</div>
+          </div>
+          <div class="meta-item">
+            <div class="m-label">Industry</div>
+            <div class="m-value" id="modalIndustry">Travel Tech</div>
+          </div>
+          <div class="meta-item">
+            <div class="m-label">Tech Stack</div>
+            <div class="meta-tags" id="modalTech">
+              <span class="tag">React</span>
+              <span class="tag green">Node.js</span>
+            </div>
+          </div>
+          <div class="meta-item">
+            <div class="m-label">Job Roles</div>
+            <div
+              class="m-value"
+              style="font-size: 13px; color: var(--text-light)"
+            >
+              None listed
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-section">
+          <h3>Description</h3>
+          <textarea
+            placeholder="Enter a description for this company..."
+          ></textarea>
+        </div>
+
+        <div class="comments-section">
+          <h3>Comments</h3>
+          <div class="comment">
+            <div class="comment-avatar">U</div>
+            <div>
+              <div class="comment-author">User</div>
+              <div class="comment-text">another comment</div>
+            </div>
+          </div>
+          <div class="comment">
+            <div class="comment-avatar">U</div>
+            <div>
+              <div class="comment-author">User</div>
+              <div class="comment-text">hello</div>
+            </div>
+          </div>
+          <div class="add-comment">
+            <textarea placeholder="Type comment here..."></textarea>
+            <button class="btn-submit">Submit</button>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn-close" onclick="closeModal('companyModal')">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADD COMPANY MODAL -->
+    <div class="modal-overlay" id="addCompanyModal">
+      <div class="modal add-modal">
+        <div class="add-modal-header">
+          <h2>Add Company</h2>
+          <button class="btn-x" onclick="closeModal('addCompanyModal')">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+            >
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+        <p class="add-modal-subtitle">
+          Submit a new company to the directory for review.
+        </p>
+
+        <div class="form-body">
+          <div class="form-group">
+            <label>Company Name <span class="required">*</span></label>
+            <input type="text" placeholder="e.g. DabApps" />
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Location <span class="required">*</span></label>
+              <select>
+                <option value="" disabled selected>Select location</option>
+                <option>Brighton</option>
+                <option>London</option>
+                <option>Remote</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Industry</label>
+              <select>
+                <option value="" disabled selected>Select industry</option>
+                <option>Fintech</option>
+                <option>EdTech</option>
+                <option>Gaming</option>
+                <option>SaaS</option>
+                <option>Travel Tech</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Tech Stack</label>
+            <div class="tag-input-wrapper">
+              <span class="tag-chip">React <button>&times;</button></span>
+              <input type="text" placeholder="Add technology..." />
+            </div>
+            <p class="form-hint">Press Enter to add a technology</p>
+          </div>
+          <div class="form-group">
+            <label>Job Roles</label>
+            <div class="tag-input-wrapper">
+              <input type="text" placeholder="Add job role..." />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Website URL</label>
+              <input type="url" placeholder="https://..." />
+            </div>
+            <div class="form-group">
+              <label>LinkedIn URL</label>
+              <input type="url" placeholder="https://linkedin.com/..." />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea placeholder="Tell us about this company..."></textarea>
+          </div>
+        </div>
+
+        <div class="add-modal-footer">
+          <button class="btn-cancel" onclick="closeModal('addCompanyModal')">
+            Cancel
+          </button>
+          <button class="btn-submit-form">Submit for Review</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Data for each card (keyed by card title)
+      const companyData = {
+        123: {
+          avatar: '',
+          initials: '123',
+          location: 'Brighton',
+          industry: 'Fintech',
+          tech: ['React'],
+        },
+        '15Below': {
+          avatar: 'green',
+          initials: '15B',
+          location: 'Brighton',
+          industry: 'Travel Tech',
+          tech: ['AWS', 'Node.js'],
+        },
+        '1X2 Network': {
+          avatar: 'blue',
+          initials: '1X2',
+          location: 'Brighton',
+          industry: 'Gaming',
+          tech: ['React', 'TypeScript'],
+        },
+        a8learning: {
+          avatar: 'pink',
+          initials: 'a8',
+          location: 'Brighton',
+          industry: 'EdTech',
+          tech: [],
+        },
+        Aariyatech: {
+          avatar: 'orange',
+          initials: 'Ar',
+          location: 'Brighton',
+          industry: 'Software',
+          tech: ['Python', 'React'],
+        },
+        ActiveInbox: {
+          avatar: 'cyan',
+          initials: 'AI',
+          location: 'Brighton',
+          industry: 'Productivity',
+          tech: ['Vue.js'],
+        },
+        'Adaptive Lab': {
+          avatar: 'blue',
+          initials: 'AL',
+          location: 'London',
+          industry: 'Consulting',
+          tech: ['React', 'Node.js', 'AWS'],
+        },
+        'Alchem Technologies': {
+          avatar: '',
+          initials: 'AT',
+          location: 'London',
+          industry: 'Enterprise',
+          tech: ['Java', 'Angular'],
+        },
+      };
+
+      const tagColors = {
+        React: '',
+        'Node.js': 'green',
+        AWS: 'blue',
+        TypeScript: 'blue',
+        Python: 'green',
+        'Vue.js': 'blue',
+        Java: '',
+        Angular: 'blue',
+      };
+
+      // Open company detail modal
+      document.querySelectorAll('.company-card').forEach((card) => {
+        card.addEventListener('click', () => {
+          const name = card.querySelector('.card-title').textContent;
+          const data = companyData[name];
+          if (!data) return;
+
+          document.getElementById('modalAvatar').textContent = data.initials;
+          document.getElementById('modalAvatar').className =
+            'company-avatar-lg ' + data.avatar;
+          document.getElementById('modalName').textContent = name;
+          document.getElementById('modalLocation').textContent = data.location;
+          document.getElementById('modalIndustry').textContent = data.industry;
+
+          const techEl = document.getElementById('modalTech');
+          if (data.tech.length) {
+            techEl.innerHTML = data.tech
+              .map((t) => `<span class="tag ${tagColors[t] || ''}">${t}</span>`)
+              .join('');
+          } else {
+            techEl.innerHTML =
+              '<span style="font-size:13px;color:var(--text-light);">None listed</span>';
+          }
+
+          document.getElementById('companyModal').classList.add('active');
+          document.body.style.overflow = 'hidden';
+        });
+      });
+
+      // Open add company modal
+      document.querySelector('.btn-add').addEventListener('click', () => {
+        document.getElementById('addCompanyModal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+      });
+
+      // Close modal
+      function closeModal(id) {
+        document.getElementById(id).classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      // Close on backdrop click
+      document.querySelectorAll('.modal-overlay').forEach((overlay) => {
+        overlay.addEventListener('click', (e) => {
+          if (e.target === overlay) {
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+          }
+        });
+      });
+
+      // Close on Escape key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          document.querySelectorAll('.modal-overlay.active').forEach((o) => {
+            o.classList.remove('active');
+            document.body.style.overflow = '';
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

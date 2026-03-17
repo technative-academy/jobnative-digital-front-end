@@ -1,10 +1,68 @@
-@import url("https://fonts.googleapis.com/css2?family=Bpmf+Iansui&display=swap");
 .tag {
-    border-radius: 12px;
-    padding: 10px 22px;
-    width: fit-content;
-    margin: 8px;
-    font-family: "Bpmf Iansui";
-    font-size: 16px;
-    font-weight: 800;
+  align-items: center;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  display: inline-flex;
+  font-size: 0.72rem;
+  font-weight: 700;
+  justify-content: center;
+  line-height: 1;
+  margin: 0;
+  max-width: 100%;
+  padding: 0.38rem 0.62rem;
+  white-space: nowrap;
+}
+
+.tag--purple {
+  background: rgba(86, 28, 229, 0.08);
+  border-color: rgba(86, 28, 229, 0.12);
+  color: #561ce5;
+}
+
+.tag--green {
+  background: rgba(5, 150, 105, 0.09);
+  border-color: rgba(5, 150, 105, 0.12);
+  color: #059669;
+}
+
+.tag--blue {
+  background: rgba(37, 99, 235, 0.08);
+  border-color: rgba(37, 99, 235, 0.12);
+  color: #2563eb;
+}
+
+.tag--pink {
+  background: rgba(219, 39, 119, 0.08);
+  border-color: rgba(219, 39, 119, 0.12);
+  color: #db2777;
+}
+
+.tag--orange {
+  background: rgba(234, 88, 12, 0.08);
+  border-color: rgba(234, 88, 12, 0.12);
+  color: #ea580c;
+}
+
+.tag--cyan {
+  background: rgba(8, 145, 178, 0.08);
+  border-color: rgba(8, 145, 178, 0.12);
+  color: #0891b2;
+}
+
+.tag--amber {
+  background: rgba(217, 119, 6, 0.08);
+  border-color: rgba(217, 119, 6, 0.12);
+  color: #d97706;
+}
+
+.tag--red {
+  background: rgba(220, 38, 38, 0.08);
+  border-color: rgba(220, 38, 38, 0.12);
+  color: #dc2626;
+}
+
+.tag--violet {
+  background: rgba(124, 58, 237, 0.08);
+  border-color: rgba(124, 58, 237, 0.12);
+  color: #7c3aed;
 }

@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JobNative - Events Mockup</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --primary: #561ce5;
+      --primary-light: #7e57e1;
+      --primary-dark: #3d0fa8;
+      --secondary: #1939e0;
+      --secondary-light: #6b80fa;
+      --accent: #fa161c;
+      --bg-white: #ffffff;
+      --bg-light: #f8f9fc;
+      --bg-card: #ffffff;
+      --text-dark: #1a1a2e;
+      --text-medium: #64748b;
+      --text-light: #94a3b8;
+      --border: #e2e8f0;
+      --shadow-sm: 0 1px 3px rgba(86, 28, 229, 0.06);
+      --shadow-md: 0 4px 16px rgba(86, 28, 229, 0.08);
+      --shadow-lg: 0 8px 32px rgba(86, 28, 229, 0.12);
+      --shadow-hover: 0 12px 40px rgba(86, 28, 229, 0.16);
+      --radius: 12px;
+      --radius-lg: 16px;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg-light);
+      color: var(--text-dark);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* NAV - same as homepage */
+    nav {
+      background: var(--bg-white);
+      border-bottom: 1px solid var(--border);
+      padding: 0 40px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+      background: rgba(255,255,255,0.92);
+    }
+    .nav-left { display: flex; align-items: center; gap: 32px; }
+    .nav-brand { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; }
+    .nav-brand span:first-child { color: var(--primary); }
+    .nav-brand span:last-child { color: var(--text-dark); }
+    .nav-links { display: flex; gap: 4px; }
+    .nav-links a {
+      text-decoration: none; color: var(--text-medium); font-size: 14px;
+      font-weight: 500; padding: 8px 14px; border-radius: 8px; transition: all 0.2s;
+    }
+    .nav-links a:hover { color: var(--text-dark); background: var(--bg-light); }
+    .nav-links a.active { color: var(--primary); background: rgba(86, 28, 229, 0.06); }
+    .nav-right { display: flex; align-items: center; gap: 12px; }
+    .nav-user { font-size: 14px; font-weight: 500; color: var(--text-dark); }
+    .btn-logout {
+      background: none; border: 1.5px solid var(--border); padding: 6px 16px;
+      border-radius: 8px; font-size: 13px; font-weight: 500; color: var(--text-medium);
+      cursor: pointer; transition: all 0.2s;
+    }
+    .btn-logout:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* HERO */
+    .hero {
+      text-align: center;
+      padding: 48px 40px 36px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .hero-brand {
+      font-size: 52px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 14px;
+    }
+    .hero-brand span:first-child { color: var(--primary); }
+    .hero-brand span:nth-child(2) { color: var(--text-dark); }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(5, 150, 105, 0.08);
+      color: #059669;
+      font-size: 13px; font-weight: 600; padding: 6px 14px;
+      border-radius: 100px; margin-top: 16px;
+    }
+    .hero h1 {
+      font-size: 36px; font-weight: 700;
+      line-height: 1.2; margin-bottom: 10px;
+      color: var(--primary);
+    }
+    .hero p { font-size: 16px; color: var(--text-medium); max-width: 480px; margin: 0 auto; }
+
+    /* FILTERS */
+    .filter-bar {
+      max-width: 1200px; margin: 0 auto 40px; padding: 0 40px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .filter-group {
+      display: flex; align-items: center; gap: 8px; background: var(--bg-white);
+      padding: 6px; border-radius: var(--radius); border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+    .filter-label { font-size: 13px; font-weight: 600; color: var(--text-medium); padding-left: 10px; }
+    .filter-btn {
+      padding: 8px 18px; border: none; border-radius: 8px; font-size: 13px;
+      font-weight: 500; cursor: pointer; transition: all 0.2s; background: transparent;
+      color: var(--text-medium);
+    }
+    .filter-btn:hover { background: var(--bg-light); color: var(--text-dark); }
+    .filter-btn.active { background: var(--primary); color: white; }
+
+    /* EVENT CARDS */
+    .card-grid {
+      max-width: 1200px; margin: 0 auto; padding: 0 40px 80px;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;
+    }
+
+    .event-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .event-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .event-date-strip {
+      padding: 14px 24px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .event-date-strip.upcoming {
+      background: linear-gradient(135deg, #059669, #34d399);
+    }
+    .event-date-strip .day {
+      font-size: 28px;
+      font-weight: 800;
+      line-height: 1;
+    }
+    .event-date-strip .month-time {
+      font-size: 12px;
+      font-weight: 500;
+      opacity: 0.9;
+      line-height: 1.4;
+    }
+
+    .event-body {
+      padding: 20px 24px 24px;
+    }
+    .event-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--text-dark);
+    }
+    .event-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .event-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+    }
+    .event-meta-row .icon {
+      width: 15px; height: 15px; color: var(--text-light); flex-shrink: 0;
+    }
+    .event-meta-row .value { color: var(--text-medium); font-weight: 500; }
+
+    .event-tags {
+      display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px;
+    }
+    .tag {
+      padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 600;
+      background: rgba(86, 28, 229, 0.06); color: var(--primary);
+    }
+    .tag.green { background: rgba(5, 150, 105, 0.08); color: #059669; }
+    .tag.blue { background: rgba(37, 99, 235, 0.08); color: #2563eb; }
+    .tag.amber { background: rgba(217, 119, 6, 0.08); color: #d97706; }
+
+    .event-sponsor {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 12px; color: var(--text-light); font-weight: 500;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+    .event-sponsor strong { color: var(--text-medium); }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 16px; }
+      .nav-left { gap: 16px; }
+      .nav-links a { padding: 6px 10px; font-size: 13px; }
+      .nav-user { display: none; }
+      .hero { padding: 32px 20px 24px; }
+      .hero h1 { font-size: 28px; }
+      .hero p { font-size: 14px; }
+      .filter-bar { padding: 0 16px; flex-wrap: wrap; }
+      .filter-group { flex-wrap: wrap; }
+      .card-grid { padding: 0 16px 60px; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+      .modal-overlay { padding: 16px; }
+      .ev-meta-row { grid-template-columns: 1fr; gap: 8px; padding: 16px 20px; }
+      .ev-banner { padding: 24px 20px; }
+      .ev-banner h1 { font-size: 22px; }
+      .ev-section { padding: 20px; }
+      .modal-footer { padding: 14px 20px; }
+      .add-modal-header { padding: 20px 20px 0; }
+      .add-modal-subtitle { padding: 6px 20px 20px; }
+      .form-body { padding: 0 20px 24px; }
+      .form-row-3 { grid-template-columns: 1fr; }
+      .add-modal-footer { padding: 14px 20px; }
+    }
+
+    /* RESPONSIVE - MOBILE */
+    @media (max-width: 480px) {
+      nav { padding: 0 12px; height: 56px; }
+      .nav-left { gap: 10px; }
+      .nav-brand { font-size: 17px; }
+      .nav-links a { padding: 5px 8px; font-size: 12px; }
+      .btn-logout { padding: 5px 12px; font-size: 12px; }
+      .hero { padding: 24px 16px 20px; }
+      .hero-badge { font-size: 12px; padding: 5px 12px; }
+      .hero h1 { font-size: 24px; }
+      .hero p { font-size: 13px; }
+      .filter-bar { padding: 0 12px; margin-bottom: 24px; }
+      .filter-btn { padding: 6px 12px; font-size: 12px; }
+      .btn-add-event { padding: 8px 14px; font-size: 13px; }
+      .card-grid { padding: 0 12px 40px; grid-template-columns: 1fr; gap: 14px; }
+      .modal-overlay { padding: 8px; }
+      .ev-banner { padding: 20px 16px; }
+      .ev-banner h1 { font-size: 20px; }
+      .ev-meta-row { padding: 12px 16px; }
+      .ev-section { padding: 16px; }
+      .modal-footer { padding: 12px 16px; }
+      .add-modal-header { padding: 16px 16px 0; }
+      .add-modal-subtitle { padding: 6px 16px 16px; }
+      .form-body { padding: 0 16px 20px; }
+      .add-modal-footer { padding: 12px 16px; }
+      .sponsor-card { width: 100%; }
+    }
+
+    /* MODAL OVERLAY */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; background: rgba(15, 10, 30, 0.55);
+      backdrop-filter: blur(4px); z-index: 200; align-items: center; justify-content: center;
+      padding: 40px; animation: fadeIn 0.2s ease;
+    }
+    .modal-overlay.active { display: flex; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+    .modal {
+      background: var(--bg-white); border-radius: 20px; width: 100%; max-height: 85vh;
+      overflow-y: auto; box-shadow: 0 24px 80px rgba(0,0,0,0.25); animation: slideUp 0.25s ease;
+    }
+    .modal.event-detail-modal { max-width: 780px; }
+    .modal.add-modal { max-width: 600px; }
+
+    /* EVENT DETAIL MODAL */
+    .ev-banner {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      padding: 32px; border-radius: 20px 20px 0 0; color: white; position: relative; overflow: hidden;
+    }
+    .ev-banner::after {
+      content: ''; position: absolute; top: -40%; right: -15%; width: 250px; height: 250px;
+      background: rgba(255,255,255,0.05); border-radius: 50%;
+    }
+    .ev-banner h1 { font-size: 26px; font-weight: 800; letter-spacing: -0.8px; margin-bottom: 12px; position: relative; z-index: 1; }
+    .visit-link {
+      display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px;
+      background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 8px; color: white; font-size: 12px; font-weight: 600;
+      text-decoration: none; transition: all 0.2s; position: relative; z-index: 1;
+    }
+    .visit-link:hover { background: rgba(255,255,255,0.25); }
+
+    .ev-meta-row {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 20px 32px; background: var(--bg-light);
+    }
+    .ev-meta-item { background: var(--bg-white); border-radius: var(--radius); padding: 14px 16px; border: 1px solid var(--border); }
+    .ev-meta-item .m-label { font-size: 11px; font-weight: 600; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .ev-meta-item .m-value { font-size: 14px; font-weight: 600; color: var(--text-dark); }
+
+    .ev-section { padding: 24px 32px; }
+    .ev-section + .ev-section { border-top: 1px solid var(--border); }
+    .ev-section h3 { font-size: 14px; font-weight: 700; color: var(--text-dark); margin-bottom: 10px; }
+    .ev-section p { font-size: 14px; color: var(--text-medium); line-height: 1.7; }
+
+    .tags-row-lg { display: flex; gap: 8px; flex-wrap: wrap; }
+    .tag-lg {
+      padding: 6px 14px; border-radius: 8px; font-size: 13px; font-weight: 600;
+    }
+    .tag-lg.purple { background: rgba(86, 28, 229, 0.08); color: var(--primary); }
+    .tag-lg.blue { background: rgba(37, 99, 235, 0.08); color: #2563eb; }
+    .tag-lg.green { background: rgba(5, 150, 105, 0.08); color: #059669; }
+    .tag-lg.amber { background: rgba(217, 119, 6, 0.08); color: #d97706; }
+
+    .sponsor-card {
+      display: flex; align-items: center; gap: 14px; padding: 14px 18px;
+      background: var(--bg-light); border-radius: var(--radius); border: 1px solid var(--border); width: fit-content;
+    }
+    .sponsor-avatar {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: linear-gradient(135deg, #d97706, #fbbf24);
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-weight: 700; font-size: 14px; flex-shrink: 0;
+    }
+    .sponsor-name { font-size: 14px; font-weight: 600; color: var(--text-dark); }
+    .sponsor-label { font-size: 11px; color: var(--text-light); font-weight: 500; }
+
+    .modal-footer { padding: 16px 32px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; }
+    .btn-close {
+      padding: 8px 20px; border: 1.5px solid var(--border); border-radius: 8px; background: none;
+      font-size: 13px; font-weight: 500; color: var(--text-medium); cursor: pointer; font-family: inherit; transition: all 0.2s;
+    }
+    .btn-close:hover { border-color: var(--text-medium); color: var(--text-dark); }
+
+    /* ADD EVENT MODAL */
+    .add-modal-header { padding: 28px 32px 0; display: flex; align-items: center; justify-content: space-between; }
+    .add-modal-header h2 { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; }
+    .btn-x {
+      width: 32px; height: 32px; border-radius: 8px; border: none; background: var(--bg-light);
+      color: var(--text-light); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;
+    }
+    .btn-x:hover { background: var(--border); color: var(--text-dark); }
+    .add-modal-subtitle { padding: 6px 32px 24px; font-size: 14px; color: var(--text-medium); }
+    .form-body { padding: 0 32px 28px; }
+    .form-group { margin-bottom: 18px; }
+    .form-group label { display: block; font-size: 13px; font-weight: 600; color: var(--text-dark); margin-bottom: 6px; }
+    .form-group label .required { color: #ef4444; margin-left: 2px; }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 10px;
+      font-size: 14px; font-family: inherit; transition: all 0.2s; outline: none;
+      background: var(--bg-light); color: var(--text-dark);
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      border-color: var(--primary); background: var(--bg-white); box-shadow: 0 0 0 3px rgba(86, 28, 229, 0.1);
+    }
+    .form-group input::placeholder, .form-group textarea::placeholder { color: var(--text-light); }
+    .form-group textarea { min-height: 80px; resize: vertical; }
+    .form-group select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px;
+    }
+    .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+    .form-divider { display: flex; align-items: center; gap: 12px; margin: 24px 0 18px; }
+    .form-divider span { font-size: 11px; font-weight: 700; color: var(--text-light); text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; }
+    .form-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .tag-input-wrapper {
+      display: flex; flex-wrap: wrap; gap: 6px; padding: 8px 12px; border: 1.5px solid var(--border);
+      border-radius: 10px; background: var(--bg-light); min-height: 42px; align-items: center; transition: all 0.2s; cursor: text;
+    }
+    .tag-input-wrapper:focus-within { border-color: var(--primary); background: var(--bg-white); box-shadow: 0 0 0 3px rgba(86, 28, 229, 0.1); }
+    .tag-chip {
+      display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px 3px 10px;
+      border-radius: 6px; font-size: 12px; font-weight: 600; background: rgba(86, 28, 229, 0.08); color: var(--primary);
+    }
+    .tag-chip button { background: none; border: none; color: var(--primary-light); cursor: pointer; font-size: 14px; line-height: 1; padding: 0; }
+    .tag-input-wrapper input { border: none; background: none; outline: none; font-size: 13px; font-family: inherit; color: var(--text-dark); flex: 1; min-width: 80px; padding: 2px 0; }
+    .tag-input-wrapper input::placeholder { color: var(--text-light); }
+    .form-hint { font-size: 11px; color: var(--text-light); margin-top: 4px; }
+    .add-modal-footer { padding: 16px 32px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 10px; }
+    .btn-cancel {
+      padding: 10px 20px; border: 1.5px solid var(--border); border-radius: 10px; background: none;
+      font-size: 14px; font-weight: 500; color: var(--text-medium); cursor: pointer; font-family: inherit; transition: all 0.2s;
+    }
+    .btn-cancel:hover { border-color: var(--text-medium); color: var(--text-dark); }
+    .btn-submit-form {
+      padding: 10px 24px; background: var(--primary); color: white; border: none; border-radius: 10px;
+      font-size: 14px; font-weight: 600; font-family: inherit; cursor: pointer; transition: all 0.2s;
+      box-shadow: 0 2px 8px rgba(86, 28, 229, 0.3);
+    }
+    .btn-submit-form:hover { background: var(--primary-dark); box-shadow: 0 4px 12px rgba(86, 28, 229, 0.4); }
+    .btn-add-event {
+      display: inline-flex; align-items: center; gap: 6px; padding: 10px 20px;
+      background: var(--primary); color: white; border: none; border-radius: var(--radius);
+      font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+      box-shadow: 0 2px 8px rgba(86, 28, 229, 0.3);
+    }
+    .btn-add-event:hover { background: var(--primary-dark); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(86, 28, 229, 0.4); }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-left">
+      <div class="nav-brand"><span>Job</span><span>Native</span></div>
+      <div class="nav-links">
+        <a href="homepage.html">Home</a>
+        <a href="#" class="active">Events</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="#">Admin</a>
+      </div>
+    </div>
+    <div class="nav-right">
+      <span class="nav-user">Alex Admin</span>
+      <button class="btn-logout">Log out</button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-brand"><span>Job</span><span>Native</span></div>
+    <h1>Tech events near you</h1>
+    <p>Find tech events going on near you.</p>
+    <div class="hero-badge">4 upcoming events</div>
+  </section>
+
+  <div class="filter-bar">
+    <div class="filter-group">
+      <span class="filter-label">Filter by</span>
+      <button class="filter-btn active">Location</button>
+      <button class="filter-btn">Industry</button>
+      <button class="filter-btn">Technology</button>
+      <button class="filter-btn">Role</button>
+    </div>
+    <button class="btn-add-event" id="btnAddEvent">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Add Event
+    </button>
+  </div>
+
+  <div class="card-grid">
+    <!-- Event 1 - TODAY -->
+    <div class="event-card">
+      <div class="event-date-strip upcoming">
+        <div class="day">17</div>
+        <div class="month-time">
+          March 2026<br>
+          10:30 AM
+        </div>
+      </div>
+      <div class="event-body">
+        <div class="event-title">123</div>
+        <div class="event-meta">
+          <div class="event-meta-row">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span class="value">Brighton</span>
+          </div>
+        </div>
+        <div class="event-tags">
+          <span class="tag">JavaScript</span>
+          <span class="tag green">Node.js</span>
+          <span class="tag">React</span>
+          <span class="tag blue">TypeScript</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Event 2 -->
+    <div class="event-card">
+      <div class="event-date-strip">
+        <div class="day">30</div>
+        <div class="month-time">
+          March 2026<br>
+          6:42 PM
+        </div>
+      </div>
+      <div class="event-body">
+        <div class="event-title">Brighton Tech Meetup</div>
+        <div class="event-meta">
+          <div class="event-meta-row">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span class="value">Brighton</span>
+          </div>
+        </div>
+        <div class="event-tags">
+          <span class="tag blue">AWS</span>
+          <span class="tag">React</span>
+        </div>
+        <div class="event-sponsor">
+          Sponsored by <strong>DabApps</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- Event 3 -->
+    <div class="event-card">
+      <div class="event-date-strip">
+        <div class="day">15</div>
+        <div class="month-time">
+          April 2026<br>
+          6:42 PM
+        </div>
+      </div>
+      <div class="event-body">
+        <div class="event-title">AI Product Showcase</div>
+        <div class="event-meta">
+          <div class="event-meta-row">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span class="value">London</span>
+          </div>
+        </div>
+        <div class="event-tags">
+          <span class="tag amber">Django</span>
+          <span class="tag green">Python</span>
+        </div>
+        <div class="event-sponsor">
+          Sponsored by <strong>StoryStream</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- Event 4 -->
+    <div class="event-card">
+      <div class="event-date-strip">
+        <div class="day">30</div>
+        <div class="month-time">
+          April 2026<br>
+          6:42 PM
+        </div>
+      </div>
+      <div class="event-body">
+        <div class="event-title">Full Stack Hiring Sprint</div>
+        <div class="event-meta">
+          <div class="event-meta-row">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span class="value">London / Brighton</span>
+          </div>
+        </div>
+        <div class="event-tags">
+          <span class="tag green">Node.js</span>
+          <span class="tag blue">TypeScript</span>
+        </div>
+        <div class="event-sponsor">
+          Sponsored by <strong>Dapper Labs Limited</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EVENT DETAIL MODAL -->
+  <div class="modal-overlay" id="eventModal">
+    <div class="modal event-detail-modal">
+      <div class="ev-banner">
+        <h1 id="evModalName">Brighton Tech Meetup</h1>
+        <a href="#" class="visit-link">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Visit website
+        </a>
+      </div>
+      <div class="ev-meta-row">
+        <div class="ev-meta-item">
+          <div class="m-label">Starts</div>
+          <div class="m-value" id="evModalStarts">Mar 30, 2026, 6:42 PM</div>
+        </div>
+        <div class="ev-meta-item">
+          <div class="m-label">Ends</div>
+          <div class="m-value" id="evModalEnds">Mar 30, 2026, 8:42 PM</div>
+        </div>
+        <div class="ev-meta-item">
+          <div class="m-label">Location</div>
+          <div class="m-value" id="evModalLocation">Brighton</div>
+        </div>
+      </div>
+      <div class="ev-section">
+        <h3>About the event</h3>
+        <p id="evModalDesc">Monthly meetup focused on modern web development and cloud infrastructure. Network with local developers, hear lightning talks, and explore new tools and frameworks.</p>
+      </div>
+      <div class="ev-section">
+        <h3>Tech focus</h3>
+        <div class="tags-row-lg" id="evModalTech">
+          <span class="tag-lg amber">AWS</span>
+          <span class="tag-lg purple">React</span>
+        </div>
+      </div>
+      <div class="ev-section" id="evModalSponsorSection">
+        <h3>Sponsors</h3>
+        <div class="sponsor-card">
+          <div class="sponsor-avatar" id="evSponsorAvatar">DA</div>
+          <div>
+            <div class="sponsor-name" id="evSponsorName">DabApps</div>
+            <div class="sponsor-label">Event sponsor</div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-close" onclick="closeModal('eventModal')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD EVENT MODAL -->
+  <div class="modal-overlay" id="addEventModal">
+    <div class="modal add-modal">
+      <div class="add-modal-header">
+        <h2>Add Event</h2>
+        <button class="btn-x" onclick="closeModal('addEventModal')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <p class="add-modal-subtitle">Submit a new tech event for the community.</p>
+      <div class="form-body">
+        <div class="form-group">
+          <label>Event Name <span class="required">*</span></label>
+          <input type="text" placeholder="e.g. Brighton React Meetup">
+        </div>
+        <div class="form-group">
+          <label>Description <span class="required">*</span></label>
+          <textarea placeholder="What's this event about?"></textarea>
+        </div>
+        <div class="form-divider"><span>Date & Location</span></div>
+        <div class="form-row-3">
+          <div class="form-group">
+            <label>Start Date <span class="required">*</span></label>
+            <input type="datetime-local" value="2026-04-15T18:00">
+          </div>
+          <div class="form-group">
+            <label>End Date</label>
+            <input type="datetime-local" value="2026-04-15T20:00">
+          </div>
+          <div class="form-group">
+            <label>Location <span class="required">*</span></label>
+            <select><option value="" disabled>Select</option><option selected>Brighton</option><option>London</option><option>Remote</option></select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Event Website</label>
+          <input type="url" placeholder="https://...">
+        </div>
+        <div class="form-divider"><span>Details</span></div>
+        <div class="form-group">
+          <label>Tech Focus</label>
+          <div class="tag-input-wrapper">
+            <span class="tag-chip">React <button>&times;</button></span>
+            <input type="text" placeholder="Add technology...">
+          </div>
+          <p class="form-hint">Press Enter to add</p>
+        </div>
+      </div>
+      <div class="add-modal-footer">
+        <button class="btn-cancel" onclick="closeModal('addEventModal')">Cancel</button>
+        <button class="btn-submit-form">Submit for Review</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const eventData = {
+      '123': {
+        starts: 'Mar 17, 2026, 10:30 AM', ends: 'Mar 17, 2026, 12:30 PM', location: 'Brighton',
+        desc: 'A hands-on workshop covering JavaScript, Node.js, React, and TypeScript fundamentals.',
+        tech: [{ name: 'JavaScript', color: 'purple' }, { name: 'Node.js', color: 'green' }, { name: 'React', color: 'purple' }, { name: 'TypeScript', color: 'blue' }],
+        sponsor: null
+      },
+      'Brighton Tech Meetup': {
+        starts: 'Mar 30, 2026, 6:42 PM', ends: 'Mar 30, 2026, 8:42 PM', location: 'Brighton',
+        desc: 'Monthly meetup focused on modern web development and cloud infrastructure. Network with local developers, hear lightning talks, and explore new tools and frameworks.',
+        tech: [{ name: 'AWS', color: 'amber' }, { name: 'React', color: 'purple' }],
+        sponsor: { name: 'DabApps', initials: 'DA' }
+      },
+      'AI Product Showcase': {
+        starts: 'Apr 15, 2026, 6:42 PM', ends: 'Apr 15, 2026, 8:42 PM', location: 'London',
+        desc: 'Showcase of AI-powered products built with Django and Python. Meet the teams behind emerging AI startups.',
+        tech: [{ name: 'Django', color: 'amber' }, { name: 'Python', color: 'green' }],
+        sponsor: { name: 'StoryStream', initials: 'SS' }
+      },
+      'Full Stack Hiring Sprint': {
+        starts: 'Apr 30, 2026, 6:42 PM', ends: 'Apr 30, 2026, 8:42 PM', location: 'London / Brighton',
+        desc: 'Speed-networking hiring event connecting full-stack developers with top companies. Bring your CV and meet recruiters face-to-face.',
+        tech: [{ name: 'Node.js', color: 'green' }, { name: 'TypeScript', color: 'blue' }],
+        sponsor: { name: 'Dapper Labs Limited', initials: 'DL' }
+      }
+    };
+
+    document.querySelectorAll('.event-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const name = card.querySelector('.event-title').textContent;
+        const data = eventData[name];
+        if (!data) return;
+
+        document.getElementById('evModalName').textContent = name;
+        document.getElementById('evModalStarts').textContent = data.starts;
+        document.getElementById('evModalEnds').textContent = data.ends;
+        document.getElementById('evModalLocation').textContent = data.location;
+        document.getElementById('evModalDesc').textContent = data.desc;
+        document.getElementById('evModalTech').innerHTML = data.tech.map(t => `<span class="tag-lg ${t.color}">${t.name}</span>`).join('');
+
+        const sponsorSection = document.getElementById('evModalSponsorSection');
+        if (data.sponsor) {
+          sponsorSection.style.display = '';
+          document.getElementById('evSponsorAvatar').textContent = data.sponsor.initials;
+          document.getElementById('evSponsorName').textContent = data.sponsor.name;
+        } else {
+          sponsorSection.style.display = 'none';
+        }
+
+        document.getElementById('eventModal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    document.getElementById('btnAddEvent').addEventListener('click', () => {
+      document.getElementById('addEventModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) { overlay.classList.remove('active'); document.body.style.overflow = ''; }
+      });
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.modal-overlay.active').forEach(o => { o.classList.remove('active'); document.body.style.overflow = ''; });
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,121 +1,34 @@
-import { useState, useEffect } from "react";
-import { companiesService } from "../services/companies.service";
-
-function getNames(items) {
-  if (!Array.isArray(items)) {
-    return [];
-  }
-
-  return items
-    .map((item) => {
-      if (typeof item === "string") {
-        return item;
-      }
-
-      return item?.name;
-    })
-    .filter(Boolean);
-}
-
-function unique(values) {
-  return [...new Set(values)];
-}
-
-function normalizeCompany(company) {
-  const technologyList = unique([
-    ...getNames(company?.technologyStack),
-    ...getNames(company?.technologies),
-    ...getNames(company?.technology ? [company.technology] : []),
-  ]);
-
-  const roleList = unique([
-    ...getNames(company?.jobRoles),
-    ...getNames(company?.jobRoleTags),
-    ...getNames(company?.role ? [company.role] : []),
-  ]);
-
-  return {
-    ...company,
-    industry: company?.industry || "Not specified",
-    technology: technologyList.join(", ") || "Not specified",
-    technologyList,
-    role: roleList.join(", ") || "Not specified",
-    roleList,
-  };
-}
-
-function normalizeCompaniesResponse(response) {
-  if (Array.isArray(response)) {
-    return response.map(normalizeCompany);
-  }
-
-  if (Array.isArray(response?.companies)) {
-    return response.companies.map(normalizeCompany);
-  }
-
-  return [];
-}
-
-function mergeCompanies(responses) {
-  const companiesById = new Map();
-
-  responses.flatMap(normalizeCompaniesResponse).forEach((company) => {
-    companiesById.set(company.id, company);
-  });
-
-  return [...companiesById.values()];
-}
+import { useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
+import {
+  COMPANIES_QUERY_KEY,
+  LOCAL_COMPANIES_QUERY_KEY,
+  fetchCompanies,
+  mergeCompanies,
+} from "../lib/companyData";
 
 export function useCompanies() {
-  const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const companiesQuery = useQuery({
+    queryKey: COMPANIES_QUERY_KEY,
+    queryFn: fetchCompanies,
+  });
+  const localCompaniesQuery = useQuery({
+    queryKey: LOCAL_COMPANIES_QUERY_KEY,
+    queryFn: () => [],
+    initialData: [],
+    staleTime: Number.POSITIVE_INFINITY,
+    gcTime: Number.POSITIVE_INFINITY,
+  });
 
-  useEffect(() => {
-    let isActive = true;
+  const data = useMemo(
+    () => mergeCompanies([localCompaniesQuery.data ?? [], companiesQuery.data ?? []]),
+    [localCompaniesQuery.data, companiesQuery.data],
+  );
+  const localCompaniesCount = localCompaniesQuery.data?.length ?? 0;
 
-    const load = async () => {
-      try {
-        setIsLoading(true);
-        setError(null);
-
-        const firstPage = await companiesService.getAll();
-        const totalPages = Number(firstPage?.totalPages) || 1;
-        const paginatedResponses = [firstPage];
-
-        if (!Array.isArray(firstPage) && totalPages > 1) {
-          const remainingPages = await Promise.all(
-            Array.from({ length: totalPages - 1 }, (_, index) =>
-              companiesService.getAll({ page: index + 2 }),
-            ),
-          );
-
-          paginatedResponses.push(...remainingPages);
-        }
-
-        if (isActive) {
-          setData(mergeCompanies(paginatedResponses));
-        }
-      } catch (err) {
-        console.error("API error:", err);
-
-        if (isActive) {
-          setError(err);
-          setData([]);
-        }
-      } finally {
-        if (isActive) {
-          setIsLoading(false);
-        }
-      }
-    };
-
-    load();
-
-    return () => {
-      isActive = false;
-    };
-  }, []);
-
-  return { data, isLoading, error };
+  return {
+    data,
+    isLoading: companiesQuery.isLoading && localCompaniesCount === 0,
+    error: data.length === 0 ? companiesQuery.error : null,
+  };
 }

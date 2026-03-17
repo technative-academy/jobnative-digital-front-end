@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JobNative - Admin Mockup</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --primary: #561ce5;
+      --primary-light: #7e57e1;
+      --primary-dark: #3d0fa8;
+      --secondary: #1939e0;
+      --secondary-light: #6b80fa;
+      --accent: #fa161c;
+      --bg-white: #ffffff;
+      --bg-light: #f8f9fc;
+      --text-dark: #1a1a2e;
+      --text-medium: #64748b;
+      --text-light: #94a3b8;
+      --border: #e2e8f0;
+      --shadow-sm: 0 1px 3px rgba(86, 28, 229, 0.06);
+      --shadow-md: 0 4px 16px rgba(86, 28, 229, 0.08);
+      --radius: 12px;
+      --radius-lg: 16px;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg-light);
+      color: var(--text-dark);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* NAV */
+    nav {
+      background: var(--bg-white); border-bottom: 1px solid var(--border);
+      padding: 0 40px; height: 64px; display: flex; align-items: center;
+      justify-content: space-between; position: sticky; top: 0; z-index: 100;
+      backdrop-filter: blur(12px); background: rgba(255,255,255,0.92);
+    }
+    .nav-left { display: flex; align-items: center; gap: 32px; }
+    .nav-brand { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; }
+    .nav-brand span:first-child { color: var(--primary); }
+    .nav-brand span:last-child { color: var(--text-dark); }
+    .nav-links { display: flex; gap: 4px; }
+    .nav-links a {
+      text-decoration: none; color: var(--text-medium); font-size: 14px;
+      font-weight: 500; padding: 8px 14px; border-radius: 8px; transition: all 0.2s;
+    }
+    .nav-links a:hover { color: var(--text-dark); background: var(--bg-light); }
+    .nav-links a.active { color: var(--primary); background: rgba(86, 28, 229, 0.06); }
+    .nav-right { display: flex; align-items: center; gap: 12px; }
+    .nav-user { font-size: 14px; font-weight: 500; color: var(--text-dark); }
+    .btn-logout {
+      background: none; border: 1.5px solid var(--border); padding: 6px 16px;
+      border-radius: 8px; font-size: 13px; font-weight: 500; color: var(--text-medium);
+      cursor: pointer; transition: all 0.2s;
+    }
+    .btn-logout:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ADMIN LAYOUT */
+    .admin {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 40px;
+    }
+
+    .admin-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+    }
+    .admin-header h1 {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+    .admin-header .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 14px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 600;
+      background: rgba(217, 119, 6, 0.08);
+      color: #d97706;
+    }
+
+    /* TABS */
+    .admin-tabs {
+      display: flex;
+      gap: 4px;
+      background: var(--bg-white);
+      padding: 4px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      margin-bottom: 28px;
+      width: fit-content;
+    }
+    .admin-tab {
+      padding: 8px 20px;
+      border: none;
+      border-radius: 7px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: transparent;
+      color: var(--text-medium);
+      font-family: inherit;
+    }
+    .admin-tab.active {
+      background: var(--primary);
+      color: white;
+    }
+    .admin-tab:hover:not(.active) {
+      background: var(--bg-light);
+    }
+
+    /* SECTIONS */
+    .admin-section {
+      background: var(--bg-white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .section-header h2 {
+      font-size: 16px;
+      font-weight: 700;
+    }
+    .section-count {
+      padding: 3px 10px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 600;
+      background: var(--bg-light);
+      color: var(--text-light);
+    }
+
+    /* EMPTY STATE */
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+    }
+    .empty-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      background: var(--bg-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 14px;
+      color: var(--text-light);
+    }
+    .empty-state h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-dark);
+      margin-bottom: 4px;
+    }
+    .empty-state p {
+      font-size: 13px;
+      color: var(--text-light);
+    }
+
+    /* PENDING ITEM (example if there were items) */
+    .pending-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .pending-item:last-child { border-bottom: none; }
+    .pending-info {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .pending-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary-light));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    .pending-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+    .pending-meta {
+      font-size: 12px;
+      color: var(--text-light);
+      margin-top: 2px;
+    }
+    .pending-actions {
+      display: flex;
+      gap: 8px;
+    }
+    .btn-approve {
+      padding: 7px 16px;
+      background: rgba(5, 150, 105, 0.08);
+      color: #059669;
+      border: 1.5px solid rgba(5, 150, 105, 0.2);
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+    .btn-approve:hover { background: rgba(5, 150, 105, 0.15); }
+    .btn-reject {
+      padding: 7px 16px;
+      background: rgba(250, 22, 28, 0.06);
+      color: var(--accent);
+      border: 1.5px solid rgba(250, 22, 28, 0.15);
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+    .btn-reject:hover { background: rgba(250, 22, 28, 0.12); }
+
+    /* RESPONSIVE - TABLET */
+    @media (max-width: 768px) {
+      nav { padding: 0 16px; }
+      .nav-left { gap: 16px; }
+      .nav-links a { padding: 6px 10px; font-size: 13px; }
+      .nav-user { display: none; }
+      .admin { padding: 24px 16px; }
+      .admin-header { flex-direction: column; gap: 12px; align-items: flex-start; }
+      .admin-header h1 { font-size: 24px; }
+      .admin-tabs { width: 100%; }
+      .admin-tab { flex: 1; text-align: center; padding: 8px 12px; font-size: 13px; }
+      .admin-section { padding: 20px; }
+      .pending-item { flex-direction: column; align-items: flex-start; gap: 12px; }
+      .pending-actions { width: 100%; }
+      .pending-actions button { flex: 1; }
+    }
+
+    /* RESPONSIVE - MOBILE */
+    @media (max-width: 480px) {
+      nav { padding: 0 12px; height: 56px; }
+      .nav-brand { font-size: 17px; }
+      .nav-links a { padding: 5px 8px; font-size: 12px; }
+      .btn-logout { padding: 5px 12px; font-size: 12px; }
+      .admin { padding: 16px 12px; }
+      .admin-header h1 { font-size: 20px; }
+      .admin-section { padding: 16px; }
+      .empty-state { padding: 24px 12px; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-left">
+      <div class="nav-brand"><span>Job</span><span>Native</span></div>
+      <div class="nav-links">
+        <a href="homepage.html">Home</a>
+        <a href="events.html">Events</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="#" class="active">Admin</a>
+      </div>
+    </div>
+    <div class="nav-right">
+      <span class="nav-user">Alex Admin</span>
+      <button class="btn-logout">Log out</button>
+    </div>
+  </nav>
+
+  <div class="admin">
+    <div class="admin-header">
+      <h1>Admin - Moderation</h1>
+      <div class="badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Admin access
+      </div>
+    </div>
+
+    <div class="admin-tabs">
+      <button class="admin-tab active">All Pending</button>
+      <button class="admin-tab">Companies</button>
+      <button class="admin-tab">Events</button>
+    </div>
+
+    <!-- PENDING COMPANIES -->
+    <div class="admin-section">
+      <div class="section-header">
+        <h2>Pending Companies</h2>
+        <span class="section-count">0 pending</span>
+      </div>
+      <div class="empty-state">
+        <div class="empty-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        </div>
+        <h3>No pending companies</h3>
+        <p>All company submissions have been reviewed.</p>
+      </div>
+    </div>
+
+    <!-- PENDING EVENTS -->
+    <div class="admin-section">
+      <div class="section-header">
+        <h2>Pending Events</h2>
+        <span class="section-count">0 pending</span>
+      </div>
+      <div class="empty-state">
+        <div class="empty-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </div>
+        <h3>No pending events</h3>
+        <p>All event submissions have been reviewed.</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
