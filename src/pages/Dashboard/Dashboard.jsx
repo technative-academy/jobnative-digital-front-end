@@ -69,9 +69,14 @@ function getCompanyMeta(company) {
   return parts.join(' • ');
 }
 
-function ActionCard({ description, title, to }) {
+function ActionCard({ description, icon: Icon, title, to, tone = 'purple' }) {
   return (
     <Link className="dashboard-action" to={to}>
+      <span
+        className={`dashboard-action__icon dashboard-action__icon--${tone}`}
+      >
+        <Icon size={20} strokeWidth={2} />
+      </span>
       <span className="dashboard-action__text">
         <span className="dashboard-action__title">{title}</span>
         <span className="dashboard-action__description">{description}</span>
