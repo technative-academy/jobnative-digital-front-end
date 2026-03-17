@@ -10,6 +10,7 @@ import { ProtectedRoute, PublicOnlyRoute } from './components/ProtectedRoute';
 import Events from './pages/Events/Events';
 import Admin from './pages/Admin/Admin';
 import AdminRoute from './components/AdminRoute';
+import { Toaster } from './components/ui/sonner';
 
 function App() {
   const location = useLocation();
@@ -62,6 +63,7 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
+      <Toaster />
     </div>
   );
 }

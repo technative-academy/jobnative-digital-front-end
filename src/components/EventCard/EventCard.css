@@ -56,11 +56,49 @@
   padding: 20px 24px 24px;
 }
 
+.event-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
 .event-card__title {
   font-size: 18px;
   font-weight: 700;
-  margin: 0 0 12px;
+  margin: 0;
   color: #1a1a2e;
+}
+
+.event-card__actions {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.event-card__action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 6px;
+  background: #f1f5f9;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.event-card__action-btn:hover {
+  background: #e2e8f0;
+  color: #334155;
+}
+
+.event-card__action-btn--delete:hover {
+  background: #fee2e2;
+  color: #dc2626;
 }
 
 .event-card__meta {

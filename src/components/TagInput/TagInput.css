@@ -4,9 +4,9 @@
   flex-wrap: wrap;
   gap: 6px;
   padding: 8px 12px;
-  border: 1.5px solid #e2e8f0;
+  border: 1.5px solid var(--tag-input-border, #e2e8f0);
   border-radius: 10px;
-  background: #f8f9fc;
+  background: var(--tag-input-bg, #f8f9fc);
   min-height: 42px;
   align-items: center;
   transition: all 0.2s;
@@ -14,9 +14,9 @@
 }
 
 .tag-input-wrapper:focus-within {
-  border-color: #561ce5;
-  background: #ffffff;
-  box-shadow: 0 0 0 3px rgba(86, 28, 229, 0.1);
+  border-color: var(--tag-input-focus-border, #561ce5);
+  background: var(--tag-input-focus-bg, #ffffff);
+  box-shadow: var(--tag-input-focus-ring, 0 0 0 3px rgba(86, 28, 229, 0.1));
 }
 
 .tag-chip {

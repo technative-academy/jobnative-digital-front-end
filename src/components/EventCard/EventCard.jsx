@@ -1,4 +1,4 @@
-import { MapPin } from 'lucide-react';
+import { MapPin, Pencil, Trash2 } from 'lucide-react';
 import Badge from '../Badge/Badge';
 import { isPendingEvent } from '../../lib/eventData';
 import './EventCard.css';
@@ -70,7 +70,7 @@ function formatDateStrip(startTime) {
   return { day, monthYear, time };
 }
 
-function EventCard({ event, onClick }) {
+function EventCard({ event, onClick, onEdit, onDelete }) {
   const pending = isPendingEvent(event);
   const technologies = getTechnologyLabels(event);
   const sponsorLabel = getSponsorLabel(event);
@@ -114,7 +114,39 @@ function EventCard({ event, onClick }) {
       </div>
 
       <div className="event-card__body">
-        <h3 className="event-card__title">{event.name}</h3>
+        <div className="event-card__header">
+          <h3 className="event-card__title">{event.name}</h3>
+          {(onEdit || onDelete) && (
+            <div className="event-card__actions">
+              {onEdit && (
+                <button
+                  type="button"
+                  className="event-card__action-btn"
+                  title="Edit event"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onEdit(event);
+                  }}
+                >
+                  <Pencil size={14} />
+                </button>
+              )}
+              {onDelete && (
+                <button
+                  type="button"
+                  className="event-card__action-btn event-card__action-btn--delete"
+                  title="Delete event"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onDelete(event);
+                  }}
+                >
+                  <Trash2 size={14} />
+                </button>
+              )}
+            </div>
+          )}
+        </div>
 
         <div className="event-card__meta">
           <div className="event-card__meta-row">
