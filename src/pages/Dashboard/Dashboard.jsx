@@ -69,7 +69,7 @@ function getCompanyMeta(company) {
   return parts.join(' • ');
 }
 
-function ActionCard({ description, icon: Icon, title, to, tone = 'purple' }) {
+function ActionCard({ description, icon: title, to, tone = 'purple' }) {
   return (
     <Link className="dashboard-action" to={to}>
       <span
@@ -601,10 +601,7 @@ function Dashboard() {
       <div className="dashboard-saved">
         <div className="dashboard-saved__header">
           <h2>Saved Companies</h2>
-          <p>
-            Track your targets, keep private notes, and move companies through
-            your pipeline.
-          </p>
+          <p>Track your target companies here</p>
         </div>
 
         <div className="dashboard-saved__tabs" role="tablist">
