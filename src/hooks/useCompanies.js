@@ -20,16 +20,15 @@ export function useCompanies() {
     gcTime: Number.POSITIVE_INFINITY,
   });
 
-  const localCompanies = localCompaniesQuery.data ?? [];
-  const serverCompanies = companiesQuery.data ?? [];
   const data = useMemo(
-    () => mergeCompanies([localCompanies, serverCompanies]),
-    [localCompanies, serverCompanies],
+    () => mergeCompanies([localCompaniesQuery.data ?? [], companiesQuery.data ?? []]),
+    [localCompaniesQuery.data, companiesQuery.data],
   );
+  const localCompaniesCount = localCompaniesQuery.data?.length ?? 0;
 
   return {
     data,
-    isLoading: companiesQuery.isLoading && localCompanies.length === 0,
+    isLoading: companiesQuery.isLoading && localCompaniesCount === 0,
     error: data.length === 0 ? companiesQuery.error : null,
   };
 }

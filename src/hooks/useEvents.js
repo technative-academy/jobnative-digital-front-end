@@ -20,18 +20,17 @@ export function useEvents() {
     gcTime: Number.POSITIVE_INFINITY,
   });
 
-  const localEvents = localEventsQuery.data ?? [];
-  const serverEvents = eventsQuery.data ?? null;
   const mergedEvents = useMemo(
-    () => mergeEvents([localEvents, serverEvents ?? []]),
-    [localEvents, serverEvents],
+    () => mergeEvents([localEventsQuery.data ?? [], eventsQuery.data ?? []]),
+    [localEventsQuery.data, eventsQuery.data],
   );
+  const localEventsCount = localEventsQuery.data?.length ?? 0;
   const data =
-    serverEvents === null && localEvents.length === 0 ? null : mergedEvents;
+    eventsQuery.data == null && localEventsCount === 0 ? null : mergedEvents;
 
   return {
     data,
-    isLoading: eventsQuery.isLoading && localEvents.length === 0,
+    isLoading: eventsQuery.isLoading && localEventsCount === 0,
     error: mergedEvents.length === 0 ? eventsQuery.error : null,
   };
 }
