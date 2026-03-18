@@ -74,8 +74,8 @@ function Events() {
     technology: [],
     role: [],
   });
-  const [sortField, setSortField] = useState('startTime');
-  const [sortDir, setSortDir] = useState(1);
+  const [sortField, setSortField] = useState('createdAt');
+  const [sortDir, setSortDir] = useState(-1);
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = usePageSize();
 

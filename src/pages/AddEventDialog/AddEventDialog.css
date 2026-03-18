@@ -88,7 +88,10 @@
   background: #ffffff;
   color: var(--brand-text-muted);
   cursor: pointer;
-  transition: border-color 0.14s ease, color 0.14s ease, background-color 0.14s ease;
+  transition:
+    border-color 0.14s ease,
+    color 0.14s ease,
+    background-color 0.14s ease;
 }
 
 .add-ev__close-x:hover {
@@ -287,6 +290,8 @@
   border: 1px solid var(--brand-border);
   border-radius: 1rem;
   box-shadow: 0 14px 30px rgba(15, 23, 42, 0.12);
+  max-height: 15rem;
+  width: var(--radix-select-trigger-width);
 }
 
 .add-ev__select-trigger {

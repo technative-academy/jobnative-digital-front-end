@@ -1,80 +1,412 @@
-.admin-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
-}
-
-.admin-title {
-  font-size: 1.75rem;
-  font-weight: 700;
-  margin-bottom: 1.5rem;
-}
-
-.admin-message {
-  padding: 0.75rem 1rem;
-  margin-bottom: 1rem;
-  border-radius: 0.5rem;
-  background-color: var(--color-muted, #f3f4f6);
-  font-size: 0.875rem;
-}
-
-.admin-list {
+/* ── Admin layout ──────────────────────────────────────────── */
+.admin {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1.5rem;
+  padding: 0.5rem 0 2.25rem;
+  width: 100%;
 }
 
-.admin-card {
-  border: 1px solid var(--color-border, #e5e7eb);
-  border-radius: 0.75rem;
-  padding: 1.25rem;
-}
-
-.admin-card-header {
+/* ── Header ───────────────────────────────────────────────── */
+.admin-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 0.5rem;
+  margin-bottom: 4px;
 }
 
-.admin-card-header h2 {
-  font-size: 1.25rem;
+.admin-header h1 {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  color: #1a1a2e;
+}
+
+.admin-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  border-radius: 100px;
+  font-size: 13px;
   font-weight: 600;
+  background: rgba(217, 119, 6, 0.08);
+  color: #d97706;
+  border: 1px solid rgba(217, 119, 6, 0.15);
 }
 
-.admin-link {
-  font-size: 0.875rem;
-  color: var(--color-primary, #3b82f6);
+/* ── Action message ───────────────────────────────────────── */
+.admin-message {
+  padding: 12px 18px;
+  border-radius: 12px;
+  background: rgba(5, 150, 105, 0.08);
+  color: #059669;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid rgba(5, 150, 105, 0.15);
+}
+
+/* ── Tabs ─────────────────────────────────────────────────── */
+.admin-tabs {
+  display: flex;
+  gap: 4px;
+  background: #ffffff;
+  padding: 4px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  width: fit-content;
+}
+
+.admin-tab {
+  padding: 8px 20px;
+  border: none;
+  border-radius: 7px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: transparent;
+  color: #64748b;
+  font-family: inherit;
+}
+
+.admin-tab.active {
+  background: #561ce5;
+  color: white;
+}
+
+.admin-tab:hover:not(.active) {
+  background: #f8f9fc;
+  color: #1a1a2e;
+}
+
+/* ── Sections ────────────────────────────────────────────── */
+.admin-section {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 1px 3px rgba(86, 28, 229, 0.06);
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.section-header h2 {
+  font-size: 17px;
+  font-weight: 700;
+  color: #1a1a2e;
+}
+
+.section-count {
+  padding: 4px 12px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 600;
+  background: #f8f9fc;
+  color: #94a3b8;
+}
+
+/* ── Empty state ─────────────────────────────────────────── */
+.empty-state {
+  text-align: center;
+  padding: 48px 20px;
+}
+
+.empty-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background: #f8f9fc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  color: #94a3b8;
+}
+
+.empty-state h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1a2e;
+  margin-bottom: 6px;
+}
+
+.empty-state p {
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+/* ── Pending item ────────────────────────────────────────── */
+.pending-item {
+  padding: 18px 0;
+  border-bottom: 1px solid #f0f1f4;
+}
+
+.pending-item:first-of-type {
+  padding-top: 0;
+}
+
+.pending-item:last-of-type {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.pending-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.pending-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+  min-width: 0;
+}
+
+.pending-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #561ce5, #6b80fa);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.pending-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.pending-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a2e;
+}
+
+.pending-meta {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-top: 2px;
+}
+
+.pending-meta a {
+  color: #561ce5;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.pending-meta a:hover {
   text-decoration: underline;
 }
 
-.admin-card-description {
-  font-size: 0.875rem;
-  color: var(--color-muted-foreground, #6b7280);
-  margin-bottom: 0.75rem;
+.pending-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
-.admin-card-tags {
+.pending-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* ── Chevron toggle ──────────────────────────────────────── */
+.btn-chevron {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #fafafc;
+  color: #94a3b8;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.btn-chevron:hover {
+  background: #f0f1f4;
+  color: #64748b;
+}
+
+.chevron-icon {
+  transition: transform 0.2s ease;
+}
+
+.chevron-icon--open {
+  transform: rotate(180deg);
+}
+
+/* ── Expanded details ────────────────────────────────────── */
+.pending-details {
+  margin-top: 14px;
+  margin-left: 56px;
+  padding: 16px;
+  background: #f8f9fc;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pending-description {
+  font-size: 13px;
+  color: #64748b;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.pending-detail-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pending-detail-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.pending-detail-value {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.pending-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.375rem;
-  margin-bottom: 0.75rem;
+  gap: 5px;
 }
 
-.admin-card-meta {
-  font-size: 0.875rem;
-  color: var(--color-muted-foreground, #6b7280);
-  margin-bottom: 0.25rem;
-}
-
-.admin-card-actions {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.admin-section-title {
-  font-size: 1.35rem;
+/* ── Approve / Reject buttons ────────────────────────────── */
+.btn-approve {
+  padding: 7px 16px;
+  background: rgba(5, 150, 105, 0.08);
+  color: #059669;
+  border: 1.5px solid rgba(5, 150, 105, 0.2);
+  border-radius: 8px;
+  font-size: 13px;
   font-weight: 600;
-  margin-top: 2rem;
-  margin-bottom: 1rem;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.btn-approve:hover {
+  background: rgba(5, 150, 105, 0.15);
+}
+
+.btn-reject {
+  padding: 7px 16px;
+  background: rgba(250, 22, 28, 0.06);
+  color: #fa161c;
+  border: 1.5px solid rgba(250, 22, 28, 0.15);
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.btn-reject:hover {
+  background: rgba(250, 22, 28, 0.12);
+}
+
+/* ── Loading skeleton rows ───────────────────────────────── */
+.admin-skeleton-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 0;
+  border-bottom: 1px solid #f0f1f4;
+}
+
+.admin-skeleton-row:last-child {
+  border-bottom: none;
+}
+
+/* ── Error state ─────────────────────────────────────────── */
+.admin-error {
+  text-align: center;
+  padding: 48px 20px;
+  color: #fa161c;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* ── Responsive — tablet ─────────────────────────────────── */
+@media (max-width: 768px) {
+  .admin-header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .admin-header h1 {
+    font-size: 24px;
+  }
+
+  .admin-tabs {
+    width: 100%;
+  }
+
+  .admin-tab {
+    flex: 1;
+    text-align: center;
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .admin-section {
+    padding: 24px 20px;
+  }
+
+  .pending-row {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .pending-right {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .pending-details {
+    margin-left: 0;
+  }
+}
+
+/* ── Responsive — mobile ─────────────────────────────────── */
+@media (max-width: 480px) {
+  .admin-header h1 {
+    font-size: 20px;
+  }
+
+  .admin-section {
+    padding: 20px 16px;
+  }
+
+  .empty-state {
+    padding: 32px 12px;
+  }
 }
