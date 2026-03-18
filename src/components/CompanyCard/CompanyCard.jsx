@@ -1,4 +1,4 @@
-import { MapPin, Monitor } from "lucide-react";
+import { MapPin, Monitor, Pencil, Trash2 } from "lucide-react";
 import Badge from "../Badge/Badge";
 import { isPendingCompany } from "../../lib/companyData";
 import { getAvatarTone, getCompanyMonogram } from "../../utils/colorSystem";
@@ -13,7 +13,7 @@ function isMeaningful(value) {
   return true;
 }
 
-function CompanyCard({ company, onClick }) {
+function CompanyCard({ company, onClick, onEdit, onDelete }) {
   const pending = isPendingCompany(company);
   const palette = getAvatarTone(company.name);
   const initials = getCompanyMonogram(company.name);
@@ -58,6 +58,36 @@ function CompanyCard({ company, onClick }) {
           </div>
           {industry && <p className="company-card__subtitle">{industry}</p>}
         </div>
+        {(onEdit || onDelete) && (
+          <div className="company-card__actions">
+            {onEdit && (
+              <button
+                type="button"
+                className="company-card__action-btn"
+                title="Edit company"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onEdit(company);
+                }}
+              >
+                <Pencil size={14} />
+              </button>
+            )}
+            {onDelete && (
+              <button
+                type="button"
+                className="company-card__action-btn company-card__action-btn--delete"
+                title="Delete company"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onDelete(company);
+                }}
+              >
+                <Trash2 size={14} />
+              </button>
+            )}
+          </div>
+        )}
       </div>
 
       {(location || industry) && (

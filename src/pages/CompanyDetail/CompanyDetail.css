@@ -1,0 +1,374 @@
+.cd-page {
+  --cd-primary: #561ce5;
+  --cd-primary-dark: #3d0fa8;
+  --cd-text: #1c2433;
+  --cd-text-muted: #64748b;
+  --cd-border: #e2e8f0;
+  flex: 1;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 40px 80px;
+}
+
+/* Breadcrumb */
+.cd-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 24px;
+  font-size: 14px;
+  color: var(--cd-text-muted);
+}
+
+.cd-breadcrumb a {
+  color: var(--cd-primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.cd-breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.cd-breadcrumb__sep {
+  color: #94a3b8;
+}
+
+.cd-breadcrumb__current {
+  color: var(--cd-text);
+  font-weight: 600;
+}
+
+/* Hero Card */
+.cd-hero {
+  border: 1px solid var(--cd-border);
+  border-radius: 20px;
+  overflow: hidden;
+  background: #ffffff;
+  margin-bottom: 28px;
+}
+
+.cd-hero__banner {
+  background: linear-gradient(135deg, #561ce5, #1939e0);
+  padding: 32px 32px 24px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.cd-hero__info {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-width: 0;
+}
+
+.cd-hero__avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 800;
+  font-size: 22px;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.18);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.cd-hero__text {
+  min-width: 0;
+}
+
+.cd-hero__name {
+  margin: 0;
+  color: white;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.cd-hero__links {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.cd-hero__link {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: color 0.15s;
+}
+
+.cd-hero__link:hover {
+  color: #ffffff;
+}
+
+.cd-hero__link svg {
+  width: 14px;
+  height: 14px;
+}
+
+.cd-hero__right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.cd-hero__status {
+  padding: 5px 14px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.cd-hero__status--approved {
+  background: rgba(255, 255, 255, 0.18);
+  color: #bbf7d0;
+}
+
+.cd-hero__status--pending {
+  background: rgba(217, 119, 6, 0.2);
+  color: #fde68a;
+}
+
+.cd-hero__edit-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.12);
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.cd-hero__edit-btn:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.cd-hero__delete-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.12);
+  color: white;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.cd-hero__delete-btn:hover {
+  background: rgba(220, 38, 38, 0.3);
+}
+
+/* Meta Strip */
+.cd-hero__meta {
+  padding: 20px 32px 24px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  border-top: 1px solid var(--cd-border);
+}
+
+.cd-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cd-meta-item__label {
+  color: var(--cd-text-muted);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.cd-meta-item__value {
+  color: var(--cd-text);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.cd-meta-item__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.cd-meta-item__empty {
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+/* Two-column layout */
+.cd-columns {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 24px;
+  align-items: start;
+}
+
+/* Cards */
+.cd-card {
+  background: #ffffff;
+  border: 1px solid var(--cd-border);
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.cd-card + .cd-card {
+  margin-top: 20px;
+}
+
+.cd-card__title {
+  margin: 0 0 16px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--cd-text);
+}
+
+.cd-card__description {
+  margin: 0;
+  color: #334155;
+  font-size: 14px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+
+.cd-card__empty {
+  color: #94a3b8;
+  font-size: 14px;
+  margin: 0;
+}
+
+/* Comments section */
+.cd-comments__list {
+  max-height: 320px;
+  overflow-y: auto;
+  border: 1px solid var(--cd-border);
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
+.cd-comments__empty {
+  padding: 16px;
+  color: #94a3b8;
+  font-size: 14px;
+}
+
+.cd-comments__add {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cd-comments__add-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--cd-text);
+}
+
+.cd-comments__submit {
+  align-self: flex-end;
+  padding: 8px 20px;
+  background: var(--cd-primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.cd-comments__submit:hover {
+  background: var(--cd-primary-dark);
+}
+
+.cd-login-hint {
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+/* Loading / Error */
+.cd-loading,
+.cd-error {
+  text-align: center;
+  padding: 80px 40px;
+  color: var(--cd-text-muted);
+  font-size: 15px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .cd-page {
+    padding: 24px 20px 60px;
+  }
+
+  .cd-hero__meta {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .cd-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .cd-hero__banner {
+    flex-direction: column;
+  }
+
+  .cd-hero__right {
+    align-self: flex-start;
+  }
+}
+
+@media (max-width: 640px) {
+  .cd-page {
+    padding: 16px 12px 40px;
+  }
+
+  .cd-hero__banner {
+    padding: 20px 16px 16px;
+  }
+
+  .cd-hero__meta {
+    padding: 16px;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .cd-hero__name {
+    font-size: 20px;
+  }
+
+  .cd-hero__avatar {
+    width: 48px;
+    height: 48px;
+    font-size: 18px;
+  }
+
+  .cd-card {
+    padding: 16px;
+  }
+}

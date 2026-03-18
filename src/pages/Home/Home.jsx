@@ -1,20 +1,56 @@
 import './Home.css';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ArrowDownUp, Trash2 } from 'lucide-react';
+import { toast } from 'sonner';
+import { Button } from '@/components/ui/button';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogMedia,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { useCompanies } from '../../hooks/useCompanies';
+import { useDeleteCompany } from '../../hooks/useDeleteCompany';
 import { isPendingCompany } from '../../lib/companyData';
 import Filters from '../../components/Filters/Filters';
 import CompanyCard from '../../components/CompanyCard/CompanyCard';
 import CompanyCardSkeleton from '../../components/CompanyCard/CompanyCardSkeleton';
-import CompanyView from '../Company/CompanyView';
 import AddCompanyDialog from '../../components/AddCompanyDialog/AddCompanyDialog';
 import { useAuth } from '../../hooks/useAuth';
 
+const SORT_FIELDS = [
+  { key: 'name', label: 'Name' },
+  { key: 'createdAt', label: 'Date added' },
+];
+
+const successToastStyle = {
+  background: '#f5f3fb',
+  border: '2px solid #7e57e1',
+  color: '#3d0fa8',
+};
+
+const errorToastStyle = {
+  background: '#fff5f5',
+  border: '1px solid #fecaca',
+  color: '#7f1d1d',
+};
+
 function Home() {
   const { data: companies, isLoading, error } = useCompanies();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
+  const { deleteCompany } = useDeleteCompany();
+  const navigate = useNavigate();
 
-  const [viewCompanyId, setViewCompanyId] = useState(null);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [editingCompany, setEditingCompany] = useState(null);
+  const [companyPendingDelete, setCompanyPendingDelete] = useState(null);
+  const [isDeletingCompany, setIsDeletingCompany] = useState(false);
 
   const [filters, setFilters] = useState({
     location: [],
@@ -22,6 +58,8 @@ function Home() {
     technology: [],
     role: [],
   });
+  const [sortField, setSortField] = useState('name');
+  const [sortDir, setSortDir] = useState(1);
 
   if (error) return <p className="home-status">Something went wrong.</p>;
 
@@ -41,14 +79,84 @@ function Home() {
       );
     }) || [];
 
+  const sortedCompanies = useMemo(() => {
+    if (!filteredCompanies) return [];
+    return [...filteredCompanies].sort((a, b) => {
+      const aVal = a[sortField] ?? '';
+      const bVal = b[sortField] ?? '';
+      if (aVal < bVal) return -1 * sortDir;
+      if (aVal > bVal) return 1 * sortDir;
+      return 0;
+    });
+  }, [filteredCompanies, sortField, sortDir]);
+
+  async function handleDeleteCompany() {
+    if (!companyPendingDelete) return;
+    try {
+      setIsDeletingCompany(true);
+      await deleteCompany(companyPendingDelete.id);
+      toast.success('Company deleted', {
+        description: `${companyPendingDelete.name} has been removed.`,
+        style: successToastStyle,
+      });
+      setCompanyPendingDelete(null);
+    } catch (deleteError) {
+      toast.error('Could not delete company', {
+        description: deleteError?.message || 'Please try again.',
+        style: errorToastStyle,
+      });
+    } finally {
+      setIsDeletingCompany(false);
+    }
+  }
+
   return (
     <div className="home-page page-transition">
-      <CompanyView
-        open={viewCompanyId !== null}
-        onOpenChange={() => setViewCompanyId(null)}
-        companyId={viewCompanyId}
+      <AddCompanyDialog
+        open={addDialogOpen}
+        onOpenChange={(open) => {
+          setAddDialogOpen(open);
+          if (!open) setEditingCompany(null);
+        }}
+        company={editingCompany}
       />
-      <AddCompanyDialog open={addDialogOpen} onOpenChange={setAddDialogOpen} />
+
+      <AlertDialog
+        open={Boolean(companyPendingDelete)}
+        onOpenChange={(open) => {
+          if (!open && !isDeletingCompany) setCompanyPendingDelete(null);
+        }}
+      >
+        <AlertDialogContent className="border-[#ddd5f0] sm:max-w-md">
+          <AlertDialogHeader>
+            <AlertDialogMedia className="bg-[#fff3f2] text-[#dc2626]">
+              <Trash2 className="size-7" />
+            </AlertDialogMedia>
+            <AlertDialogTitle>Delete this company?</AlertDialogTitle>
+            <AlertDialogDescription>
+              {companyPendingDelete
+                ? `${companyPendingDelete.name} will be removed from the companies list. This action cannot be undone.`
+                : 'This action cannot be undone.'}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={isDeletingCompany}>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              variant="destructive"
+              disabled={isDeletingCompany}
+              className="bg-[#dc2626] hover:bg-[#b91c1c] focus-visible:ring-[#fecaca]"
+              onClick={async (event) => {
+                event.preventDefault();
+                await handleDeleteCompany();
+              }}
+            >
+              {isDeletingCompany ? 'Deleting...' : 'Delete company'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <div className="home-hero">
         <div className="home-hero__brand">
@@ -66,30 +174,62 @@ function Home() {
         )}
       </div>
 
-      {isLoading ? (
-        <div className="filter-bar">
+      <div className="home-toolbar">
+        {isLoading ? (
           <div
             className="skeleton"
             style={{ height: 44, width: 340, borderRadius: 12 }}
           />
+        ) : (
+          <Filters
+            filters={filters}
+            setFilters={setFilters}
+            bare
+            variant="purple"
+          />
+        )}
+
+        <div className="home-toolbar__right">
+          {!isLoading && (
+            <div className="home-sort-bar">
+              <ArrowDownUp size={14} className="home-sort-bar__icon" />
+              {SORT_FIELDS.map((field) => {
+                const isActive = sortField === field.key;
+                return (
+                  <Button
+                    key={field.key}
+                    variant="outline"
+                    className={
+                      isActive
+                        ? 'home-sort-btn home-sort-btn--active bg-[#561ce5] hover:bg-[#3d0fa8] text-white! border-[#561ce5] font-normal'
+                        : 'home-sort-btn text-[#1a1a2e] font-normal'
+                    }
+                    onClick={() => {
+                      if (isActive) {
+                        setSortDir((d) => d * -1);
+                      } else {
+                        setSortField(field.key);
+                        setSortDir(1);
+                      }
+                    }}
+                  >
+                    {field.label} {isActive ? (sortDir === 1 ? '↑' : '↓') : ''}
+                  </Button>
+                );
+              })}
+            </div>
+          )}
+          {isAuthenticated && (
+            <Button
+              className="bg-[#561ce5] hover:bg-[#3d0fa8] text-white shadow-sm"
+              onClick={() => setAddDialogOpen(true)}
+              type="button"
+            >
+              + Add Company
+            </Button>
+          )}
         </div>
-      ) : (
-        <Filters
-          filters={filters}
-          setFilters={setFilters}
-          addButton={
-            isAuthenticated && (
-              <button
-                className="home-add-btn"
-                onClick={() => setAddDialogOpen(true)}
-                type="button"
-              >
-                + Add Company
-              </button>
-            )
-          }
-        />
-      )}
+      </div>
 
       {isLoading ? (
         <div className="home-card-grid">
@@ -97,21 +237,40 @@ function Home() {
             <CompanyCardSkeleton key={i} />
           ))}
         </div>
-      ) : filteredCompanies.length === 0 ? (
+      ) : sortedCompanies.length === 0 ? (
         <p className="home-empty">No companies match the current filters.</p>
       ) : (
-        <div className="home-card-grid">
-          {filteredCompanies.map((company) => (
-            <CompanyCard
-              key={company.id}
-              company={company}
-              onClick={
-                isPendingCompany(company)
-                  ? undefined
-                  : () => setViewCompanyId(company.id)
-              }
-            />
-          ))}
+        <div className="home-card-grid" key={`${sortField}-${sortDir}`}>
+          {sortedCompanies.map((company) => {
+            const canManage =
+              user &&
+              (user.id === company.createdByUserId || user.role === 'admin');
+
+            return (
+              <CompanyCard
+                key={company.id}
+                company={company}
+                onClick={
+                  isPendingCompany(company)
+                    ? undefined
+                    : () => navigate(`/companies/${company.id}`)
+                }
+                onEdit={
+                  canManage
+                    ? () => {
+                        setEditingCompany(company);
+                        setAddDialogOpen(true);
+                      }
+                    : undefined
+                }
+                onDelete={
+                  canManage
+                    ? () => setCompanyPendingDelete(company)
+                    : undefined
+                }
+              />
+            );
+          })}
         </div>
       )}
     </div>
