@@ -253,7 +253,7 @@ function EventDateTimeField({
               <Clock3 size={16} />
               <SelectValue placeholder="Select time" />
             </SelectTrigger>
-            <SelectContent className="add-ev__time-content">
+            <SelectContent className="add-ev__time-content" position="popper">
               {TIME_OPTIONS.map((option) => (
                 <SelectItem key={option.value} value={option.value}>
                   {option.label}
