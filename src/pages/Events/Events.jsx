@@ -217,11 +217,10 @@ function Events() {
                   <Button
                     key={field.key}
                     variant="outline"
-                    size="sm"
                     className={
                       isActive
-                        ? 'events-sort-btn events-sort-btn--active bg-[#059669] hover:bg-[#047857] text-white! border-[#059669] font-semibold'
-                        : 'events-sort-btn text-[#1a1a2e] font-medium'
+                        ? 'events-sort-btn events-sort-btn--active bg-[#059669] hover:bg-[#047857] text-white! border-[#059669] font-normal'
+                        : 'events-sort-btn text-[#1a1a2e] font-normal'
                     }
                     onClick={() => {
                       if (isActive) {
