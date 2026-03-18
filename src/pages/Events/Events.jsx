@@ -28,7 +28,8 @@ import { usePageSize } from '../../hooks/usePageSize';
 
 const SORT_FIELDS = [
   { key: 'startTime', label: 'Event date' },
-  { key: 'createdAt', label: 'Date added' },
+  { key: 'createdAt', label: 'Date', labelFull: 'Date added' },
+  { key: 'updatedAt', label: 'Updated' },
 ];
 
 const successToastStyle = {
@@ -45,6 +46,9 @@ const errorToastStyle = {
 
 function getEventSortValue(event, field) {
   if (field === 'createdAt') {
+    return new Date(event.createdAt || 0).getTime();
+  }
+  if (field === 'updatedAt') {
     return new Date(event.updatedAt || event.createdAt || 0).getTime();
   }
 
@@ -105,6 +109,9 @@ function Events() {
       const bVal = getEventSortValue(b, sortField);
       if (aVal < bVal) return -1 * sortDir;
       if (aVal > bVal) return 1 * sortDir;
+      // Tiebreaker: sort by id so reversing direction always flips the list
+      if (a.id < b.id) return -1 * sortDir;
+      if (a.id > b.id) return 1 * sortDir;
       return 0;
     });
   }, [filteredEvents, sortField, sortDir]);
@@ -266,7 +273,15 @@ function Events() {
                       }
                     }}
                   >
-                    {field.label} {isActive ? (sortDir === 1 ? '↑' : '↓') : ''}
+                    {field.labelFull ? (
+                      <>
+                        <span className="events-sort-btn__label-full">{field.labelFull}</span>
+                        <span className="events-sort-btn__label-short">{field.label}</span>
+                      </>
+                    ) : (
+                      field.label
+                    )}{' '}
+                    {isActive ? (sortDir === 1 ? '↑' : '↓') : ''}
                   </Button>
                 );
               })}
