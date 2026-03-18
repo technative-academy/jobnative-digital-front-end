@@ -43,6 +43,14 @@ const errorToastStyle = {
   color: '#7f1d1d',
 };
 
+function getCompanySortValue(company, field) {
+  if (field === 'createdAt') {
+    return new Date(company.updatedAt || company.createdAt || 0).getTime();
+  }
+
+  return (company[field] ?? '').toString().toLowerCase();
+}
+
 function Home() {
   const { data: companies, isLoading, error } = useCompanies();
   const { isAuthenticated, user } = useAuth();
@@ -83,8 +91,8 @@ function Home() {
       }) || [];
 
     return [...filteredCompanies].sort((a, b) => {
-      const aVal = (a[sortField] ?? '').toString().toLowerCase();
-      const bVal = (b[sortField] ?? '').toString().toLowerCase();
+      const aVal = getCompanySortValue(a, sortField);
+      const bVal = getCompanySortValue(b, sortField);
       if (aVal < bVal) return -1 * sortDir;
       if (aVal > bVal) return 1 * sortDir;
       return 0;

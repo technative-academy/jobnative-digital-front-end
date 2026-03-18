@@ -43,6 +43,14 @@ const errorToastStyle = {
   color: '#7f1d1d',
 };
 
+function getEventSortValue(event, field) {
+  if (field === 'createdAt') {
+    return new Date(event.updatedAt || event.createdAt || 0).getTime();
+  }
+
+  return event[field] ?? '';
+}
+
 function showMutationSuccess(title, description) {
   toast.success(title, {
     description,
@@ -93,8 +101,8 @@ function Events() {
   const sortedEvents = useMemo(() => {
     if (!filteredEvents) return [];
     return [...filteredEvents].sort((a, b) => {
-      const aVal = a[sortField] ?? '';
-      const bVal = b[sortField] ?? '';
+      const aVal = getEventSortValue(a, sortField);
+      const bVal = getEventSortValue(b, sortField);
       if (aVal < bVal) return -1 * sortDir;
       if (aVal > bVal) return 1 * sortDir;
       return 0;
