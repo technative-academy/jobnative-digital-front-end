@@ -174,17 +174,31 @@ function Home() {
       </AlertDialog>
 
       <div className="home-hero">
-        <div className="home-hero__brand">
+        <div
+          className="home-hero__brand page-hero-copy"
+          style={{ '--hero-copy-delay': '0.08s' }}
+        >
           <span className="home-hero__brand--primary">Job</span>
           <span className="home-hero__brand--dark">Native</span>
         </div>
-        <h1 className="home-hero__title">Companies worth knowing</h1>
-        <p className="home-hero__subtitle">
+        <h1
+          className="home-hero__title page-hero-copy"
+          style={{ '--hero-copy-delay': '0.18s' }}
+        >
+          Companies worth knowing
+        </h1>
+        <p
+          className="home-hero__subtitle page-hero-copy"
+          style={{ '--hero-copy-delay': '0.28s' }}
+        >
           Discover local companies, their tech stacks, and what people are
           saying
         </p>
         {companies?.length > 0 && (
-          <span className="home-hero__badge">
+          <span
+            className="home-hero__badge page-hero-copy"
+            style={{ '--hero-copy-delay': '0.52s' }}
+          >
             {companies.length} companies listed
           </span>
         )}

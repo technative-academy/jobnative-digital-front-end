@@ -209,6 +209,42 @@
   animation: pageEnter 0.3s ease both;
 }
 
+@keyframes heroCopyFlourish {
+  0% {
+    opacity: 0;
+    transform: translateY(26px) scale(0.96) rotate(-0.8deg);
+  }
+  62% {
+    opacity: 1;
+    transform: translateY(-4px) scale(1.01) rotate(0.2deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotate(0);
+  }
+}
+
+.page-hero-copy {
+  animation: heroCopyFlourish 0.82s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--hero-copy-delay, 0s);
+  transform-origin: center top;
+  will-change: opacity, transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-transition,
+  .page-hero-copy,
+  .home-card-grid > *,
+  .events-card-grid > * {
+    animation: none !important;
+  }
+
+  .page-hero-copy {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 /* ── Skeleton shimmer ────────────────────────────────────────── */
 @keyframes skeletonShimmer {
   0% {
