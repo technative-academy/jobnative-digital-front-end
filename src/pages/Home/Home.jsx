@@ -1,5 +1,5 @@
 import './Home.css';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowDownUp, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
@@ -22,7 +22,9 @@ import Filters from '../../components/Filters/Filters';
 import CompanyCard from '../../components/CompanyCard/CompanyCard';
 import CompanyCardSkeleton from '../../components/CompanyCard/CompanyCardSkeleton';
 import AddCompanyDialog from '../../components/AddCompanyDialog/AddCompanyDialog';
+import PageNav from '../../components/PageNav/PageNav';
 import { useAuth } from '../../hooks/useAuth';
+import { usePageSize } from '../../hooks/usePageSize';
 
 const SORT_FIELDS = [
   { key: 'name', label: 'Name' },
@@ -60,35 +62,48 @@ function Home() {
   });
   const [sortField, setSortField] = useState('name');
   const [sortDir, setSortDir] = useState(1);
-
-  if (error) return <p className="home-status">Something went wrong.</p>;
-
-  const filteredCompanies =
-    companies?.filter((company) => {
-      return (
-        (filters.location.length === 0 ||
-          filters.location.includes(company.location)) &&
-        (filters.industry.length === 0 ||
-          filters.industry.includes(company.industry)) &&
-        (filters.technology.length === 0 ||
-          company.technologyList?.some((tech) =>
-            filters.technology.includes(tech),
-          )) &&
-        (filters.role.length === 0 ||
-          company.roleList?.some((role) => filters.role.includes(role)))
-      );
-    }) || [];
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = usePageSize();
 
   const sortedCompanies = useMemo(() => {
-    if (!filteredCompanies) return [];
+    const filteredCompanies =
+      companies?.filter((company) => {
+        return (
+          (filters.location.length === 0 ||
+            filters.location.includes(company.location)) &&
+          (filters.industry.length === 0 ||
+            filters.industry.includes(company.industry)) &&
+          (filters.technology.length === 0 ||
+            company.technologyList?.some((tech) =>
+              filters.technology.includes(tech),
+            )) &&
+          (filters.role.length === 0 ||
+            company.roleList?.some((role) => filters.role.includes(role)))
+        );
+      }) || [];
+
     return [...filteredCompanies].sort((a, b) => {
-      const aVal = a[sortField] ?? '';
-      const bVal = b[sortField] ?? '';
+      const aVal = (a[sortField] ?? '').toString().toLowerCase();
+      const bVal = (b[sortField] ?? '').toString().toLowerCase();
       if (aVal < bVal) return -1 * sortDir;
       if (aVal > bVal) return 1 * sortDir;
       return 0;
     });
-  }, [filteredCompanies, sortField, sortDir]);
+  }, [companies, filters, sortField, sortDir]);
+
+  // Reset to page 1 when filters, sort, or page size change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filters, sortField, sortDir, pageSize]);
+
+  const totalPages = Math.max(1, Math.ceil(sortedCompanies.length / pageSize));
+  const safePage = Math.min(currentPage, totalPages);
+  const paginatedCompanies = sortedCompanies.slice(
+    (safePage - 1) * pageSize,
+    safePage * pageSize,
+  );
+
+  if (error) return <p className="home-status">Something went wrong.</p>;
 
   async function handleDeleteCompany() {
     if (!companyPendingDelete) return;
@@ -163,13 +178,14 @@ function Home() {
           <span className="home-hero__brand--primary">Job</span>
           <span className="home-hero__brand--dark">Native</span>
         </div>
-        <h1 className="home-hero__title">Find the company of your dreams</h1>
+        <h1 className="home-hero__title">Companies worth knowing</h1>
         <p className="home-hero__subtitle">
-          Explore job opportunities that match your skills and interests.
+          Discover local companies, their tech stacks, and what people are
+          saying
         </p>
         {companies?.length > 0 && (
           <span className="home-hero__badge">
-            {companies.length}+ companies listed
+            {companies.length} companies listed
           </span>
         )}
       </div>
@@ -221,7 +237,7 @@ function Home() {
           )}
           {isAuthenticated && (
             <Button
-              className="bg-[#561ce5] hover:bg-[#3d0fa8] text-white shadow-sm"
+              className="bg-[#561ce5] hover:bg-[#3d0fa8] text-white shadow-sm cursor-pointer"
               onClick={() => setAddDialogOpen(true)}
               type="button"
             >
@@ -240,38 +256,50 @@ function Home() {
       ) : sortedCompanies.length === 0 ? (
         <p className="home-empty">No companies match the current filters.</p>
       ) : (
-        <div className="home-card-grid" key={`${sortField}-${sortDir}`}>
-          {sortedCompanies.map((company) => {
-            const canManage =
-              user &&
-              (user.id === company.createdByUserId || user.role === 'admin');
+        <>
+          <div
+            className="home-card-grid"
+            key={`${sortField}-${sortDir}-${safePage}`}
+          >
+            {paginatedCompanies.map((company) => {
+              const canManage =
+                user &&
+                (user.id === company.createdByUserId || user.role === 'admin');
 
-            return (
-              <CompanyCard
-                key={company.id}
-                company={company}
-                onClick={
-                  isPendingCompany(company)
-                    ? undefined
-                    : () => navigate(`/companies/${company.id}`)
-                }
-                onEdit={
-                  canManage
-                    ? () => {
-                        setEditingCompany(company);
-                        setAddDialogOpen(true);
-                      }
-                    : undefined
-                }
-                onDelete={
-                  canManage
-                    ? () => setCompanyPendingDelete(company)
-                    : undefined
-                }
-              />
-            );
-          })}
-        </div>
+              return (
+                <CompanyCard
+                  key={company.id}
+                  company={company}
+                  onClick={
+                    isPendingCompany(company)
+                      ? undefined
+                      : () => navigate(`/companies/${company.id}`)
+                  }
+                  onEdit={
+                    canManage
+                      ? () => {
+                          setEditingCompany(company);
+                          setAddDialogOpen(true);
+                        }
+                      : undefined
+                  }
+                  onDelete={
+                    canManage
+                      ? () => setCompanyPendingDelete(company)
+                      : undefined
+                  }
+                />
+              );
+            })}
+          </div>
+          {totalPages > 1 && (
+            <PageNav
+              currentPage={safePage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
+          )}
+        </>
       )}
     </div>
   );

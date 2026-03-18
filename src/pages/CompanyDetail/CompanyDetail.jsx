@@ -1,6 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { ArrowUpRight, ChevronRight, Pencil, Trash2, Star, CheckSquare, Mail } from 'lucide-react';
+import {
+  ArrowUpRight,
+  ChevronRight,
+  Pencil,
+  Trash2,
+  Star,
+  CheckSquare,
+  Mail,
+} from 'lucide-react';
 import { toast } from 'sonner';
 import {
   AlertDialog,
@@ -62,7 +70,11 @@ function getUserInitials(name) {
 }
 
 function formatCommentDate(comment) {
-  const raw = comment.createdAt || comment.created_at || comment.updatedAt || comment.updated_at;
+  const raw =
+    comment.createdAt ||
+    comment.created_at ||
+    comment.updatedAt ||
+    comment.updated_at;
   if (!raw) return null;
   const date = new Date(raw);
   if (isNaN(date)) return null;
@@ -78,11 +90,18 @@ function formatCommentDate(comment) {
   return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
 }
 
-function Comment({ comment, isOwner, currentUserName, onDelete, onEdit }) {
+function Comment({
+  comment,
+  isOwner,
+  currentUserName,
+  onRequestDelete,
+  onEdit,
+}) {
   const [editing, setEditing] = useState(false);
   const [draftValue, setDraftValue] = useState(comment.body);
   const value = editing ? draftValue : comment.body;
-  const userName = comment.user?.name || (isOwner ? currentUserName : null) || 'User';
+  const userName =
+    comment.user?.name || (isOwner ? currentUserName : null) || 'User';
   const tone = getAvatarTone(userName);
   const initials = getUserInitials(userName);
   const timeLabel = formatCommentDate(comment);
@@ -118,15 +137,41 @@ function Comment({ comment, isOwner, currentUserName, onDelete, onEdit }) {
           <div className="cd-comment__actions">
             {editing ? (
               <>
-                <button className="cd-comment__action-btn cd-comment__action-btn--save" onClick={handleSave} type="button">Save</button>
-                <button className="cd-comment__action-btn" onClick={() => { setDraftValue(comment.body); setEditing(false); }} type="button">Cancel</button>
+                <button
+                  className="cd-comment__action-btn cd-comment__action-btn--save"
+                  onClick={handleSave}
+                  type="button"
+                >
+                  Save
+                </button>
+                <button
+                  className="cd-comment__action-btn"
+                  onClick={() => {
+                    setDraftValue(comment.body);
+                    setEditing(false);
+                  }}
+                  type="button"
+                >
+                  Cancel
+                </button>
               </>
             ) : (
               <>
-                <button className="cd-comment__action-btn" onClick={() => { setDraftValue(comment.body); setEditing(true); }} type="button">
+                <button
+                  className="cd-comment__action-btn"
+                  onClick={() => {
+                    setDraftValue(comment.body);
+                    setEditing(true);
+                  }}
+                  type="button"
+                >
                   <Pencil size={12} /> Edit
                 </button>
-                <button className="cd-comment__action-btn cd-comment__action-btn--delete" onClick={() => onDelete(comment.id)} type="button">
+                <button
+                  className="cd-comment__action-btn cd-comment__action-btn--delete"
+                  onClick={() => onRequestDelete(comment)}
+                  type="button"
+                >
                   <Trash2 size={12} /> Delete
                 </button>
               </>
@@ -157,6 +202,9 @@ function CompanyDetail() {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [removeTrackerDialogOpen, setRemoveTrackerDialogOpen] = useState(false);
+  const [commentPendingDelete, setCommentPendingDelete] = useState(null);
+  const [isDeletingComment, setIsDeletingComment] = useState(false);
 
   // Tracker state
   const [trackerForm, setTrackerForm] = useState({
@@ -172,7 +220,10 @@ function CompanyDetail() {
   useEffect(() => {
     if (!id || !isAuthenticated) {
       setSavedTrackerState(null);
-      setTrackerForm({ dashboardColumn: DEFAULT_DASHBOARD_COLUMN, personalNotes: '' });
+      setTrackerForm({
+        dashboardColumn: DEFAULT_DASHBOARD_COLUMN,
+        personalNotes: '',
+      });
       setIsTrackerLoading(false);
       setIsTrackerSaving(false);
       setTrackerMessage('');
@@ -191,7 +242,8 @@ function CompanyDetail() {
         if (isActive) {
           setSavedTrackerState(trackerState);
           setTrackerForm({
-            dashboardColumn: trackerState.dashboardColumn || DEFAULT_DASHBOARD_COLUMN,
+            dashboardColumn:
+              trackerState.dashboardColumn || DEFAULT_DASHBOARD_COLUMN,
             personalNotes: trackerState.personalNotes ?? '',
           });
         }
@@ -199,9 +251,14 @@ function CompanyDetail() {
         if (!isActive) return;
         if (requestError?.status === 404) {
           setSavedTrackerState(null);
-          setTrackerForm({ dashboardColumn: DEFAULT_DASHBOARD_COLUMN, personalNotes: '' });
+          setTrackerForm({
+            dashboardColumn: DEFAULT_DASHBOARD_COLUMN,
+            personalNotes: '',
+          });
         } else {
-          setTrackerError(requestError.message || 'Unable to load dashboard state.');
+          setTrackerError(
+            requestError.message || 'Unable to load dashboard state.',
+          );
         }
       } finally {
         if (isActive) setIsTrackerLoading(false);
@@ -209,11 +266,17 @@ function CompanyDetail() {
     }
 
     loadTrackerState();
-    return () => { isActive = false; };
+    return () => {
+      isActive = false;
+    };
   }, [id, isAuthenticated]);
 
   if (isLoading) {
-    return <div className="cd-page"><p className="cd-loading">Loading company...</p></div>;
+    return (
+      <div className="cd-page">
+        <p className="cd-loading">Loading company...</p>
+      </div>
+    );
   }
 
   if (error) {
@@ -225,7 +288,11 @@ function CompanyDetail() {
   }
 
   if (!data) {
-    return <div className="cd-page"><p className="cd-error">Company not found.</p></div>;
+    return (
+      <div className="cd-page">
+        <p className="cd-error">Company not found.</p>
+      </div>
+    );
   }
 
   const canManage =
@@ -234,10 +301,16 @@ function CompanyDetail() {
   const palette = getAvatarTone(data.name);
   const initials = getCompanyMonogram(data.name);
 
-  const technologies = (data.technologies || []).map((t) => t?.name ?? t).filter(Boolean);
-  const jobRoles = (data.jobRoles || data.jobRoleTags || []).map((r) => r?.name ?? r).filter(Boolean);
+  const technologies = (data.technologies || [])
+    .map((t) => t?.name ?? t)
+    .filter(Boolean);
+  const jobRoles = (data.jobRoles || data.jobRoleTags || [])
+    .map((r) => r?.name ?? r)
+    .filter(Boolean);
 
-  const normalizedTrackerNotes = normalizeDashboardNotes(trackerForm.personalNotes);
+  const normalizedTrackerNotes = normalizeDashboardNotes(
+    trackerForm.personalNotes,
+  );
   const savedNotes = savedTrackerState?.personalNotes ?? '';
   const isTrackerDirty =
     trackerForm.dashboardColumn !==
@@ -295,7 +368,9 @@ function CompanyDetail() {
           : 'Company saved to your dashboard.',
       );
     } catch (requestError) {
-      setTrackerError(requestError.message || 'Unable to save dashboard state.');
+      setTrackerError(
+        requestError.message || 'Unable to save dashboard state.',
+      );
     } finally {
       setIsTrackerSaving(false);
     }
@@ -308,10 +383,15 @@ function CompanyDetail() {
       setTrackerMessage('');
       await userCompanyStatesService.delete(id);
       setSavedTrackerState(null);
-      setTrackerForm({ dashboardColumn: DEFAULT_DASHBOARD_COLUMN, personalNotes: '' });
+      setTrackerForm({
+        dashboardColumn: DEFAULT_DASHBOARD_COLUMN,
+        personalNotes: '',
+      });
       setTrackerMessage('Removed from your dashboard.');
     } catch (requestError) {
-      setTrackerError(requestError.message || 'Unable to remove this dashboard entry.');
+      setTrackerError(
+        requestError.message || 'Unable to remove this dashboard entry.',
+      );
     } finally {
       setIsTrackerSaving(false);
     }
@@ -338,7 +418,8 @@ function CompanyDetail() {
             </AlertDialogMedia>
             <AlertDialogTitle>Delete this company?</AlertDialogTitle>
             <AlertDialogDescription>
-              {data.name} will be removed from the companies list. This action cannot be undone.
+              {data.name} will be removed from the companies list. This action
+              cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -358,10 +439,98 @@ function CompanyDetail() {
         </AlertDialogContent>
       </AlertDialog>
 
+      {/* Remove from dashboard confirmation */}
+      <AlertDialog
+        open={removeTrackerDialogOpen}
+        onOpenChange={(open) => {
+          if (!open && !isTrackerSaving) setRemoveTrackerDialogOpen(false);
+        }}
+      >
+        <AlertDialogContent className="border-[#ddd5f0] sm:max-w-md">
+          <AlertDialogHeader>
+            <AlertDialogMedia className="bg-[#fff3f2] text-[#dc2626]">
+              <Trash2 className="size-7" />
+            </AlertDialogMedia>
+            <AlertDialogTitle>Remove from dashboard?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This company will be removed from your dashboard. Your private
+              notes will be lost.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={isTrackerSaving}>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              variant="destructive"
+              disabled={isTrackerSaving}
+              className="bg-[#dc2626] hover:bg-[#b91c1c] focus-visible:ring-[#fecaca]"
+              onClick={async (e) => {
+                e.preventDefault();
+                await handleRemoveTracker();
+                setRemoveTrackerDialogOpen(false);
+              }}
+            >
+              {isTrackerSaving ? 'Removing...' : 'Remove'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Delete comment confirmation */}
+      <AlertDialog
+        open={Boolean(commentPendingDelete)}
+        onOpenChange={(open) => {
+          if (!open && !isDeletingComment) setCommentPendingDelete(null);
+        }}
+      >
+        <AlertDialogContent className="border-[#ddd5f0] sm:max-w-md">
+          <AlertDialogHeader>
+            <AlertDialogMedia className="bg-[#fff3f2] text-[#dc2626]">
+              <Trash2 className="size-7" />
+            </AlertDialogMedia>
+            <AlertDialogTitle>Delete this comment?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This comment will be permanently removed. This action cannot be
+              undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={isDeletingComment}>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              variant="destructive"
+              disabled={isDeletingComment}
+              className="bg-[#dc2626] hover:bg-[#b91c1c] focus-visible:ring-[#fecaca]"
+              onClick={async (e) => {
+                e.preventDefault();
+                try {
+                  setIsDeletingComment(true);
+                  await deleteComment(commentPendingDelete.id);
+                  setCommentPendingDelete(null);
+                } catch {
+                  toast.error('Could not delete comment', {
+                    description: 'Please try again.',
+                    style: errorToastStyle,
+                  });
+                } finally {
+                  setIsDeletingComment(false);
+                }
+              }}
+            >
+              {isDeletingComment ? 'Deleting...' : 'Delete comment'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
       {/* Breadcrumb */}
       <nav className="cd-breadcrumb">
         <Link to="/">Companies</Link>
-        <span className="cd-breadcrumb__sep"><ChevronRight size={14} /></span>
+        <span className="cd-breadcrumb__sep">
+          <ChevronRight size={14} />
+        </span>
         <span className="cd-breadcrumb__current">{data.name}</span>
       </nav>
 
@@ -369,17 +538,29 @@ function CompanyDetail() {
       <div className="cd-hero">
         <div className="cd-hero__banner">
           <div className="cd-hero__info">
-            <div className={`cd-hero__avatar cd-hero__avatar--${palette}`}>{initials}</div>
+            <div className={`cd-hero__avatar cd-hero__avatar--${palette}`}>
+              {initials}
+            </div>
             <div className="cd-hero__text">
               <h1 className="cd-hero__name">{data.name}</h1>
               <div className="cd-hero__links">
                 {data.website && (
-                  <a href={data.website} target="_blank" rel="noreferrer" className="cd-hero__link">
+                  <a
+                    href={data.website}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="cd-hero__link"
+                  >
                     Website <ArrowUpRight size={14} />
                   </a>
                 )}
                 {data.linkedin && (
-                  <a href={data.linkedin} target="_blank" rel="noreferrer" className="cd-hero__link">
+                  <a
+                    href={data.linkedin}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="cd-hero__link"
+                  >
                     LinkedIn <ArrowUpRight size={14} />
                   </a>
                 )}
@@ -388,7 +569,9 @@ function CompanyDetail() {
           </div>
           <div className="cd-hero__right">
             {pending && (
-              <span className="cd-hero__status cd-hero__status--pending">Pending</span>
+              <span className="cd-hero__status cd-hero__status--pending">
+                Pending
+              </span>
             )}
             {canManage && (
               <>
@@ -415,11 +598,15 @@ function CompanyDetail() {
         <div className="cd-hero__meta">
           <div className="cd-meta-item">
             <span className="cd-meta-item__label">Location</span>
-            <span className="cd-meta-item__value">{data.location || 'Not specified'}</span>
+            <span className="cd-meta-item__value">
+              {data.location || 'Not specified'}
+            </span>
           </div>
           <div className="cd-meta-item">
             <span className="cd-meta-item__label">Industry</span>
-            <span className="cd-meta-item__value">{data.industry || 'Not specified'}</span>
+            <span className="cd-meta-item__value">
+              {data.industry || 'Not specified'}
+            </span>
           </div>
           <div className="cd-meta-item">
             <span className="cd-meta-item__label">Tech Stack</span>
@@ -474,22 +661,28 @@ function CompanyDetail() {
                       {commentsError.message || 'Unable to load comments.'}
                     </p>
                   ) : comments.length === 0 ? (
-                    <p className="cd-comments__empty">No comments yet. Be the first to share your thoughts!</p>
+                    <p className="cd-comments__empty">
+                      No comments yet. Be the first to share your thoughts!
+                    </p>
                   ) : (
                     comments.map((comment) => (
                       <Comment
                         comment={comment}
                         currentUserName={user?.name}
-                        isOwner={(comment.userId ?? comment.user_id) === user?.id}
+                        isOwner={
+                          (comment.userId ?? comment.user_id) === user?.id
+                        }
                         key={comment.id}
-                        onDelete={deleteComment}
+                        onRequestDelete={setCommentPendingDelete}
                         onEdit={editComment}
                       />
                     ))
                   )}
                 </div>
                 <div className="cd-comments__add">
-                  <div className={`cd-comment__avatar cd-comment__avatar--${getAvatarTone(user?.name)}`}>
+                  <div
+                    className={`cd-comment__avatar cd-comment__avatar--${getAvatarTone(user?.name)}`}
+                  >
                     {getUserInitials(user?.name)}
                   </div>
                   <div className="cd-comments__add-input">
@@ -535,7 +728,8 @@ function CompanyDetail() {
                   <p className="company-tracker__saved-state">
                     Currently in{' '}
                     <strong>
-                      {getDashboardColumnMeta(savedTrackerState.dashboardColumn)?.label || 'To Do'}
+                      {getDashboardColumnMeta(savedTrackerState.dashboardColumn)
+                        ?.label || 'To Do'}
                     </strong>
                     .
                   </p>
@@ -543,9 +737,12 @@ function CompanyDetail() {
 
                 <div className="company-tracker__columns">
                   {DASHBOARD_COLUMNS.map((column) => {
-                    const Icon = TRACKER_COLUMN_ICONS[column.value] || CheckSquare;
-                    const color = TRACKER_COLUMN_COLORS[column.value] || 'green';
-                    const isActive = trackerForm.dashboardColumn === column.value;
+                    const Icon =
+                      TRACKER_COLUMN_ICONS[column.value] || CheckSquare;
+                    const color =
+                      TRACKER_COLUMN_COLORS[column.value] || 'green';
+                    const isActive =
+                      trackerForm.dashboardColumn === column.value;
                     return (
                       <button
                         className={`company-tracker__column-card company-tracker__column-card--${color} ${
@@ -561,17 +758,26 @@ function CompanyDetail() {
                         }
                         type="button"
                       >
-                        <div className={`company-tracker__column-icon company-tracker__column-icon--${color}`}>
+                        <div
+                          className={`company-tracker__column-icon company-tracker__column-icon--${color}`}
+                        >
                           <Icon size={18} />
                         </div>
-                        <span className="company-tracker__column-label">{column.label}</span>
-                        <small className="company-tracker__column-desc">{column.description}</small>
+                        <span className="company-tracker__column-label">
+                          {column.label}
+                        </span>
+                        <small className="company-tracker__column-desc">
+                          {column.description}
+                        </small>
                       </button>
                     );
                   })}
                 </div>
 
-                <label className="company-tracker__notes-label" htmlFor="cd-tracker-notes">
+                <label
+                  className="company-tracker__notes-label"
+                  htmlFor="cd-tracker-notes"
+                >
                   Private notes
                 </label>
                 <textarea
@@ -605,17 +811,21 @@ function CompanyDetail() {
                 <div className="company-tracker__actions">
                   <button
                     className="company-tracker__save-btn"
-                    disabled={isTrackerLoading || isTrackerSaving || !canSaveTracker}
+                    disabled={
+                      isTrackerLoading || isTrackerSaving || !canSaveTracker
+                    }
                     onClick={handleSaveTracker}
                     type="button"
                   >
-                    {savedTrackerState ? 'Save dashboard changes' : 'Save to dashboard'}
+                    {savedTrackerState
+                      ? 'Save dashboard changes'
+                      : 'Save to dashboard'}
                   </button>
                   {savedTrackerState ? (
                     <button
                       className="company-tracker__remove-btn"
                       disabled={isTrackerSaving || isTrackerLoading}
-                      onClick={handleRemoveTracker}
+                      onClick={() => setRemoveTrackerDialogOpen(true)}
                       type="button"
                     >
                       Remove from dashboard
@@ -625,7 +835,8 @@ function CompanyDetail() {
               </div>
             ) : (
               <p className="cd-login-hint">
-                Log in to save this company to your dashboard and keep private notes.
+                Log in to save this company to your dashboard and keep private
+                notes.
               </p>
             )}
           </div>

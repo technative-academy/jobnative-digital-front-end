@@ -4,7 +4,7 @@ import './EventCard.css';
 function EventCardSkeleton() {
   return (
     <div className="event-card" aria-hidden="true">
-      <div className="event-card__date-strip">
+      <div className="event-card__date-strip" style={{ background: '#e8eaf0' }}>
         <div
           className="skeleton"
           style={{ width: 36, height: 32, borderRadius: 6, opacity: 0.3 }}
