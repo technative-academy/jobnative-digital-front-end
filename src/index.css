@@ -52,6 +52,7 @@ body {
   font-family: var(--font-family-body);
   background-color: #f8f9fc;
   color: var(--colour-text-dark);
+  overflow-x: hidden;
 }
 
 /* Typography */
