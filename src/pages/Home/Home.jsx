@@ -28,7 +28,8 @@ import { usePageSize } from '../../hooks/usePageSize';
 
 const SORT_FIELDS = [
   { key: 'name', label: 'Name' },
-  { key: 'createdAt', label: 'Date added' },
+  { key: 'createdAt', label: 'Date', labelFull: 'Date added' },
+  { key: 'updatedAt', label: 'Updated' },
 ];
 
 const successToastStyle = {
@@ -45,6 +46,9 @@ const errorToastStyle = {
 
 function getCompanySortValue(company, field) {
   if (field === 'createdAt') {
+    return new Date(company.createdAt || 0).getTime();
+  }
+  if (field === 'updatedAt') {
     return new Date(company.updatedAt || company.createdAt || 0).getTime();
   }
 
@@ -95,6 +99,9 @@ function Home() {
       const bVal = getCompanySortValue(b, sortField);
       if (aVal < bVal) return -1 * sortDir;
       if (aVal > bVal) return 1 * sortDir;
+      // Tiebreaker: sort by id so reversing direction always flips the list
+      if (a.id < b.id) return -1 * sortDir;
+      if (a.id > b.id) return 1 * sortDir;
       return 0;
     });
   }, [companies, filters, sortField, sortDir]);
@@ -251,7 +258,15 @@ function Home() {
                       }
                     }}
                   >
-                    {field.label} {isActive ? (sortDir === 1 ? '↑' : '↓') : ''}
+                    {field.labelFull ? (
+                      <>
+                        <span className="home-sort-btn__label-full">{field.labelFull}</span>
+                        <span className="home-sort-btn__label-short">{field.label}</span>
+                      </>
+                    ) : (
+                      field.label
+                    )}{' '}
+                    {isActive ? (sortDir === 1 ? '↑' : '↓') : ''}
                   </Button>
                 );
               })}
