@@ -107,6 +107,10 @@
     box-shadow 0.25s ease !important;
 }
 
+.home-sort-btn__label-short {
+  display: none;
+}
+
 /* Card grid */
 .home-card-grid {
   max-width: 1200px;
@@ -188,7 +192,15 @@
 
   .home-sort-btn {
     font-size: 13px !important;
-    padding: 6px 12px !important;
+    padding: 6px 10px !important;
+  }
+
+  .home-sort-btn__label-full {
+    display: none;
+  }
+
+  .home-sort-btn__label-short {
+    display: inline;
   }
 
   .home-toolbar__right > .home-sort-bar + button {
