@@ -197,12 +197,23 @@ function Events() {
       </AlertDialog>
 
       <div className="events-hero">
-        <h1 className="events-hero__title">Tech events near you</h1>
-        <p className="events-hero__subtitle">
+        <h1
+          className="events-hero__title page-hero-copy"
+          style={{ '--hero-copy-delay': '0.12s' }}
+        >
+          Tech events near you
+        </h1>
+        <p
+          className="events-hero__subtitle page-hero-copy"
+          style={{ '--hero-copy-delay': '0.24s' }}
+        >
           Find tech events going on near you.
         </p>
         {totalCount > 0 && (
-          <span className="events-hero__badge">
+          <span
+            className="events-hero__badge page-hero-copy"
+            style={{ '--hero-copy-delay': '0.48s' }}
+          >
             {totalCount} event{totalCount !== 1 ? 's' : ''}
           </span>
         )}
