@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { ArrowUpRight, ChevronRight, Pencil, Trash2 } from 'lucide-react';
+import { ArrowUpRight, ChevronRight, Pencil, Trash2, Star, CheckSquare, Mail } from 'lucide-react';
 import { toast } from 'sonner';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -44,10 +42,50 @@ const errorToastStyle = {
   color: '#7f1d1d',
 };
 
-function Comment({ comment, isOwner, onDelete, onEdit }) {
+const TRACKER_COLUMN_ICONS = {
+  favourite: Star,
+  todo: CheckSquare,
+  contacted: Mail,
+};
+
+const TRACKER_COLUMN_COLORS = {
+  favourite: 'purple',
+  todo: 'green',
+  contacted: 'blue',
+};
+
+function getUserInitials(name) {
+  if (!name) return '?';
+  const parts = name.trim().split(/\s+/);
+  if (parts.length === 1) return parts[0][0].toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+function formatCommentDate(comment) {
+  const raw = comment.createdAt || comment.created_at || comment.updatedAt || comment.updated_at;
+  if (!raw) return null;
+  const date = new Date(raw);
+  if (isNaN(date)) return null;
+  const now = new Date();
+  const diffMs = now - date;
+  const diffMins = Math.floor(diffMs / 60000);
+  if (diffMins < 1) return 'Just now';
+  if (diffMins < 60) return `${diffMins}m ago`;
+  const diffHours = Math.floor(diffMins / 60);
+  if (diffHours < 24) return `${diffHours}h ago`;
+  const diffDays = Math.floor(diffHours / 24);
+  if (diffDays < 7) return `${diffDays}d ago`;
+  return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+}
+
+function Comment({ comment, isOwner, currentUserName, onDelete, onEdit }) {
   const [editing, setEditing] = useState(false);
   const [draftValue, setDraftValue] = useState(comment.body);
   const value = editing ? draftValue : comment.body;
+  const userName = comment.user?.name || (isOwner ? currentUserName : null) || 'User';
+  const tone = getAvatarTone(userName);
+  const initials = getUserInitials(userName);
+  const timeLabel = formatCommentDate(comment);
 
   async function handleSave() {
     const trimmedValue = value.trim();
@@ -58,68 +96,44 @@ function Comment({ comment, isOwner, onDelete, onEdit }) {
   }
 
   return (
-    <div className="flex gap-10 p-3">
-      <span>
-        <div className="text-center">
-          <img
-            alt="Profile"
-            className="h-14 w-14 rounded-full object-cover"
-            src="/stock-profile-pic.jpg"
-          />
-          <p>{comment.user?.name ?? 'User'}</p>
+    <div className="cd-comment">
+      <div className={`cd-comment__avatar cd-comment__avatar--${tone}`}>
+        {initials}
+      </div>
+      <div className="cd-comment__content">
+        <div className="cd-comment__top">
+          <span className="cd-comment__author">{userName}</span>
+          {timeLabel && <span className="cd-comment__time">{timeLabel}</span>}
         </div>
-      </span>
-      <span className="min-w-9/12 max-w-11/12 flex flex-col gap-1">
-        <Textarea
-          disabled={!editing}
-          onChange={(e) => setDraftValue(e.target.value)}
-          value={value}
-        />
+        {editing ? (
+          <textarea
+            className="cd-comment__edit-textarea"
+            onChange={(e) => setDraftValue(e.target.value)}
+            value={value}
+          />
+        ) : (
+          <p className="cd-comment__text">{value}</p>
+        )}
         {isOwner ? (
-          <div className="flex justify-end gap-2">
+          <div className="cd-comment__actions">
             {editing ? (
               <>
-                <Button onClick={handleSave} size="sm" type="button">
-                  Save
-                </Button>
-                <Button
-                  onClick={() => {
-                    setDraftValue(comment.body);
-                    setEditing(false);
-                  }}
-                  size="sm"
-                  type="button"
-                  variant="outline"
-                >
-                  Cancel
-                </Button>
+                <button className="cd-comment__action-btn cd-comment__action-btn--save" onClick={handleSave} type="button">Save</button>
+                <button className="cd-comment__action-btn" onClick={() => { setDraftValue(comment.body); setEditing(false); }} type="button">Cancel</button>
               </>
             ) : (
               <>
-                <Button
-                  onClick={() => {
-                    setDraftValue(comment.body);
-                    setEditing(true);
-                  }}
-                  size="sm"
-                  type="button"
-                  variant="outline"
-                >
-                  Edit
-                </Button>
-                <Button
-                  onClick={() => onDelete(comment.id)}
-                  size="sm"
-                  type="button"
-                  variant="destructive"
-                >
-                  Delete
-                </Button>
+                <button className="cd-comment__action-btn" onClick={() => { setDraftValue(comment.body); setEditing(true); }} type="button">
+                  <Pencil size={12} /> Edit
+                </button>
+                <button className="cd-comment__action-btn cd-comment__action-btn--delete" onClick={() => onDelete(comment.id)} type="button">
+                  <Trash2 size={12} /> Delete
+                </button>
               </>
             )}
           </div>
         ) : null}
-      </span>
+      </div>
     </div>
   );
 }
@@ -355,7 +369,7 @@ function CompanyDetail() {
       <div className="cd-hero">
         <div className="cd-hero__banner">
           <div className="cd-hero__info">
-            <div className={`cd-hero__avatar`}>{initials}</div>
+            <div className={`cd-hero__avatar cd-hero__avatar--${palette}`}>{initials}</div>
             <div className="cd-hero__text">
               <h1 className="cd-hero__name">{data.name}</h1>
               <div className="cd-hero__links">
@@ -373,9 +387,9 @@ function CompanyDetail() {
             </div>
           </div>
           <div className="cd-hero__right">
-            <span className={`cd-hero__status ${pending ? 'cd-hero__status--pending' : 'cd-hero__status--approved'}`}>
-              {pending ? 'Pending' : 'Approved'}
-            </span>
+            {pending && (
+              <span className="cd-hero__status cd-hero__status--pending">Pending</span>
+            )}
             {canManage && (
               <>
                 <button
@@ -449,7 +463,7 @@ function CompanyDetail() {
 
           {/* Comments */}
           <div className="cd-card">
-            <h2 className="cd-card__title">Comments</h2>
+            <h2 className="cd-card__title">Community Comments</h2>
             {isAuthenticated ? (
               <>
                 <div className="cd-comments__list">
@@ -460,12 +474,13 @@ function CompanyDetail() {
                       {commentsError.message || 'Unable to load comments.'}
                     </p>
                   ) : comments.length === 0 ? (
-                    <p className="cd-comments__empty">No comments yet.</p>
+                    <p className="cd-comments__empty">No comments yet. Be the first to share your thoughts!</p>
                   ) : (
                     comments.map((comment) => (
                       <Comment
                         comment={comment}
-                        isOwner={comment.userId === user?.id}
+                        currentUserName={user?.name}
+                        isOwner={(comment.userId ?? comment.user_id) === user?.id}
                         key={comment.id}
                         onDelete={deleteComment}
                         onEdit={editComment}
@@ -474,22 +489,27 @@ function CompanyDetail() {
                   )}
                 </div>
                 <div className="cd-comments__add">
-                  <label className="cd-comments__add-label" htmlFor="cd-add-comment">
-                    Add Comment
-                  </label>
-                  <Textarea
-                    id="cd-add-comment"
-                    onChange={(e) => setNewComment(e.target.value)}
-                    placeholder="Type comment here"
-                    value={newComment}
-                  />
-                  <button
-                    type="button"
-                    className="cd-comments__submit"
-                    onClick={handleSubmitComment}
-                  >
-                    Submit
-                  </button>
+                  <div className={`cd-comment__avatar cd-comment__avatar--${getAvatarTone(user?.name)}`}>
+                    {getUserInitials(user?.name)}
+                  </div>
+                  <div className="cd-comments__add-input">
+                    <textarea
+                      className="cd-comments__textarea"
+                      id="cd-add-comment"
+                      onChange={(e) => setNewComment(e.target.value)}
+                      placeholder="Share your experience or ask a question..."
+                      rows={3}
+                      value={newComment}
+                    />
+                    <button
+                      type="button"
+                      className="cd-comments__submit"
+                      disabled={!newComment.trim()}
+                      onClick={handleSubmitComment}
+                    >
+                      Post comment
+                    </button>
+                  </div>
                 </div>
               </>
             ) : (
@@ -503,7 +523,7 @@ function CompanyDetail() {
         {/* Right column — Tracker */}
         <div>
           <div className="cd-card">
-            <h2 className="cd-card__title">Dashboard Tracker</h2>
+            <h2 className="cd-card__title">My Job Tracker</h2>
             {isAuthenticated ? (
               <div className="company-tracker">
                 <p className="company-tracker__intro">
@@ -522,33 +542,39 @@ function CompanyDetail() {
                 ) : null}
 
                 <div className="company-tracker__columns">
-                  {DASHBOARD_COLUMNS.map((column) => (
-                    <button
-                      className={`company-tracker__column-button ${
-                        trackerForm.dashboardColumn === column.value
-                          ? 'company-tracker__column-button--active'
-                          : ''
-                      }`}
-                      disabled={isTrackerLoading || isTrackerSaving}
-                      key={column.value}
-                      onClick={() =>
-                        setTrackerForm((current) => ({
-                          ...current,
-                          dashboardColumn: column.value,
-                        }))
-                      }
-                      type="button"
-                    >
-                      <span>{column.label}</span>
-                      <small>{column.description}</small>
-                    </button>
-                  ))}
+                  {DASHBOARD_COLUMNS.map((column) => {
+                    const Icon = TRACKER_COLUMN_ICONS[column.value] || CheckSquare;
+                    const color = TRACKER_COLUMN_COLORS[column.value] || 'green';
+                    const isActive = trackerForm.dashboardColumn === column.value;
+                    return (
+                      <button
+                        className={`company-tracker__column-card company-tracker__column-card--${color} ${
+                          isActive ? 'company-tracker__column-card--active' : ''
+                        }`}
+                        disabled={isTrackerLoading || isTrackerSaving}
+                        key={column.value}
+                        onClick={() =>
+                          setTrackerForm((current) => ({
+                            ...current,
+                            dashboardColumn: column.value,
+                          }))
+                        }
+                        type="button"
+                      >
+                        <div className={`company-tracker__column-icon company-tracker__column-icon--${color}`}>
+                          <Icon size={18} />
+                        </div>
+                        <span className="company-tracker__column-label">{column.label}</span>
+                        <small className="company-tracker__column-desc">{column.description}</small>
+                      </button>
+                    );
+                  })}
                 </div>
 
                 <label className="company-tracker__notes-label" htmlFor="cd-tracker-notes">
                   Private notes
                 </label>
-                <Textarea
+                <textarea
                   className="company-tracker__notes"
                   id="cd-tracker-notes"
                   onChange={(e) =>
@@ -558,6 +584,7 @@ function CompanyDetail() {
                     }))
                   }
                   placeholder="Add research notes, contacts, or follow-up ideas."
+                  rows={3}
                   value={trackerForm.personalNotes}
                 />
 
@@ -576,22 +603,23 @@ function CompanyDetail() {
                 ) : null}
 
                 <div className="company-tracker__actions">
-                  <Button
+                  <button
+                    className="company-tracker__save-btn"
                     disabled={isTrackerLoading || isTrackerSaving || !canSaveTracker}
                     onClick={handleSaveTracker}
                     type="button"
                   >
                     {savedTrackerState ? 'Save dashboard changes' : 'Save to dashboard'}
-                  </Button>
+                  </button>
                   {savedTrackerState ? (
-                    <Button
+                    <button
+                      className="company-tracker__remove-btn"
                       disabled={isTrackerSaving || isTrackerLoading}
                       onClick={handleRemoveTracker}
                       type="button"
-                      variant="outline"
                     >
                       Remove from dashboard
-                    </Button>
+                    </button>
                   ) : null}
                 </div>
               </div>
