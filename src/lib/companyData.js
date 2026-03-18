@@ -100,7 +100,7 @@ function unique(values) {
 
   return values.filter((value) => {
     const key =
-      typeof value === "string" ? value.trim().toLowerCase() : String(value);
+      typeof value === "string" ? value.trim().toLowerCase().replace(/[-_]/g, " ") : String(value);
 
     if (!key || seen.has(key)) {
       return false;
