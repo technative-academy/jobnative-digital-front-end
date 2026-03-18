@@ -10,6 +10,7 @@ import { ProtectedRoute, PublicOnlyRoute } from './components/ProtectedRoute';
 import Events from './pages/Events/Events';
 import Admin from './pages/Admin/Admin';
 import AdminRoute from './components/AdminRoute';
+import CompanyDetail from './pages/CompanyDetail/CompanyDetail';
 import { Toaster } from './components/ui/sonner';
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route path="/companies/:id" element={<CompanyDetail />} />
           <Route path="/events" element={<Events />} />
           <Route
             path="/admin"

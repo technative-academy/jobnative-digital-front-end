@@ -18,11 +18,6 @@ function Navbar() {
   const isEventsPage = location.pathname.startsWith('/events');
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // Close menu on route change
-  useEffect(() => {
-    setMenuOpen(false);
-  }, [location.pathname]);
-
   // Prevent body scroll when menu is open
   useEffect(() => {
     if (menuOpen) {
@@ -36,16 +31,24 @@ function Navbar() {
     };
   }, [menuOpen]);
 
+  function closeMenu() {
+    setMenuOpen(false);
+  }
+
+  function toggleMenu() {
+    setMenuOpen((open) => !open);
+  }
+
   async function handleLogout() {
     await logout();
-    setMenuOpen(false);
+    closeMenu();
     navigate('/login');
   }
 
   return (
     <nav className="navbar">
       <div className="navbar-left">
-        <NavLink className="navbar-brand" to="/">
+        <NavLink className="navbar-brand" to="/" onClick={closeMenu}>
           <span
             className={`navbar-brand__job${isEventsPage ? ' navbar-brand__job--green' : ''}`}
           >
@@ -100,7 +103,7 @@ function Navbar() {
       {/* Mobile burger button */}
       <button
         className={`navbar-burger${menuOpen ? ' navbar-burger--open' : ''}`}
-        onClick={() => setMenuOpen(!menuOpen)}
+        onClick={toggleMenu}
         type="button"
         aria-label={menuOpen ? 'Close menu' : 'Open menu'}
       >
@@ -112,19 +115,39 @@ function Navbar() {
       {/* Mobile menu overlay */}
       <div className={`mobile-menu${menuOpen ? ' mobile-menu--open' : ''}`}>
         <div className="mobile-menu__links">
-          <NavLink className={getNavItemClassName} to="/" style={{ '--i': 0 }}>
+          <NavLink
+            className={getNavItemClassName}
+            to="/"
+            style={{ '--i': 0 }}
+            onClick={closeMenu}
+          >
             Home
           </NavLink>
-          <NavLink className={getEventsNavItemClassName} to="/events" style={{ '--i': 1 }}>
+          <NavLink
+            className={getEventsNavItemClassName}
+            to="/events"
+            style={{ '--i': 1 }}
+            onClick={closeMenu}
+          >
             Events
           </NavLink>
           {isAuthenticated ? (
-            <NavLink className={getNavItemClassName} to="/dashboard" style={{ '--i': 2 }}>
+            <NavLink
+              className={getNavItemClassName}
+              to="/dashboard"
+              style={{ '--i': 2 }}
+              onClick={closeMenu}
+            >
               Dashboard
             </NavLink>
           ) : null}
           {user?.role === 'admin' ? (
-            <NavLink className={getNavItemClassName} to="/admin" style={{ '--i': 3 }}>
+            <NavLink
+              className={getNavItemClassName}
+              to="/admin"
+              style={{ '--i': 3 }}
+              onClick={closeMenu}
+            >
               Admin
             </NavLink>
           ) : null}
@@ -147,10 +170,20 @@ function Navbar() {
             </>
           ) : (
             <>
-              <NavLink className={getNavItemClassName} to="/login" style={{ '--i': 3 }}>
+              <NavLink
+                className={getNavItemClassName}
+                to="/login"
+                style={{ '--i': 3 }}
+                onClick={closeMenu}
+              >
                 Login
               </NavLink>
-              <NavLink className={getNavItemClassName} to="/signup" style={{ '--i': 4 }}>
+              <NavLink
+                className={getNavItemClassName}
+                to="/signup"
+                style={{ '--i': 4 }}
+                onClick={closeMenu}
+              >
                 Sign Up
               </NavLink>
             </>

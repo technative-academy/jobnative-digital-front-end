@@ -210,7 +210,7 @@ body[data-scroll-locked] .navbar {
 
   .mobile-menu__links .nav-item--active {
     color: #561ce5;
-    background: rgba(86, 28, 229, 0.06);
+    background: rgba(86, 28, 229, 0.12);
   }
 
   .mobile-menu__links .nav-item--active-green {

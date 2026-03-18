@@ -111,9 +111,10 @@ export function getCompanyMonogram(name) {
 
   const [firstPart, secondPart] = parts;
 
-  if (parts.length > 1 && !/^\d/.test(firstPart)) {
-    const secondCharacter = secondPart?.[0] || firstPart[1] || firstPart[0];
-    return `${firstPart[0] ?? ""}${secondCharacter ?? ""}`.toUpperCase();
+  if (parts.length > 1) {
+    const firstChar = firstPart[0] ?? "";
+    const secondChar = secondPart?.[0] || firstPart[1] || "";
+    return `${firstChar}${secondChar}`.toUpperCase();
   }
 
   return firstPart.slice(0, 2).toUpperCase();

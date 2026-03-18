@@ -1,5 +1,5 @@
 import './Events.css';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ArrowDownUp, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -23,6 +23,8 @@ import { isPendingEvent } from '../../lib/eventData';
 import EventCard from '../../components/EventCard/EventCard';
 import EventCardSkeleton from '../../components/EventCard/EventCardSkeleton';
 import AddEventDialog from '../AddEventDialog/AddEventDialog';
+import PageNav from '../../components/PageNav/PageNav';
+import { usePageSize } from '../../hooks/usePageSize';
 
 const SORT_FIELDS = [
   { key: 'startTime', label: 'Event date' },
@@ -74,6 +76,8 @@ function Events() {
   });
   const [sortField, setSortField] = useState('startTime');
   const [sortDir, setSortDir] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = usePageSize();
 
   const filteredEvents = events?.filter((event) => {
     return (
@@ -98,6 +102,18 @@ function Events() {
   }, [filteredEvents, sortField, sortDir]);
 
   const totalCount = sortedEvents.length;
+
+  // Reset to page 1 when filters, sort, or page size change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filters, sortField, sortDir, pageSize]);
+
+  const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
+  const safePage = Math.min(currentPage, totalPages);
+  const paginatedEvents = sortedEvents.slice(
+    (safePage - 1) * pageSize,
+    safePage * pageSize,
+  );
 
   if (error) return <p className="events-status">Something went wrong.</p>;
 
@@ -239,7 +255,7 @@ function Events() {
           )}
           {isAuthenticated && (
             <Button
-              className="bg-[#059669] hover:bg-[#047857] text-white shadow-sm"
+              className="bg-[#059669] hover:bg-[#047857] text-white shadow-sm cursor-pointer"
               onClick={() => setAddEventDialogOpen(true)}
               type="button"
             >
@@ -258,43 +274,56 @@ function Events() {
       ) : sortedEvents.length === 0 ? (
         <p className="events-empty">No events match the current filters.</p>
       ) : (
-        <div className="events-card-grid" key={`${sortField}-${sortDir}`}>
-          {sortedEvents.map((event) => {
-            const canManage =
-              user &&
-              (user.id === event.createdByUserId || user.role === 'admin');
+        <>
+          <div
+            className="events-card-grid"
+            key={`${sortField}-${sortDir}-${safePage}`}
+          >
+            {paginatedEvents.map((event) => {
+              const canManage =
+                user &&
+                (user.id === event.createdByUserId || user.role === 'admin');
 
-            return (
-              <EventCard
-                key={event.id}
-                event={event}
-                onClick={
-                  isPendingEvent(event)
-                    ? undefined
-                    : () => {
-                        setSelectedEventId(event.id);
-                        setEventDialogOpen(true);
-                      }
-                }
-                onEdit={
-                  canManage
-                    ? () => {
-                        setEditingEvent(event);
-                        setAddEventDialogOpen(true);
-                      }
-                    : undefined
-                }
-                onDelete={
-                  canManage
-                    ? () => {
-                        setEventPendingDelete(event);
-                      }
-                    : undefined
-                }
-              />
-            );
-          })}
-        </div>
+              return (
+                <EventCard
+                  key={event.id}
+                  event={event}
+                  onClick={
+                    isPendingEvent(event)
+                      ? undefined
+                      : () => {
+                          setSelectedEventId(event.id);
+                          setEventDialogOpen(true);
+                        }
+                  }
+                  onEdit={
+                    canManage
+                      ? () => {
+                          setEditingEvent(event);
+                          setAddEventDialogOpen(true);
+                        }
+                      : undefined
+                  }
+                  onDelete={
+                    canManage
+                      ? () => {
+                          setEventPendingDelete(event);
+                        }
+                      : undefined
+                  }
+                />
+              );
+            })}
+          </div>
+          {totalPages > 1 && (
+            <PageNav
+              currentPage={safePage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+              variant="green"
+            />
+          )}
+        </>
       )}
     </div>
   );

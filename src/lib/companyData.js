@@ -27,6 +27,74 @@ function getNames(items) {
     .filter(Boolean);
 }
 
+const TAG_DISPLAY_NAMES = {
+  javascript: "JavaScript",
+  typescript: "TypeScript",
+  nodejs: "Node.js",
+  "node js": "Node.js",
+  node: "Node.js",
+  nextjs: "Next.js",
+  "next js": "Next.js",
+  reactjs: "React",
+  react: "React",
+  "react native": "React Native",
+  vuejs: "Vue.js",
+  "vue js": "Vue.js",
+  vue: "Vue.js",
+  angular: "Angular",
+  svelte: "Svelte",
+  go: "Go",
+  golang: "Go",
+  python: "Python",
+  ruby: "Ruby",
+  rails: "Rails",
+  php: "PHP",
+  java: "Java",
+  csharp: "C#",
+  "c sharp": "C#",
+  "c#": "C#",
+  dotnet: ".NET",
+  ".net": ".NET",
+  css: "CSS",
+  html: "HTML",
+  sql: "SQL",
+  nosql: "NoSQL",
+  graphql: "GraphQL",
+  mongodb: "MongoDB",
+  postgresql: "PostgreSQL",
+  postgres: "PostgreSQL",
+  mysql: "MySQL",
+  redis: "Redis",
+  docker: "Docker",
+  kubernetes: "Kubernetes",
+  aws: "AWS",
+  "aws lambda": "AWS Lambda",
+  azure: "Azure",
+  gcp: "GCP",
+  firebase: "Firebase",
+  figma: "Figma",
+  git: "Git",
+  github: "GitHub",
+  tailwind: "Tailwind CSS",
+  "tailwind css": "Tailwind CSS",
+  express: "Express",
+  django: "Django",
+  flask: "Flask",
+  "machine learning": "Machine Learning",
+  ai: "AI",
+  "ui ux": "UI/UX",
+  devops: "DevOps",
+};
+
+function normalizeTagDisplay(tag) {
+  const key = tag.trim().toLowerCase();
+  if (TAG_DISPLAY_NAMES[key]) {
+    return TAG_DISPLAY_NAMES[key];
+  }
+  // Title case fallback: capitalize first letter of each word
+  return tag.trim().replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
 function unique(values) {
   const seen = new Set();
 
@@ -44,17 +112,21 @@ function unique(values) {
 }
 
 export function normalizeCompany(company) {
-  const technologyList = unique([
-    ...getNames(company?.technologies),
-    ...getNames(company?.technologyStack),
-    ...getNames(company?.technology ? [company.technology] : []),
-  ]);
+  const technologyList = unique(
+    [
+      ...getNames(company?.technologies),
+      ...getNames(company?.technologyStack),
+      ...getNames(company?.technology ? company.technology.split(',').map(s => s.trim()).filter(Boolean) : []),
+    ].map(normalizeTagDisplay),
+  );
 
-  const roleList = unique([
-    ...getNames(company?.jobRoleTags),
-    ...getNames(company?.jobRoles),
-    ...getNames(company?.role ? [company.role] : []),
-  ]);
+  const roleList = unique(
+    [
+      ...getNames(company?.jobRoleTags),
+      ...getNames(company?.jobRoles),
+      ...getNames(company?.role ? [company.role] : []),
+    ].map(normalizeTagDisplay),
+  );
 
   return {
     ...company,
